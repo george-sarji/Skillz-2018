@@ -208,38 +208,5 @@ namespace Skillz_Code
         }
     }
 
-    public void PairMyPirates(List<Pirate> PiratesToPair)
-    {
-        foreach (var pirate in PiratesToPair)
-        {
-            if (!PiratePairs.ContainsKey(pirate) && !PiratePairs.ContainsValue(pirate))
-            {
-                // This pirate is not used.
-                // Attempt to pair the pirate with the closest pirate that is in the same state and not used.
-                var closestSameStatePirate = PiratesToPair.Where(p => !p.Equals(pirate) && p.IsSameState(pirate) &&
-                        !PiratePairs.ContainsKey(p) && !PiratePairs.ContainsValue(p))
-                    .OrderBy(p => p.Steps(pirate)).FirstOrDefault();
-                var closestDifferentStatePirate = PiratesToPair.Where(p => !p.Equals(pirate) && !p.IsSameState(pirate) &&
-                        !PiratePairs.ContainsKey(p) && !PiratePairs.ContainsValue(p))
-                    .OrderBy(p => p.Steps(pirate)).FirstOrDefault();
-                if (closestSameStatePirate != null)
-                {
-                    // Pair the pirates.
-                    PiratePairs[pirate] = closestSameStatePirate;
-                    ("Paired " + pirate.ToString() + " with " + closestSameStatePirate).Print();
-                }
-                else if (closestDifferentStatePirate != null)
-                {
-                    PiratePairs[pirate] = closestDifferentStatePirate;
-                }
-                else
-                {
-                    // There is no good closest pirate. Solo pair.
-                    PiratePairs[pirate] = null;
-                    (pirate + " is a solo pair.").Print();
-                }
-            }
-        }
-    }
 }
 }
