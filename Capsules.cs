@@ -8,25 +8,79 @@ namespace Skillz_Code
     {
         public void CaptureCapsules()
         {
-            foreach (Capsule capsule in myCapsules.OrderBy(
-                    capsule => capsule.Distance(
-                        myPirates.OrderBy(p => ClosestDistance(
-                            p.Location, capsule.Location,
-                            game.GetAllWormholes().Where(wormhole => wormhole.TurnsToReactivate < p.Steps(capsule.InitialLocation)))).FirstOrDefault())))
+            if (myPirates.Any())
             {
-                var PiratesOrdered = availablePirates.Where(p => !p.HasCapsule())
-                    .OrderBy(p => ClosestDistance(p.Location, capsule.InitialLocation, game.GetAllWormholes()
-                        .Where(wormhole => wormhole.TurnsToReactivate < p.Steps(capsule.InitialLocation))));
-                if (PiratesOrdered.Any())
+                foreach (var capsule in game.GetMyCapsules().OrderBy(
+                        capsule => capsule.Distance(
+                            myPirates.OrderBy(p => ClosestDistance(
+                                p.Location, capsule.Location,
+                                game.GetAllWormholes().Where(wormhole => wormhole.TurnsToReactivate < p.Steps(capsule.InitialLocation))
+                            )).FirstOrDefault()
+                        )
+                    ))
                 {
-                    var closestPirate = PiratesOrdered.First();
-                    if (ClosestDistance(closestPirate.Location, capsule.InitialLocation, game.GetAllWormholes()
-                            .Where(wormhole => wormhole.TurnsToReactivate < closestPirate.Steps(capsule.InitialLocation))) == closestPirate.Distance(capsule))
+                    var piratesOrdered = myPirates.Where(p => !p.HasCapsule()).OrderBy(p => p.Steps(capsule.InitialLocation))
+                        .OrderBy(p => ClosestDistance(p.Location, capsule.InitialLocation, game.GetAllWormholes()
+                            .Where(wormhole => wormhole.TurnsToReactivate < p.Steps(capsule.InitialLocation) / 4)) / p.MaxSpeed);
+                    // Check if we have a close pirate to the capsule.
+                    if (piratesOrdered.Any())
                     {
+                        // Send the closest pirate to the spawn.
+                        var closestPirate = piratesOrdered.First();
+                        var bestWormhole = GetBestWormhole(capsule.InitialLocation, closestPirate);
+                        myPirates.Remove(closestPirate);
+                        if (bestWormhole != null)
+                        {
+                            var BestPirate = myPirates.OrderBy(p => p.Distance(closestPirate))
+                                .OrderByDescending(p => p.IsSameState(closestPirate)).FirstOrDefault();
+                            // if (CheckIfCapturerCanReach(closestPirate, bestWormhole.Location) || BestPirate == null)
+                            AssignDestination(closestPirate, SmartSail(closestPirate, bestWormhole));
+                            // else
+                            // {
+                            //     if (ShouldPushPirates(closestPirate, BestPirate, capsule.Location))
+                            //     {
 
+                            //         PushPair(closestPirate, BestPirate, capsule.Location);
+                            //         myPirates.Remove(BestPirate);
+                            //         continue;
+                            //     }
+                            //     MakePair(closestPirate, BestPirate, bestWormhole.Location);
+                            //     myPirates.Remove(BestPirate);
+                            // }
+                        }
+                        else
+                        {
+                            var BestPirate = myPirates.OrderBy(p => p.Distance(closestPirate))
+                                .OrderByDescending(p => p.IsSameState(closestPirate)).FirstOrDefault();
+                            // if (CheckIfCapturerCanReach(closestPirate, capsule.InitialLocation) || BestPirate == null)
+                            AssignDestination(closestPirate, capsule.InitialLocation);
+                            // else
+                            // {
+                            //     if (ShouldPushPirates(closestPirate, BestPirate, capsule.Location))
+                            //     {
+                            //         PushPair(closestPirate, BestPirate, capsule.Location);
+                            //         myPirates.Remove(BestPirate);
+                            //         continue;
+                            //     }
+                            //     MakePair(closestPirate, BestPirate, capsule.InitialLocation);
+                            //     myPirates.Remove(BestPirate);
+                            // }
+                        }
                     }
                 }
             }
+        }
+
+        public bool CheckIfCapturerCanReach(Pirate CapsuleCapturer, Location destination) //Working on this Function -Mahmoud
+        {
+            if (destination == null) return false;
+            if (CapsuleCapturer.InRange(destination, CapsuleCapturer.MaxSpeed) &&
+                NumberOfAvailableEnemyPushers(CapsuleCapturer) < CapsuleCapturer.NumPushesForCapsuleLoss &&
+                NumberOfEnemiesOnTheWay(CapsuleCapturer, destination) < CapsuleCapturer.NumPushesForCapsuleLoss)
+            {
+                return true;
+            }
+            return false;
         }
 
         protected bool TryPushEnemyCapsuleAggressively(Pirate friendly, Capsule capsule)
