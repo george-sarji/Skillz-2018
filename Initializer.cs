@@ -10,6 +10,9 @@ namespace Skillz_Code
         public const bool Debug = true;
 
         protected List<Pirate> availablePirates;
+        protected List<Capsule> myCapsules;
+        protected List<Capsule> enemyCapsules;
+        protected List<Pirate> myPirates;
         public void DoTurn(PirateGame game)
         {
             Initialize(game);
@@ -18,6 +21,9 @@ namespace Skillz_Code
         {
             game = pirateGame;
             availablePirates = pirateGame.GetMyLivingPirates().ToList();
+            myCapsules = game.GetMyCapsules().ToList();
+            enemyCapsules = game.GetEnemyCapsules().ToList();
+            myPirates = game.GetMyLivingPirates().ToList();
         }
     }
 }
