@@ -27,25 +27,25 @@ namespace Skillz_Code
             game = pirateGame;
             availablePirates = pirateGame.GetMyLivingPirates().ToList();
             bunkerCount = new Dictionary<Mothership, int>();
-            foreach(var mothership in game.GetEnemyMotherships())
-                bunkerCount[mothership]=0;
+            foreach (var mothership in game.GetEnemyMotherships())
+                bunkerCount[mothership] = 0;
             myCapsules = game.GetMyCapsules().ToList();
             enemyCapsules = game.GetEnemyCapsules().ToList();
             myPirates = game.GetMyLivingPirates().ToList();
             pirateDestinations = new Dictionary<Pirate, Location>();
             capsulePushes = new Dictionary<Capsule, int>();
-            foreach(var capsule in enemyCapsules)
-                capsulePushes[capsule]=0;
+            foreach (var capsule in enemyCapsules)
+                capsulePushes[capsule] = 0;
         }
 
         protected void MovePirates()
         {
-            foreach(var map in pirateDestinations)
+            foreach (var map in pirateDestinations)
             {
                 var pirate = map.Key;
                 var destination = map.Value;
                 pirate.Sail(destination);
-                (pirate + " sails towards "+ destination).Print();
+                (pirate + " sails towards " + destination).Print();
             }
         }
     }

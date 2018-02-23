@@ -101,7 +101,7 @@ namespace Skillz_Code
 
         protected void AssignDestination(Pirate pirate, Location destination)
         {
-            pirateDestinations[pirate]=destination;
+            pirateDestinations[pirate] = destination;
         }
 
         protected int AvailablePushDistance(Pirate pirate)

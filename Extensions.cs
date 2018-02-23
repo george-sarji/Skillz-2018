@@ -8,13 +8,13 @@ namespace Skillz_Code
     {
         public static void Print(this string s)
         {
-            if(SSJS12Bot.Debug)
+            if (SSJS12Bot.Debug)
                 SSJS12Bot.game.Debug(s);
         }
-        
+
         public static int Power(this int num, int power)
         {
-            return (int)System.Math.Pow(num, power);
+            return (int) System.Math.Pow(num, power);
         }
         public static double Power(this double num, int power)
         {
@@ -43,7 +43,7 @@ namespace Skillz_Code
         }
         public static int Steps(this Pirate pirate, MapObject mapObject)
         {
-            return (int)(pirate.Distance(mapObject) / (pirate.MaxSpeed+1));
+            return (int) (pirate.Distance(mapObject) / (pirate.MaxSpeed + 1));
         }
     }
 
