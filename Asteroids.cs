@@ -12,7 +12,7 @@ namespace Skillz_Code
             foreach(Asteroid asteroid in livingAsteroids)
             {
                 var pirate = availablePirates.Where(p => p.CanPush(asteroid)).OrderByDescending(p => AsteroidHeadingTowardsPirate(asteroid,p)).FirstOrDefault();
-                if(pirate!=null && availablePirates.Where(p => AsteroidHeadingTowardsPirate(asteroid,p)).Any()&&!exceptionList.Contains(asteroid))
+                if(pirate!=null && availablePirates.Where(p => p.CanPush(asteroid)).Any()&&!exceptionList.Contains(asteroid))
                 {
                     var bestEnemy = game.GetEnemyLivingPirates()
                         .OrderByDescending(enemy => enemy.HasCapsule())
