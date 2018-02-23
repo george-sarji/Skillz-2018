@@ -26,7 +26,7 @@ namespace Skillz_Code
                         }
                     }
                     var requiredPiratesCount = Min(count+1, capsule.Holder.NumPushesForCapsuleLoss);
-                    ("Mothership: "+mothership).Print();
+                    ("Mothership: "+mothership+", Capsule: "+capsule).Print();
                     ("Required pirates: "+requiredPiratesCount).Print();
                     ("Push pirates: "+count).Print();
                     ("Capsule loss: "+ capsule.Holder.NumPushesForCapsuleLoss).Print();
