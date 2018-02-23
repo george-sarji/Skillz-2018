@@ -112,173 +112,134 @@ namespace Skillz_Code
         {
             var usedPirates = new List<Pirate>();
             var capsuleHolders = availablePirates.Where(p => p.HasCapsule()).ToList();
-            while (capsuleHolders.Count() > 1)
+            foreach (Pirate pirateWithCapsule in capsuleHolders)
             {
-                // Get the best mothership
-                var first = capsuleHolders.FirstOrDefault();
-                capsuleHolders.Remove(first);
-                availablePirates.Remove(first);
-                var mothership = game.GetMyMotherships().OrderBy(m => m.Distance(first) / ((double) m.ValueMultiplier).Sqrt()).FirstOrDefault();
-                if (mothership != null)
+                availablePirates.Remove(pirateWithCapsule);
+                var bestMothership = game.GetMyMotherships().OrderBy(m => ClosestDistance(pirateWithCapsule.Location, m, game.GetAllWormholes()) / ((double) m.ValueMultiplier).Sqrt()).FirstOrDefault();
+                if (bestMothership != null)
                 {
-
-                    // Get the best wormhole
-                    var bestWormhole = GetBestWormhole(mothership.Location, first);
-                    Pirate closestHolder = null;
-                    closestHolder = availablePirates.OrderBy(p => p.Steps(first)).FirstOrDefault();
-                    // if (piratePairs.ContainsKey(first))
-                    //     closestHolder = piratePairs[first];
-                    // else if (piratePairs.Values.Contains(first))
-                    //     closestHolder = piratePairs.Where(p => p.Value != null && p.Value.Equals(first)).FirstOrDefault().Key;
-                    // else if (capsuleHolders.Any())
-                    //     closestHolder = capsuleHolders.OrderBy(p => p.Distance(mothership)).FirstOrDefault();
-                    // else if (myPirates.Any())
-                    //     closestHolder = myPirates.OrderBy(p => p.Steps(first)).FirstOrDefault();
-                    // var closestHolder = capsuleHolders.OrderBy(p => p.Distance(mothership)).FirstOrDefault();
-                    capsuleHolders.Remove(closestHolder);
-                    if (bestWormhole != null)
+                    var bestWormhole = GetBestWormhole(bestMothership.Location, pirateWithCapsule);
+                    if (ClosestDistance(pirateWithCapsule.Location, bestMothership, game.GetAllWormholes()) == pirateWithCapsule.Distance(bestMothership))
                     {
-                        // There is a wormhole. Send them with an intersection.
-                        MakePair(first, closestHolder, bestWormhole.Location);
-                        availablePirates.Remove(first);
-                        availablePirates.Remove(closestHolder);
-                    }
-                    else if (closestHolder != null)
-                    {
-                        if (!CheckIfCapsuleCanReach(first, mothership) && CheckIfCapsuleCanReach(closestHolder, mothership))
-                        {
-                            AssignDestination(first, SmartSail(first, mothership.Location));
-                        }
-                        else if (CheckIfCapsuleCanReach(first, mothership) && !CheckIfCapsuleCanReach(closestHolder, mothership))
-                            AssignDestination(closestHolder, SmartSail(closestHolder, mothership.Location));
-                        else
-                            MakePair(first, closestHolder, mothership.Location);
-                        availablePirates.Remove(first);
-                        availablePirates.Remove(closestHolder);
+                        AssignDestination(pirateWithCapsule, bestMothership.Location);
                     }
                     else
-                        AssignDestination(first, SmartSail(first, mothership.Location));
+                    {
+                        AssignDestination(pirateWithCapsule, bestWormhole.Location);
+                    }
                 }
             }
-            if (capsuleHolders.Count() == 1)
+    }
+    public void MakePair(Pirate first, Pirate second, Location destination)
+    {
+        if (second == null)
+        {
+            AssignDestination(first, SmartSail(first, destination));
+            return;
+        }
+        // if (!second.IsSameState(first))
+        // {
+        //     ("Reached2").Print();
+        //     MakeSpecialPair(first, second, destination);
+        //     return;
+        // }
+        var intersections = new List<Location>();
+        intersections.Add(Interception(first.Location, destination, second.Location));
+        intersections.Add(Interception(second.Location, destination, first.Location));
+        var speeds = new List<int>();
+        var slowestSpeed = Min(first.MaxSpeed, second.MaxSpeed);
+        // intersections.Add(MidPoint(first, second));
+        var bestIntersection = intersections.Where(location => location != null).OrderBy(location => location.Distance(destination))
+            .Where(location => IsOnTheWay(first.Location, destination, location, 1) &&
+                IsOnTheWay(second.Location, destination, location, 1))
+            .FirstOrDefault();
+        Location finalDest = null;
+        if (first.Location.Equals(second.Location))
+        {
+            finalDest = destination;
+        }
+        else
+        {
+            finalDest = bestIntersection;
+        }
+        if (finalDest == null)
+        {
+            intersections.RemoveAt(0);
+            intersections.RemoveAt(0);
+            intersections.Add(first.Location);
+            intersections.Add(second.Location);
+            finalDest = intersections.OrderBy(location => location.Distance(destination)).FirstOrDefault();
             {
-                // There's a lonely pirate. Pair him up for the sake of Valentine.
-                var lonelyPirate = capsuleHolders.FirstOrDefault();
-                var mothership = game.GetMyMotherships().OrderBy(m => m.Distance(lonelyPirate) / ((double) m.ValueMultiplier).Sqrt()).FirstOrDefault();
-                if (mothership != null)
-                {
-                    var closestPirate = availablePirates.OrderBy(p => p.Distance(lonelyPirate)).FirstOrDefault();
-                    var bestWormhole = GetBestWormhole(mothership.Location, lonelyPirate);
-                    if (closestPirate != null)
-                    {
-                        if (closestPirate.IsSameState(lonelyPirate))
-                        {
-                            if (bestWormhole != null)
-                            {
-                                MakePair(lonelyPirate, closestPirate, bestWormhole.Location);
-                            }
-                            else if (!CheckIfCapsuleCanReach(lonelyPirate, mothership))
-                            {
-                                MakePair(lonelyPirate, closestPirate, mothership.Location);
-                            }
-                        }
-                        else
-                        {
-                            if (bestWormhole != null)
-                            {
-                                MakePair(lonelyPirate, closestPirate, bestWormhole.Location);
-                            }
-                            else if (!CheckIfCapsuleCanReach(lonelyPirate, mothership))
-                            {
-                                MakePair(lonelyPirate, closestPirate, mothership.Location);
-                            }
-                        }
-                        availablePirates.Remove(lonelyPirate);
-                        availablePirates.Remove(closestPirate);
-                    }
-                    else
-                        AssignDestination(lonelyPirate, SmartSail(lonelyPirate, mothership.Location));
-                    availablePirates.Remove(lonelyPirate);
-                }
 
             }
         }
-        public void MakePair(Pirate first, Pirate second, Location destination)
+        if (first.HasCapsule())
+            AssignDestination(first, SmartSail(first, finalDest));
+        else
+            AssignDestination(first, first.Location.Towards(finalDest, slowestSpeed));
+        if (second.HasCapsule())
+            AssignDestination(second, SmartSail(second, finalDest));
+        else
+            AssignDestination(second, second.Location.Towards(finalDest, slowestSpeed));
+    }
+    protected void PushEnemyCapsulesAggressively()
+    {
+        foreach (var capsule in game.GetEnemyCapsules().Where(cap => cap.Holder != null))
         {
-            if (second == null)
+            // Get the pirates that can push
+            var pushingPirates = availablePirates.Where(p => p.CanPush(capsule.Holder))
+                .Take(capsule.Holder.NumPushesForCapsuleLoss);
+            var distanceToBorder = capsule.Holder.Distance(GetClosestToBorder(capsule.Location));
+            if (pushingPirates.Count() == capsule.Holder.NumPushesForCapsuleLoss)
             {
-                AssignDestination(first, SmartSail(first, destination));
-                return;
-            }
-            // if (!second.IsSameState(first))
-            // {
-            //     ("Reached2").Print();
-            //     MakeSpecialPair(first, second, destination);
-            //     return;
-            // }
-            var intersections = new List<Location>();
-            intersections.Add(Interception(first.Location, destination, second.Location));
-            intersections.Add(Interception(second.Location, destination, first.Location));
-            var speeds = new List<int>();
-            var slowestSpeed = Min(first.MaxSpeed, second.MaxSpeed);
-            // intersections.Add(MidPoint(first, second));
-            var bestIntersection = intersections.Where(location => location != null).OrderBy(location => location.Distance(destination))
-                .Where(location => IsOnTheWay(first.Location, destination, location, 1) &&
-                    IsOnTheWay(second.Location, destination, location, 1))
-                .FirstOrDefault();
-            Location finalDest = null;
-            if (first.Location.Equals(second.Location))
-            {
-                finalDest = destination;
-            }
-            else
-            {
-                finalDest = bestIntersection;
-            }
-            if (finalDest == null)
-            {
-                intersections.RemoveAt(0);
-                intersections.RemoveAt(0);
-                intersections.Add(first.Location);
-                intersections.Add(second.Location);
-                finalDest = intersections.OrderBy(location => location.Distance(destination)).FirstOrDefault();
+                var pushDistance = pushingPirates.Sum(p => p.PushDistance);
+                Location pushLocation = (pushDistance >= distanceToBorder) ?
+                    GetClosestToBorder(capsule.Location) :
+                    capsule.Location.Towards(capsule.InitialLocation, -pushDistance);
+                var usedPirates = new List<Pirate>();
+                foreach (var pirate in pushingPirates)
                 {
-
+                    pirate.Push(capsule.Holder, pushLocation);
+                    (pirate + " pushes pirate " + capsule.Holder + " towards " + pushLocation).Print();
+                    usedPirates.Add(pirate);
                 }
+                availablePirates = availablePirates.Except(usedPirates).ToList();
             }
-            if (first.HasCapsule())
-                AssignDestination(first, SmartSail(first, finalDest));
-            else
-                AssignDestination(first, first.Location.Towards(finalDest, slowestSpeed));
-            if (second.HasCapsule())
-                AssignDestination(second, SmartSail(second, finalDest));
-            else
-                AssignDestination(second, second.Location.Towards(finalDest, slowestSpeed));
         }
-        protected void PushEnemyCapsulesAggressively()
+    }
+
+    public void PairMyPirates(List<Pirate> PiratesToPair)
+    {
+        foreach (var pirate in PiratesToPair)
         {
-            foreach(var capsule in game.GetEnemyCapsules().Where(cap => cap.Holder!=null))
+            if (!PiratePairs.ContainsKey(pirate) && !PiratePairs.ContainsValue(pirate))
             {
-                // Get the pirates that can push
-                var pushingPirates = availablePirates.Where(p => p.CanPush(capsule.Holder))
-                    .Take(capsule.Holder.NumPushesForCapsuleLoss);
-                var distanceToBorder = capsule.Holder.Distance(GetClosestToBorder(capsule.Location));
-                if(pushingPirates.Count()==capsule.Holder.NumPushesForCapsuleLoss)
+                // This pirate is not used.
+                // Attempt to pair the pirate with the closest pirate that is in the same state and not used.
+                var closestSameStatePirate = PiratesToPair.Where(p => !p.Equals(pirate) && p.IsSameState(pirate) &&
+                        !PiratePairs.ContainsKey(p) && !PiratePairs.ContainsValue(p))
+                    .OrderBy(p => p.Steps(pirate)).FirstOrDefault();
+                var closestDifferentStatePirate = PiratesToPair.Where(p => !p.Equals(pirate) && !p.IsSameState(pirate) &&
+                        !PiratePairs.ContainsKey(p) && !PiratePairs.ContainsValue(p))
+                    .OrderBy(p => p.Steps(pirate)).FirstOrDefault();
+                if (closestSameStatePirate != null)
                 {
-                    var pushDistance = pushingPirates.Sum(p => p.PushDistance);
-                    Location pushLocation = (pushDistance>=distanceToBorder) 
-                        ? GetClosestToBorder(capsule.Location)
-                        : capsule.Location.Towards(capsule.InitialLocation, -pushDistance);
-                    var usedPirates = new List<Pirate>();
-                    foreach(var pirate in pushingPirates)
-                    {
-                        pirate.Push(capsule.Holder, pushLocation);
-                        (pirate + " pushes pirate "+ capsule.Holder + " towards "+ pushLocation).Print();
-                        usedPirates.Add(pirate);
-                    }
-                    availablePirates = availablePirates.Except(usedPirates).ToList();
+                    // Pair the pirates.
+                    PiratePairs[pirate] = closestSameStatePirate;
+                    ("Paired " + pirate.ToString() + " with " + closestSameStatePirate).Print();
+                }
+                else if (closestDifferentStatePirate != null)
+                {
+                    PiratePairs[pirate] = closestDifferentStatePirate;
+                }
+                else
+                {
+                    // There is no good closest pirate. Solo pair.
+                    PiratePairs[pirate] = null;
+                    (pirate + " is a solo pair.").Print();
                 }
             }
         }
     }
+}
 }
