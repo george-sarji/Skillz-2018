@@ -138,5 +138,31 @@ namespace Skillz_Code
         {
             return game.GetEnemyLivingPirates().Where(enemy => enemy.InRange(location, enemy.PushRange) && enemy.PushReloadTurns != 0).Count();
         }
+
+        public bool CheckIfCapsuleCanReach(Pirate CapsuleHolder, Mothership mothership) //Working on this Function -Mahmoud
+        {
+            if (mothership == null) return false;
+            if (CapsuleHolder.InRange(mothership, mothership.UnloadRange * 3)
+                && NumberOfAvailableEnemyPushers(CapsuleHolder) < CapsuleHolder.NumPushesForCapsuleLoss
+                && NumberOfEnemiesOnTheWay(CapsuleHolder, mothership.Location) < CapsuleHolder.NumPushesForCapsuleLoss)
+            {
+                AssignDestination(CapsuleHolder, mothership.Location);
+                availablePirates.Remove(CapsuleHolder);
+                return true;
+            }
+            return false;
+        }
+
+        public bool CheckIfCapturerCanReach(Pirate CapsuleCapturer, Location destination) //Working on this Function -Mahmoud
+        {
+            if (destination == null) return false;
+            if (CapsuleCapturer.InRange(destination, CapsuleCapturer.MaxSpeed) &&
+                NumberOfAvailableEnemyPushers(CapsuleCapturer) < CapsuleCapturer.NumPushesForCapsuleLoss &&
+                NumberOfEnemiesOnTheWay(CapsuleCapturer, destination) < CapsuleCapturer.NumPushesForCapsuleLoss)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }
