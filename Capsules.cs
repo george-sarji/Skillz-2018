@@ -28,7 +28,7 @@ namespace Skillz_Code
                         // Send the closest pirate to the spawn.
                         var closestPirate = piratesOrdered.First();
                         var bestWormhole = GetBestWormhole(capsule.InitialLocation, closestPirate);
-                        myPirates.Remove(closestPirate);
+                        availablePirates.Remove(closestPirate);
                         if (bestWormhole != null)
                         {
                             var BestPirate = myPirates.OrderBy(p => p.Distance(closestPirate))
@@ -95,7 +95,6 @@ namespace Skillz_Code
                 if (pushDistanceAvailable >= distanceToBorder)
                 {
                     // Push towards the border
-                    pushDistanceAvailable -= friendly.PushDistance;
                     var pushLocation = GetClosestToBorder(capsule.Location);
                     friendly.Push(capsule.Holder, pushLocation);
                     (friendly + " pushes " + capsule.Holder + " towards " + pushLocation).Print();
@@ -119,6 +118,32 @@ namespace Skillz_Code
                 return true;
             }
             return false;
+        }
+
+        protected void PushEnemyCapsulesAggressively()
+        {
+            foreach(var capsule in game.GetEnemyCapsules().Where(cap => cap.Holder!=null))
+            {
+                // Get the pirates that can push
+                var pushingPirates = availablePirates.Where(p => p.CanPush(capsule.Holder))
+                    .Take(capsule.Holder.NumPushesForCapsuleLoss);
+                var distanceToBorder = capsule.Holder.Distance(GetClosestToBorder(capsule.Location));
+                if(pushingPirates.Count()==capsule.Holder.NumPushesForCapsuleLoss)
+                {
+                    var pushDistance = pushingPirates.Sum(p => p.PushDistance);
+                    Location pushLocation = (pushDistance>=distanceToBorder) 
+                        ? GetClosestToBorder(capsule.Location)
+                        : capsule.Location.Towards(capsule.InitialLocation, -pushDistance);
+                    var usedPirates = new List<Pirate>();
+                    foreach(var pirate in pushingPirates)
+                    {
+                        pirate.Push(capsule.Holder, pushLocation);
+                        (pirate + " pushes pirate "+ capsule.Holder + " towards "+ pushLocation).Print();
+                        usedPirates.Add(pirate);
+                    }
+                    availablePirates = availablePirates.Except(usedPirates).ToList();
+                }
+            }
         }
     }
 }
