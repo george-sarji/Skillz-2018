@@ -49,7 +49,7 @@ namespace Skillz_Code
                                 // {
                                     var rangeNeeded = bunkerCount[mothership].Power(2) * game.PushRange;
                                     var destinationBunker = mothership.Location.Towards(capsule, rangeNeeded);
-                                    if(useablePirates.Count(p => p.InRange(capsule, p.PushRange*2) && p.InRange(mothership, p.PushDistance*2))==requiredPiratesCount &&
+                                    if(useablePirates.Count(p => p.InRange(capsule, p.PushRange*2) && p.InRange(mothership, p.PushDistance*2))>=requiredPiratesCount &&
                                             pirate.InRange(capsule, pirate.PushRange*2) && pirate.InRange(mothership, pirate.PushDistance*2))
                                     {
                                         destinationBunker = capsule.Location.Towards(mothership, (int)(pirate.PushRange*0.9));
