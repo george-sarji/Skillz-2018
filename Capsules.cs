@@ -110,14 +110,6 @@ namespace Skillz_Code
 
         public void DeliverCapsules()
         {
-            foreach (Pirate pirateWithCapsule in availablePirates.Where(p => p.HasCapsule()))
-            {
-                availablePirates.Remove(pirateWithCapsule);
-                var bestMothership = game.GetMyMotherships().OrderBy(mothership => mothership.Distance(pirateWithCapsule) / ((double) mothership.ValueMultiplier).Sqrt()).FirstOrDefault();
-                if (bestMothership != null)
-                {
-                }
-            }
             var usedPirates = new List<Pirate>();
             var capsuleHolders = availablePirates.Where(p => p.HasCapsule()).ToList();
             while (capsuleHolders.Count() > 1)
