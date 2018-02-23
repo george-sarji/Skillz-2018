@@ -15,8 +15,14 @@ namespace Skillz_Code
         public void DoTurn(PirateGame game)
         {
             Initialize(game);
-            CaptureCapsules();
-            PerformAggressiveBunker();
+            if (!game.GetMyMotherships().Any() || !game.GetMyCapsules().Any())
+                PerformDefensiveBunker();
+            else
+            {
+                PushEnemyCapsulesAggressively();
+                CaptureCapsules();
+                PerformAggressiveBunker();
+            }
             MovePirates();
         }
         protected void Initialize(PirateGame pirateGame)
@@ -34,12 +40,11 @@ namespace Skillz_Code
 
         protected void MovePirates()
         {
-            foreach(var map in pirateDestinations)
+            foreach (var pirate in pirateDestinations.Keys)
             {
-                var pirate = map.Key;
-                var destination = map.Value;
+                var destination = pirateDestinations[pirate];
                 pirate.Sail(destination);
-                (pirate + " sails towards "+ destination).Print();
+                (pirate + " sails towards " + destination).Print();
             }
         }
     }
