@@ -41,7 +41,7 @@ namespace Skillz_Code
                 if (pushDistanceAvailable >= distanceToBorder)
                 {
                     // Push towards the border
-                    pushDistanceAvailable = -friendly.PushDistance;
+                    pushDistanceAvailable -= friendly.PushDistance;
                     var pushLocation = GetClosestToBorder(capsule.Location);
                     friendly.Push(capsule.Holder, pushLocation);
                     (friendly + " pushes " + capsule.Holder + " towards " + pushLocation).Print();
