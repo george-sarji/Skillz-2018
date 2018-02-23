@@ -19,7 +19,7 @@ namespace Skillz_Code
         {
             Initialize(game);
         }
-        public void Initialize(PirateGame pirateGame)
+        protected void Initialize(PirateGame pirateGame)
         {
             game = pirateGame;
             availablePirates = pirateGame.GetMyLivingPirates().ToList();
@@ -30,6 +30,17 @@ namespace Skillz_Code
             enemyCapsules = game.GetEnemyCapsules().ToList();
             myPirates = game.GetMyLivingPirates().ToList();
             pirateDestinations = new Dictionary<Pirate, Location>();
+        }
+
+        protected void MovePirates()
+        {
+            foreach(var map in pirateDestinations)
+            {
+                var pirate = map.Key;
+                var destination = map.Value;
+                pirate.Sail(destination);
+                (pirate + " sails towards "+ destination).Print();
+            }
         }
     }
 }
