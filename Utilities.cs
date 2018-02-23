@@ -101,7 +101,7 @@ namespace Skillz_Code
 
         protected void AssignDestination(Pirate pirate, Location destination)
         {
-            pirateDestinations[pirate]=destination;
+            pirateDestinations[pirate] = destination;
         }
 
         protected int AvailablePushDistance(Pirate pirate)
@@ -111,6 +111,32 @@ namespace Skillz_Code
         protected int NumOfAvailablePushers(Pirate pirate)
         {
             return availablePirates.Where(p => p.CanPush(pirate)).Count();
+        }
+
+        private bool IsOnTheWay(Location a, Location b, Location c, int buffer)
+        {
+            return b.Distance(c) <= a.Distance(c) && DistanceLP(a, b, c) <= buffer;
+        }
+
+        private int DistanceLP(Location a, Location b, Location c)
+        {
+            int numerator = System.Math.Abs((b.Col - a.Col) * c.Row - (b.Row - a.Row) * c.Col + b.Row * a.Col - b.Col * a.Row);
+            double denominator = a.Distance(b);
+            return denominator == 0 ? 0 : (int) System.Math.Round(numerator / denominator);
+        }
+        public int NumberOfEnemiesOnTheWay(Pirate myPirate, Location b)
+        {
+            return game.GetEnemyLivingPirates().Where(p => IsOnTheWay(myPirate.Location, b, p.Location, p.MaxSpeed) && myPirate.Steps(p) < p.PushReloadTurns).ToList().Count;
+        }
+
+        public int NumberOfAvailableEnemyPushers(Pirate pirate)
+        {
+            return game.GetEnemyLivingPirates().Where(enemy => enemy.CanPush(pirate)).Count();
+        }
+
+        public int NumberOfPushersAtLocation(Location location)
+        {
+            return game.GetEnemyLivingPirates().Where(enemy => enemy.InRange(location, enemy.PushRange) && enemy.PushReloadTurns != 0).Count();
         }
     }
 }
