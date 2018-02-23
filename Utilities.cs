@@ -47,7 +47,7 @@ namespace Skillz_Code
             return null;
         }
 
-        public Mothership GetBestMothershipThroughWormholes(Pirate pirate)
+        protected Mothership GetBestMothershipThroughWormholes(Pirate pirate)
         {
             var mothershipWormholes = new Dictionary<Mothership, int>();
             Mothership bestMothership = null;
@@ -79,12 +79,12 @@ namespace Skillz_Code
             return bestMothership;
         }
 
-        private static Location Closest(Location location, params Location[] locations)
+        protected static Location Closest(Location location, params Location[] locations)
         {
             return locations.OrderBy(l => l.Distance(location)).First();
         }
 
-        private Location GetClosestToBorder(Location location)
+        protected Location GetClosestToBorder(Location location)
         {
             var up = new Location(-5, location.Col);
             var down = new Location(game.Rows + 5, location.Col);
@@ -92,6 +92,16 @@ namespace Skillz_Code
             var right = new Location(location.Row, game.Cols + 5);
 
             return Closest(location, up, down, left, right);
+        }
+
+        protected int Min(params int[] nums)
+        {
+            return nums.Min();
+        }
+
+        protected void AssignDestination(Pirate pirate, Location destination)
+        {
+            pirateDestinations[pirate]=destination;
         }
     }
 }

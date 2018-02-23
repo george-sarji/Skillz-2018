@@ -13,6 +13,8 @@ namespace Skillz_Code
         protected List<Capsule> myCapsules;
         protected List<Capsule> enemyCapsules;
         protected List<Pirate> myPirates;
+
+        protected Dictionary<Pirate, Location> pirateDestinations;
         public void DoTurn(PirateGame game)
         {
             Initialize(game);
@@ -27,6 +29,7 @@ namespace Skillz_Code
             myCapsules = game.GetMyCapsules().ToList();
             enemyCapsules = game.GetEnemyCapsules().ToList();
             myPirates = game.GetMyLivingPirates().ToList();
+            pirateDestinations = new Dictionary<Pirate, Location>();
         }
     }
 }
