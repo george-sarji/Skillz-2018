@@ -19,6 +19,7 @@ namespace Skillz_Code
                 PerformDefensiveBunker();
             else
             {
+                DeliverCapsules();
                 PushEnemyCapsulesAggressively();
                 CaptureCapsules();
                 PerformAggressiveBunker();
