@@ -17,6 +17,7 @@ namespace Skillz_Code
         public void DoTurn(PirateGame game)
         {
             Initialize(game);
+            PushAsteroids();
             PushEnemyCapsulesAggressively();
             if (!game.GetMyMotherships().Any() || !game.GetMyCapsules().Any())
                 PerformDefensiveBunker();
@@ -39,6 +40,7 @@ namespace Skillz_Code
             capsulePushes = new Dictionary<Capsule, int>();
             foreach(var capsule in game.GetEnemyCapsules())
                 capsulePushes[capsule]=0;
+            livingAsteroids = game.GetLivingAsteroids().ToList();
         }
 
         protected void MovePirates()
