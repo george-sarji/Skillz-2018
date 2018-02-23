@@ -139,15 +139,15 @@ namespace Skillz_Code
             return game.GetEnemyLivingPirates().Where(enemy => enemy.InRange(location, enemy.PushRange) && enemy.PushReloadTurns != 0).Count();
         }
 
-        public bool CheckIfCapsuleCanReach(Pirate CapsuleHolder, Mothership mothership) //Working on this Function -Mahmoud
+        public bool CheckIfCapsuleCanReach(Pirate capsuleHolder, Mothership mothership) //Working on this Function -Mahmoud
         {
             if (mothership == null) return false;
-            if (CapsuleHolder.InRange(mothership, mothership.UnloadRange * 3) &&
-                NumberOfAvailableEnemyPushers(CapsuleHolder) < CapsuleHolder.NumPushesForCapsuleLoss &&
-                NumberOfEnemiesOnTheWay(CapsuleHolder, mothership.Location) < CapsuleHolder.NumPushesForCapsuleLoss)
+            if (capsuleHolder.InRange(mothership, mothership.UnloadRange * 3) &&
+                NumberOfAvailableEnemyPushers(capsuleHolder) < capsuleHolder.NumPushesForCapsuleLoss &&
+                NumberOfEnemiesOnTheWay(capsuleHolder, mothership.Location) < capsuleHolder.NumPushesForCapsuleLoss)
             {
-                AssignDestination(CapsuleHolder, mothership.Location);
-                availablePirates.Remove(CapsuleHolder);
+                AssignDestination(capsuleHolder, mothership.Location);
+                availablePirates.Remove(capsuleHolder);
                 return true;
             }
             return false;
@@ -177,12 +177,12 @@ namespace Skillz_Code
             }
             return d;
         }
-        protected Mothership[] GetPlayerMotherships(Player player) 
+        protected Mothership[] GetPlayerMotherships(Player player)
         {
             return player == game.GetMyself() ? game.GetMyMotherships() : game.GetEnemyMotherships();
         }
 
-        protected Capsule[] GetPlayerCapsules(Player player) 
+        protected Capsule[] GetPlayerCapsules(Player player)
         {
             return player == game.GetMyself() ? game.GetMyCapsules() : game.GetEnemyCapsules();
         }
@@ -190,7 +190,7 @@ namespace Skillz_Code
         protected Mothership GetBestMothership(MapObject mapObject, Player player)
         {
             // Returns the best mothership for a given player and a mapobject, taking into consideration the mothership's value multiplier and distance.
-            return GetPlayerMotherships(player).OrderBy(mothership => mothership.Distance(mapObject)/mothership.ValueMultiplier).FirstOrDefault();
+            return GetPlayerMotherships(player).OrderBy(mothership => mothership.Distance(mapObject) / mothership.ValueMultiplier).FirstOrDefault();
         }
         protected Capsule GetClosestCapsule(MapObject mapObject, Player player)
         {
@@ -243,7 +243,8 @@ namespace Skillz_Code
                 double deltaY = game.PushDistance * System.Math.Sin(angle);
                 Location newWormholeLocation = new Location((int) (wormhole.Location.Row - deltaY), (int) (wormhole.Location.Col + deltaX));
                 int newLocationScore = GetWormholeScore(newWormholeLocation, wormhole.Partner.Location);
-                if (newLocationScore < bestOptionScore) {
+                if (newLocationScore < bestOptionScore)
+                {
                     bestOption = newWormholeLocation;
                     bestOptionScore = newLocationScore;
                 }
@@ -252,30 +253,30 @@ namespace Skillz_Code
             return bestOption;
         }
 
-        private bool MakesSenseToPushWormhole(Wormhole wormhole) 
+        private bool MakesSenseToPushWormhole(Wormhole wormhole)
         {
             var bestPushLocation = BestWormholePushLocation(wormhole);
-            return bestPushLocation != wormhole.Location;    
+            return bestPushLocation != wormhole.Location;
         }
 
-        private int GetWormholePriority(Wormhole wormhole) 
+        private int GetWormholePriority(Wormhole wormhole)
         {
             int currentScore = GetWormholeScore(wormhole.Location, wormhole.Partner.Location);
             int improvedScore = GetWormholeScore(BestWormholePushLocation(wormhole), wormhole.Partner.Location);
-            
+
             int improvementDelta = currentScore - improvedScore;
-            int maxPossibleImprovement = game.PushDistance * 2;  // Moved PushDistance away from enemy locations towards our locations.
-            
+            int maxPossibleImprovement = game.PushDistance * 2; // Moved PushDistance away from enemy locations towards our locations.
+
             int bonus = wormhole.TurnsToReactivate == 0 ? 1 : 0;
-            return 0;  // TODO: Scale improvementDelta / maxPossibleImprovement to priorities range and add/subtract bonus.
+            return 0; // TODO: Scale improvementDelta / maxPossibleImprovement to priorities range and add/subtract bonus.
         }
 
-        private Dictionary<Wormhole, int> GetTargetLocationsWormholes() 
+        private Dictionary<Wormhole, int> GetTargetLocationsWormholes()
         {
             return game.GetAllWormholes()
                 .Where(MakesSenseToPushWormhole)
                 .ToDictionary(wormhole => wormhole, wormhole => GetWormholePriority(wormhole));
         }
-        
+
     }
 }
