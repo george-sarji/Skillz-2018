@@ -10,16 +10,23 @@ namespace Skillz_Code
         public const bool Debug = true;
         public Dictionary<Mothership, int> bunkerCount;
         protected List<Pirate> availablePirates;
-        protected List<Capsule> myCapsules;
-        protected List<Capsule> enemyCapsules;
-        protected List<Pirate> myPirates;
-
+        protected Dictionary<Capsule, int> capsulePushes;
         protected Dictionary<Pirate, Location> pirateDestinations;
         protected List<Asteroid> livingAsteroids;
         protected List<Mothership> enemyMotherShips;
         public void DoTurn(PirateGame game)
         {
             Initialize(game);
+            PushEnemyCapsulesAggressively();
+            if (!game.GetMyMotherships().Any() || !game.GetMyCapsules().Any())
+                PerformDefensiveBunker();
+            else
+            {
+                DeliverCapsules();
+                CaptureCapsules();
+                PerformAggressiveBunker();
+            }
+            MovePirates();
         }
         protected void Initialize(PirateGame pirateGame)
         {
@@ -28,12 +35,10 @@ namespace Skillz_Code
             bunkerCount = new Dictionary<Mothership, int>();
             foreach(var mothership in game.GetEnemyMotherships())
                 bunkerCount[mothership]=0;
-            myCapsules = game.GetMyCapsules().ToList();
-            enemyCapsules = game.GetEnemyCapsules().ToList();
-            myPirates = game.GetMyLivingPirates().ToList();
             pirateDestinations = new Dictionary<Pirate, Location>();
-            livingAsteroids = game.GetLivingAsteroids().ToList();
-            enemyMotherShips = game.GetEnemyMotherships().ToList();
+            capsulePushes = new Dictionary<Capsule, int>();
+            foreach(var capsule in game.GetEnemyCapsules())
+                capsulePushes[capsule]=0;
         }
 
         protected void MovePirates()
