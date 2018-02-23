@@ -103,5 +103,14 @@ namespace Skillz_Code
         {
             pirateDestinations[pirate]=destination;
         }
+
+        protected int AvailablePushDistance(Pirate pirate)
+        {
+            return availablePirates.Where(p => p.CanPush(pirate)).Sum(p => p.PushDistance);
+        }
+        protected int NumOfAvailablePushers(Pirate pirate)
+        {
+            return availablePirates.Where(p => p.CanPush(pirate)).Count();
+        }
     }
 }
