@@ -13,45 +13,37 @@ namespace Skillz_Code
         protected List<Capsule> myCapsules;
         protected List<Capsule> enemyCapsules;
         protected List<Pirate> myPirates;
-        protected Dictionary<Capsule, int> capsulePushes;
 
         protected Dictionary<Pirate, Location> pirateDestinations;
+        protected List<Asteroid> livingAsteroids;
+        protected List<Mothership> enemyMotherShips;
         public void DoTurn(PirateGame game)
         {
             Initialize(game);
-            if (!game.GetMyMotherships().Any() || !game.GetMyCapsules().Any())
-                PerformDefensiveBunker();
-            else
-            {
-                PushEnemyCapsulesAggressively();
-                CaptureCapsules();
-                PerformAggressiveBunker();
-            }
-            MovePirates();
         }
         protected void Initialize(PirateGame pirateGame)
         {
             game = pirateGame;
             availablePirates = pirateGame.GetMyLivingPirates().ToList();
             bunkerCount = new Dictionary<Mothership, int>();
-            foreach (var mothership in game.GetEnemyMotherships())
-                bunkerCount[mothership] = 0;
+            foreach(var mothership in game.GetEnemyMotherships())
+                bunkerCount[mothership]=0;
             myCapsules = game.GetMyCapsules().ToList();
             enemyCapsules = game.GetEnemyCapsules().ToList();
             myPirates = game.GetMyLivingPirates().ToList();
             pirateDestinations = new Dictionary<Pirate, Location>();
-            capsulePushes = new Dictionary<Capsule, int>();
-            foreach (var capsule in enemyCapsules)
-                capsulePushes[capsule] = 0;
+            livingAsteroids = game.GetLivingAsteroids().ToList();
+            enemyMotherShips = game.GetEnemyMotherships().ToList();
         }
 
         protected void MovePirates()
         {
-            foreach (var pirate in pirateDestinations.Keys)
+            foreach(var map in pirateDestinations)
             {
-                var destination = pirateDestinations[pirate];
+                var pirate = map.Key;
+                var destination = map.Value;
                 pirate.Sail(destination);
-                (pirate + " sails towards " + destination).Print();
+                (pirate + " sails towards "+ destination).Print();
             }
         }
     }
