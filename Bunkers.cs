@@ -10,7 +10,7 @@ namespace Skillz_Code
         {
             foreach (var mothership in game.GetEnemyMotherships())
             {
-                foreach (var capsule in enemyCapsules.Where(cap => cap.Holder != null &&
+                foreach (var capsule in game.GetEnemyCapsules().Where(cap => cap.Holder != null &&
                         GetBestMothershipThroughWormholes(cap.Holder).Equals(mothership)))
                 {
                     bunkerCount[mothership]++;
