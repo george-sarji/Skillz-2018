@@ -73,18 +73,18 @@ namespace Skillz_Code
 
         public void DeliverCapsules()
         {
-            foreach(var pirate in availablePirates.Where(p => p.HasCapsule()).ToList())
+            foreach (var pirate in availablePirates.Where(p => p.HasCapsule()).ToList())
             {
-                var bestMothership = game.GetMyMotherships().OrderBy(mothership => ClosestDistance(pirate.Location, mothership, game.GetAllWormholes().Where(wormhole => wormhole.TurnsToReactivate > pirate.Steps(mothership)/4))/((double)mothership.ValueMultiplier).Sqrt()).FirstOrDefault();
-                if(bestMothership!=null)
+                var bestMothership = game.GetMyMotherships().OrderBy(mothership => ClosestDistance(pirate.Location, mothership, game.GetAllWormholes().Where(wormhole => wormhole.TurnsToReactivate > pirate.Steps(mothership) / 4)) / ((double) mothership.ValueMultiplier).Sqrt()).FirstOrDefault();
+                if (bestMothership != null)
                 {
                     // Get best wormhole
                     var bestWormhole = GetBestWormhole(bestMothership.Location, pirate);
-                    if(bestWormhole!=null)
+                    if (bestWormhole != null)
                     {
                         AssignDestination(pirate, SmartSail(pirate, bestWormhole));
                     }
-                    else if(!CheckIfCapsuleCanReach(pirate, bestMothership))
+                    else
                         AssignDestination(pirate, SmartSail(pirate, bestMothership.Location));
                     availablePirates.Remove(pirate);
                 }
