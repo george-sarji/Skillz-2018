@@ -25,7 +25,7 @@ namespace Skillz_Code
                             pushDistanceUsed += pirate.PushDistance;
                         }
                     }
-                    var requiredPiratesCount = Min((count == 0) ? 1 : count, capsule.Holder.NumPushesForCapsuleLoss);
+                    var requiredPiratesCount = Min((count == 0) ? 1 : count, capsule.Holder.NumPushesForCapsuleLoss) + 1;
                     ("Mothership: " + mothership + ", Capsule: " + capsule).Print();
                     ("Required pirates: " + requiredPiratesCount).Print();
                     ("Push pirates: " + count).Print();
