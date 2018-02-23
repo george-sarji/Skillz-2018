@@ -59,12 +59,8 @@ namespace Skillz_Code
             var wormholes = game.GetAllWormholes()
                 .Where(wormhole => wormhole.TurnsToReactivate < pirate.Steps(destination) / 4 &&
                     wormhole.InRange(location, wormhole.WormholeRange));
-            var closestWormhole = wormholes.FirstOrDefault();
-            if (closestWormhole == null)
-                return false;
-            else if (closestWormhole.Equals(GetBestWormhole(destination, pirate)))
-                return false;
-            return true;
+            return wormholes.FirstOrDefault() != null && wormholes.FirstOrDefault().Equals(GetBestWormhole(destination, pirate));
+
         }
 
         public bool IsInRangeOfEnemy(Location loc, Pirate myPirate)
