@@ -23,6 +23,7 @@ namespace Skillz_Code
                 PerformDefensiveBunker();
             else
             {
+                PushEnemyCapsulesAggressively();
                 CaptureCapsules();
                 PerformAggressiveBunker();
             }
@@ -46,10 +47,9 @@ namespace Skillz_Code
 
         protected void MovePirates()
         {
-            foreach (var map in pirateDestinations)
+            foreach (var pirate in pirateDestinations.Keys)
             {
-                var pirate = map.Key;
-                var destination = map.Value;
+                var destination = pirateDestinations[pirate];
                 pirate.Sail(destination);
                 (pirate + " sails towards " + destination).Print();
             }
