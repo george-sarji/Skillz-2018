@@ -8,9 +8,24 @@ namespace Skillz_Code
     {
         public void CaptureCapsules()
         {
-            foreach (Capsule capsule in myCapsules)
+            foreach (Capsule capsule in myCapsules.OrderBy(
+                    capsule => capsule.Distance(
+                        myPirates.OrderBy(p => ClosestDistance(
+                            p.Location, capsule.Location,
+                            game.GetAllWormholes().Where(wormhole => wormhole.TurnsToReactivate < p.Steps(capsule.InitialLocation)))).FirstOrDefault())))
             {
+                var PiratesOrdered = availablePirates.Where(p => !p.HasCapsule())
+                    .OrderBy(p => ClosestDistance(p.Location, capsule.InitialLocation, game.GetAllWormholes()
+                        .Where(wormhole => wormhole.TurnsToReactivate < p.Steps(capsule.InitialLocation))));
+                if (PiratesOrdered.Any())
+                {
+                    var closestPirate = PiratesOrdered.First();
+                    if (ClosestDistance(closestPirate.Location, capsule.InitialLocation, game.GetAllWormholes()
+                            .Where(wormhole => wormhole.TurnsToReactivate < closestPirate.Steps(capsule.InitialLocation))) == closestPirate.Distance(capsule))
+                    {
 
+                    }
+                }
             }
         }
 
@@ -33,7 +48,7 @@ namespace Skillz_Code
                     capsulePushes[capsule]++;
                     return true;
                 }
-                else if (NumOfAvailablePushers(capsule.Holder) >= capsuleLoss && capsulePushes[capsule]<capsuleLoss)
+                else if (NumOfAvailablePushers(capsule.Holder) >= capsuleLoss && capsulePushes[capsule] < capsuleLoss)
                 {
                     // Push the pirate towards the negative direction
                     var pushLocation = capsule.Location.Towards(capsule.InitialLocation, -friendly.PushDistance);
