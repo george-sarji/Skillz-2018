@@ -15,11 +15,12 @@ namespace Skillz_Code
         public void DoTurn(PirateGame game)
         {
             Initialize(game);
+            PushEnemyCapsulesAggressively();
             if (!game.GetMyMotherships().Any() || !game.GetMyCapsules().Any())
                 PerformDefensiveBunker();
             else
             {
-                PushEnemyCapsulesAggressively();
+                DeliverCapsules();
                 CaptureCapsules();
                 PerformAggressiveBunker();
             }
