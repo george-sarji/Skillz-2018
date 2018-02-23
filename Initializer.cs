@@ -13,11 +13,14 @@ namespace Skillz_Code
         protected List<Capsule> myCapsules;
         protected List<Capsule> enemyCapsules;
         protected List<Pirate> myPirates;
+        protected Dictionary<Capsule, int> capsulePushes;
 
         protected Dictionary<Pirate, Location> pirateDestinations;
         public void DoTurn(PirateGame game)
         {
             Initialize(game);
+            PerformAggressiveBunker();
+            MovePirates();
         }
         protected void Initialize(PirateGame pirateGame)
         {
@@ -30,6 +33,9 @@ namespace Skillz_Code
             enemyCapsules = game.GetEnemyCapsules().ToList();
             myPirates = game.GetMyLivingPirates().ToList();
             pirateDestinations = new Dictionary<Pirate, Location>();
+            capsulePushes = new Dictionary<Capsule, int>();
+            foreach(var capsule in enemyCapsules)
+                capsulePushes[capsule]=0;
         }
 
         protected void MovePirates()
