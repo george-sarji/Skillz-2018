@@ -45,17 +45,14 @@ namespace Skillz_Code
                             }
                             else
                             {
-                                // if (!TryPushEnemyCapsuleAggressively(pirate, capsule))
-                                // {
-                                    var rangeNeeded = bunkerCount[mothership].Power(2) * game.PushRange;
-                                    var destinationBunker = mothership.Location.Towards(capsule, rangeNeeded);
-                                    if(useablePirates.Count(p => p.InRange(capsule, p.PushRange*2) && p.InRange(mothership, p.PushDistance*2))>=requiredPiratesCount &&
-                                            pirate.InRange(capsule, pirate.PushRange*2) && pirate.InRange(mothership, pirate.PushDistance*2))
-                                    {
-                                        destinationBunker = capsule.Location.Towards(mothership, (int)(pirate.PushRange*0.9));
-                                    }
-                                    AssignDestination(pirate, destinationBunker);
-                                // }
+                                var rangeNeeded = bunkerCount[mothership].Power(2) * game.PushRange;
+                                var destinationBunker = mothership.Location.Towards(capsule, rangeNeeded);
+                                if (useablePirates.Count(p => p.InRange(capsule, p.PushRange * 2) && p.InRange(mothership, p.PushDistance * 2)) >= requiredPiratesCount &&
+                                    pirate.InRange(capsule, pirate.PushRange * 2) && pirate.InRange(mothership, pirate.PushDistance * 2))
+                                {
+                                    destinationBunker = capsule.Location.Towards(mothership, (int) (pirate.PushRange * 0.9));
+                                }
+                                AssignDestination(pirate, destinationBunker);
                             }
                             usedPirates.Add(pirate);
                         }
@@ -70,7 +67,7 @@ namespace Skillz_Code
         {
             ("Entered bunker").Print();
             foreach (var capsule in game.GetEnemyCapsules().Where(cap => cap.Holder != null)
-                            .OrderBy(cap => cap.Holder.Steps(GetBestMothershipThroughWormholes(cap.Holder).Location)))
+                    .OrderBy(cap => cap.Holder.Steps(GetBestMothershipThroughWormholes(cap.Holder).Location)))
             {
                 var bestMothership = GetBestMothershipThroughWormholes(capsule.Holder);
                 if (bestMothership != null)
@@ -92,9 +89,7 @@ namespace Skillz_Code
                         var usedPirates = new List<Pirate>();
                         foreach (var pirate in useablePirates.Take(requiredPiratesCount))
                         {
-                            // if(TryPushEnemyCapsuleAggressively(pirate, capsule))
                             AssignDestination(pirate, bestMothership.Location.Towards(capsule, (int) (capsule.Holder.MaxSpeed)));
-                            // Attempt push
                             usedPirates.Add(pirate);
 
                         }
