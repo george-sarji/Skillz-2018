@@ -24,8 +24,8 @@ namespace Skillz_Code
             else
             {
                 DeliverCapsules();
-                CaptureCapsules();
                 PerformAggressiveBunker();
+                CaptureCapsules();
             }
             MovePirates();
         }
@@ -34,23 +34,23 @@ namespace Skillz_Code
             game = pirateGame;
             availablePirates = pirateGame.GetMyLivingPirates().ToList();
             bunkerCount = new Dictionary<Mothership, int>();
-            foreach(var mothership in game.GetEnemyMotherships())
-                bunkerCount[mothership]=0;
+            foreach (var mothership in game.GetEnemyMotherships())
+                bunkerCount[mothership] = 0;
             pirateDestinations = new Dictionary<Pirate, Location>();
             capsulePushes = new Dictionary<Capsule, int>();
-            foreach(var capsule in game.GetEnemyCapsules())
-                capsulePushes[capsule]=0;
+            foreach (var capsule in game.GetEnemyCapsules())
+                capsulePushes[capsule] = 0;
             livingAsteroids = game.GetLivingAsteroids().ToList();
         }
 
         protected void MovePirates()
         {
-            foreach(var map in pirateDestinations)
+            foreach (var map in pirateDestinations)
             {
                 var pirate = map.Key;
                 var destination = map.Value;
                 pirate.Sail(destination);
-                (pirate + " sails towards "+ destination).Print();
+                (pirate + " sails towards " + destination).Print();
             }
         }
     }
