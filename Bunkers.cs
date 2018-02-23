@@ -15,7 +15,7 @@ namespace Skillz_Code
                 {
                     bunkerCount[mothership]++;
                     var distanceToBorder = capsule.Distance(GetClosestToBorder(capsule.Location));
-                    var useablePirates = availablePirates.Where(p => p.Steps(mothership)> p.PushReloadTurns).OrderBy(p => p.Steps(mothership));
+                    var useablePirates = availablePirates.Where(p => p.Steps(mothership) > p.PushReloadTurns).OrderBy(p => p.Steps(mothership));
                     int count = 0, pushDistanceUsed = 0;
                     foreach(var pirate in useablePirates.OrderByDescending(p => p.PushDistance))
                     {
@@ -25,7 +25,11 @@ namespace Skillz_Code
                             pushDistanceUsed+=pirate.PushDistance;
                         }
                     }
-                    var requiredPiratesCount = Min(count, capsule.Holder.NumPushesForCapsuleLoss);
+                    var requiredPiratesCount = Min(count+1, capsule.Holder.NumPushesForCapsuleLoss);
+                    ("Mothership: "+mothership).Print();
+                    ("Required pirates: "+requiredPiratesCount).Print();
+                    ("Push pirates: "+count).Print();
+                    ("Capsule loss: "+ capsule.Holder.NumPushesForCapsuleLoss).Print();
                     var bestWormhole = GetBestWormhole(mothership.Location, capsule.Holder);
                     if(useablePirates.Count()>=requiredPiratesCount)
                     {
@@ -41,9 +45,11 @@ namespace Skillz_Code
                             }
                             else
                             {
-                                // Add push enemy capsule here.
-                                var rangeNeeded = bunkerCount[mothership].Power(2) * game.PushRange;
-                                AssignDestination(pirate, mothership.Location.Towards(capsule, rangeNeeded));
+                                if(!TryPushEnemyCapsuleAggressively(pirate, capsule))
+                                {
+                                    var rangeNeeded = bunkerCount[mothership].Power(2) * game.PushRange;
+                                    AssignDestination(pirate, mothership.Location.Towards(capsule, rangeNeeded));
+                                }
                             }
                             usedPirates.Add(pirate);
                         }
