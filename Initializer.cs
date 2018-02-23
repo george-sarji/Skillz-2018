@@ -10,6 +10,9 @@ namespace Skillz_Code
         public const bool Debug = true;
         public Dictionary<Mothership, int> bunkerCount;
         protected List<Pirate> availablePirates;
+        protected List<Capsule> myCapsules;
+        protected List<Capsule> enemyCapsules;
+        protected List<Pirate> myPirates;
         public void DoTurn(PirateGame game)
         {
             Initialize(game);
@@ -21,6 +24,9 @@ namespace Skillz_Code
             bunkerCount = new Dictionary<Mothership, int>();
             foreach(var mothership in game.GetEnemyMotherships())
                 bunkerCount[mothership]=0;
+            myCapsules = game.GetMyCapsules().ToList();
+            enemyCapsules = game.GetEnemyCapsules().ToList();
+            myPirates = game.GetMyLivingPirates().ToList();
         }
     }
 }
