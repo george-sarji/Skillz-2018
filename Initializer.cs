@@ -10,10 +10,11 @@ namespace Skillz_Code
         public const bool Debug = true;
         public Dictionary<Mothership, int> bunkerCount;
         protected List<Pirate> availablePirates;
+        protected static Dictionary<MapObject, int> Priorities = new Dictionary<MapObject, int>();//General priorities for each map object chosen without pirates
+        protected static Dictionary<MapObject, int> AssignedPirates = new Dictionary<MapObject, int>();//number of assigned pirates for each heading
         protected Dictionary<Capsule, int> capsulePushes;
         protected Dictionary<Pirate, Location> pirateDestinations;
         protected List<Asteroid> livingAsteroids;
-        protected List<Mothership> enemyMotherShips;
         public void DoTurn(PirateGame game)
         {
             Initialize(game);
@@ -27,6 +28,7 @@ namespace Skillz_Code
                 PerformAggressiveBunker();
                 CaptureCapsules();
             }
+            HandlePriorities();
             MovePirates();
         }
         protected void Initialize(PirateGame pirateGame)
