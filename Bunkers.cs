@@ -25,7 +25,7 @@ namespace Skillz_Code
                             pushDistanceUsed += pirate.PushDistance;
                         }
                     }
-                    var requiredPiratesCount = Min(count + 1, capsule.Holder.NumPushesForCapsuleLoss);
+                    var requiredPiratesCount = Min((count == 0) ? 1 : count, capsule.Holder.NumPushesForCapsuleLoss);
                     ("Mothership: " + mothership + ", Capsule: " + capsule).Print();
                     ("Required pirates: " + requiredPiratesCount).Print();
                     ("Push pirates: " + count).Print();
@@ -55,6 +55,43 @@ namespace Skillz_Code
                         }
                         availablePirates = availablePirates.Except(usedPirates).ToList();
 
+                    }
+                }
+            }
+        }
+
+        protected void PerformDefensiveBunker()
+        {
+            ("Entered bunker").Print();
+            foreach (var capsule in game.GetEnemyCapsules().Where(cap => cap.Holder != null))
+            {
+                var bestMothership = GetBestMothershipThroughWormholes(capsule.Holder);
+                if (bestMothership != null)
+                {
+                    var distanceToBorder = capsule.Distance(GetClosestToBorder(capsule.Location));
+                    var useablePirates = availablePirates.Where(p => p.Steps(bestMothership) >= p.PushReloadTurns).OrderBy(p => p.Steps(bestMothership));
+                    int count = 0, pushDistanceUsed = 0;
+                    foreach (var pirate in useablePirates.OrderByDescending(p => p.PushDistance))
+                    {
+                        if (pushDistanceUsed < distanceToBorder)
+                        {
+                            count++;
+                            pushDistanceUsed += pirate.PushDistance;
+                        }
+                    }
+                    var requiredPiratesCount = Min((count == 0) ? 1 : count, capsule.Holder.NumPushesForCapsuleLoss);
+                    if (useablePirates.Count() >= requiredPiratesCount)
+                    {
+                        var usedPirates = new List<Pirate>();
+                        foreach (var pirate in useablePirates.Take(requiredPiratesCount))
+                        {
+                            // if(TryPushEnemyCapsuleAggressively(pirate, capsule))
+                            AssignDestination(pirate, bestMothership.Location.Towards(capsule, (int) (bestMothership.UnloadRange * 0.5)));
+                            // Attempt push
+                            usedPirates.Add(pirate);
+
+                        }
+                        availablePirates = availablePirates.Except(usedPirates).ToList();
                     }
                 }
             }
