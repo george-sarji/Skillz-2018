@@ -93,7 +93,7 @@ namespace Skillz_Code
                         foreach (var pirate in useablePirates.Take(requiredPiratesCount))
                         {
                             // if(TryPushEnemyCapsuleAggressively(pirate, capsule))
-                            AssignDestination(pirate, bestMothership.Location.Towards(capsule, (int) (bestMothership.UnloadRange * 0.5)));
+                            AssignDestination(pirate, bestMothership.Location.Towards(capsule, (int) (capsule.Holder.MaxSpeed)));
                             // Attempt push
                             usedPirates.Add(pirate);
 
