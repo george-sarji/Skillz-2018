@@ -11,6 +11,40 @@ namespace Skillz_Code
             if(SSJS12Bot.Debug)
                 SSJS12Bot.game.Debug(s);
         }
+        
+        public static int Power(this int num, int power)
+        {
+            return (int)System.Math.Pow(num, power);
+        }
+        public static double Power(this double num, int power)
+        {
+            return System.Math.Pow(num, power);
+        }
+
+        public static double Sqrt(this int num)
+        {
+            return System.Math.Sqrt(num);
+        }
+        public static double Sqrt(this double num)
+        {
+            return System.Math.Sqrt(num);
+        }
+        public static bool IsHeavy(this Pirate pirate)
+        {
+            return pirate.StateName == SSJS12Bot.game.STATE_NAME_HEAVY;
+        }
+        public static bool IsNormal(this Pirate pirate)
+        {
+            return pirate.StateName == SSJS12Bot.game.STATE_NAME_NORMAL;
+        }
+        public static bool IsSameState(this Pirate pirate, Pirate second)
+        {
+            return pirate.StateName == second.StateName;
+        }
+        public static int Steps(this Pirate pirate, MapObject mapObject)
+        {
+            return (int)(pirate.Distance(mapObject) / (pirate.MaxSpeed+1));
+        }
     }
 
 }
