@@ -69,7 +69,8 @@ namespace Skillz_Code
         protected void PerformDefensiveBunker()
         {
             ("Entered bunker").Print();
-            foreach (var capsule in game.GetEnemyCapsules().Where(cap => cap.Holder != null))
+            foreach (var capsule in game.GetEnemyCapsules().Where(cap => cap.Holder != null)
+                            .OrderBy(cap => cap.Holder.Steps(GetBestMothershipThroughWormholes(cap.Holder).Location)))
             {
                 var bestMothership = GetBestMothershipThroughWormholes(capsule.Holder);
                 if (bestMothership != null)
