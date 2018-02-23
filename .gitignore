@@ -4,3 +4,8 @@ obj/Skillz-Code.csproj.nuget.g.props
 obj/Skillz-Code.csproj.nuget.g.targets
 obj/project.assets.json
 Skillz-Code.csproj
+.vscode/launch.json
+.vscode/tasks.json
+obj/Debug/netcoreapp2.0/Skillz-Code.AssemblyInfo.cs
+obj/Debug/netcoreapp2.0/Skillz-Code.AssemblyInfoInputs.cache
+obj/Debug/netcoreapp2.0/Skillz-Code.csproj.CoreCompileInputs.cache
