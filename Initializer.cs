@@ -19,7 +19,13 @@ namespace Skillz_Code
         public void DoTurn(PirateGame game)
         {
             Initialize(game);
-            PerformAggressiveBunker();
+            if (!game.GetMyMotherships().Any() || !game.GetMyCapsules().Any())
+                PerformDefensiveBunker();
+            else
+            {
+                CaptureCapsules();
+                PerformAggressiveBunker();
+            }
             MovePirates();
         }
         protected void Initialize(PirateGame pirateGame)
