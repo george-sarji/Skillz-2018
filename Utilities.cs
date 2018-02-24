@@ -197,6 +197,11 @@ namespace Skillz_Code
             // Returns the best capsule for a given player and a mapobject, taking into consideration the capsule's distance.
             return GetPlayerCapsules(player).OrderBy(capsule => capsule.Distance(mapObject)).FirstOrDefault();
         }
-       
+
+        private int ScaleToRange(int a, int b, int c, int d, int x)
+        {
+            return c + (x - a) * (d - c) / (b - a);
+        }
+
     }
 }
