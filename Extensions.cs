@@ -45,6 +45,11 @@ namespace Skillz_Code
         {
             return (int) (pirate.Distance(mapObject) / (pirate.MaxSpeed + 1));
         }
-    }
+        public static int Clamp(this int x, int min, int max)
+        {
+            return x<min ? min : x> max ? max :
+                x;
+        }
 
+    }
 }
