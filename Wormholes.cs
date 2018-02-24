@@ -77,7 +77,7 @@ namespace Skillz_Code
             int maxPossibleImprovement = game.PushDistance * 2; // Moved PushDistance away from enemy locations towards our locations.
 
             int bonus = wormhole.TurnsToReactivate == 0 ? 1 : 0;
-            return 0; // TODO: Scale improvementDelta / maxPossibleImprovement to priorities range and add/subtract bonus.
+            return ScaleToRange(0, maxPossibleImprovement, MAX_PRIORITY, MIN_PRIORITY, improvementDelta) - bonus; // TODO: Scale improvementDelta / maxPossibleImprovement to priorities range and add/subtract bonus.
         }
 
         private IEnumerable<TargetLocation> GetTargetLocationsWormholes()
