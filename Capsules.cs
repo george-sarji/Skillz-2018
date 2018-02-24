@@ -33,38 +33,13 @@ namespace Skillz_Code
                         {
                             var BestPirate = availablePirates.OrderBy(p => p.Distance(closestPirate))
                                 .OrderByDescending(p => p.IsSameState(closestPirate)).FirstOrDefault();
-                            // if (CheckIfCapturerCanReach(closestPirate, bestWormhole.Location) || BestPirate == null)
                             AssignDestination(closestPirate, SmartSail(closestPirate, bestWormhole));
-                            // else
-                            // {
-                            //     if (ShouldPushPirates(closestPirate, BestPirate, capsule.Location))
-                            //     {
-
-                            //         PushPair(closestPirate, BestPirate, capsule.Location);
-                            //         myPirates.Remove(BestPirate);
-                            //         continue;
-                            //     }
-                            //     MakePair(closestPirate, BestPirate, bestWormhole.Location);
-                            //     myPirates.Remove(BestPirate);
-                            // }
                         }
                         else
                         {
                             var BestPirate = availablePirates.OrderBy(p => p.Distance(closestPirate))
                                 .OrderByDescending(p => p.IsSameState(closestPirate)).FirstOrDefault();
-                            // if (CheckIfCapturerCanReach(closestPirate, capsule.InitialLocation) || BestPirate == null)
                             AssignDestination(closestPirate, SmartSail(closestPirate, capsule.InitialLocation));
-                            // else
-                            // {
-                            //     if (ShouldPushPirates(closestPirate, BestPirate, capsule.Location))
-                            //     {
-                            //         PushPair(closestPirate, BestPirate, capsule.Location);
-                            //         myPirates.Remove(BestPirate);
-                            //         continue;
-                            //     }
-                            //     MakePair(closestPirate, BestPirate, capsule.InitialLocation);
-                            //     myPirates.Remove(BestPirate);
-                            // }
                         }
                     }
                 }
@@ -97,18 +72,11 @@ namespace Skillz_Code
                 AssignDestination(first, SmartSail(first, destination));
                 return;
             }
-            // if (!second.IsSameState(first))
-            // {
-            //     ("Reached2").Print();
-            //     MakeSpecialPair(first, second, destination);
-            //     return;
-            // }
             var intersections = new List<Location>();
             intersections.Add(Interception(first.Location, destination, second.Location));
             intersections.Add(Interception(second.Location, destination, first.Location));
             var speeds = new List<int>();
             var slowestSpeed = Min(first.MaxSpeed, second.MaxSpeed);
-            // intersections.Add(MidPoint(first, second));
             var bestIntersection = intersections.Where(location => location != null).OrderBy(location => location.Distance(destination))
                 .Where(location => IsOnTheWay(first.Location, destination, location, 1) &&
                     IsOnTheWay(second.Location, destination, location, 1))
