@@ -15,6 +15,8 @@ namespace Skillz_Code
         protected Dictionary<Capsule, int> capsulePushes;
         protected Dictionary<Pirate, Location> pirateDestinations;
         protected List<Asteroid> livingAsteroids;
+        protected const int MAX_PRIORITY = 10;
+        protected const int MIN_PRIORITY=1;
         public void DoTurn(PirateGame game)
         {
             Initialize(game);
@@ -29,6 +31,7 @@ namespace Skillz_Code
                 CaptureCapsules();
             }
             HandlePriorities();
+            PrintTargetLocations(GetAllTargetLocations());
             MovePirates();
         }
         protected void Initialize(PirateGame pirateGame)
