@@ -8,6 +8,12 @@ namespace Skillz_Code
     {
         public void PerformAggressiveBunker()
         {
+            if(game.GetEnemyMotherships().Any() && game.GetEnemyCapsules().Any(capsule => capsule.Holder!=null))
+            {
+                ("Mothership bunkers: ").Print();
+                var header = string.Format("{0, -8} {1, 7} {2, 12} {3, 12} {4,12}", "Mothership", "Capsule", "  Location  ", "  Capsule loss  ", "  Border pushes  ");
+                header.Print();
+            }
             foreach (var mothership in game.GetEnemyMotherships())
             {
                 foreach (var capsule in game.GetEnemyCapsules().Where(cap => cap.Holder != null &&
@@ -15,7 +21,9 @@ namespace Skillz_Code
                 {
                     bunkerCount[mothership]++;
                     var distanceToBorder = capsule.Distance(GetClosestToBorder(capsule.Location));
-                    var useablePirates = availablePirates.Where(p => p.Steps(mothership) > p.PushReloadTurns).OrderBy(p => p.Steps(mothership));
+                    var useablePirates = availablePirates.Where(p => p.Steps(mothership) > p.PushReloadTurns)
+                        .Where(p => p.Steps(mothership) < capsule.Holder.Steps(mothership))
+                        .OrderBy(p => p.Steps(mothership));
                     int count = 0, pushDistanceUsed = 0;
                     foreach (var pirate in useablePirates.OrderByDescending(p => p.PushDistance))
                     {
@@ -25,11 +33,9 @@ namespace Skillz_Code
                             pushDistanceUsed += pirate.PushDistance;
                         }
                     }
-                    var requiredPiratesCount = Min((count == 0) ? 1 : count, capsule.Holder.NumPushesForCapsuleLoss) + 1;
-                    ("Mothership: " + mothership + ", Capsule: " + capsule).Print();
-                    ("Required pirates: " + requiredPiratesCount).Print();
-                    ("Push pirates: " + count).Print();
-                    ("Capsule loss: " + capsule.Holder.NumPushesForCapsuleLoss).Print();
+                    var requiredPiratesCount = Min((count == 0) ? 1 : count, capsule.Holder.NumPushesForCapsuleLoss);
+                    var line = string.Format("{0, -8} {1, 9} @ {2, 12} {3,12} {4,12}", "ID: "+mothership.Id, "ID: "+capsule.Id, mothership.Location, capsule.Holder.NumPushesForCapsuleLoss, count);
+                    line.Print();
                     var bestWormhole = GetBestWormhole(mothership.Location, capsule.Holder);
                     if (useablePirates.Count() >= requiredPiratesCount)
                     {
