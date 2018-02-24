@@ -14,6 +14,8 @@ namespace Skillz_Code
             public int DesiredPirates { get; private set; }
             public int AssignedPirates { get; set; }
 
+            private const int PenaltyPerExtraPirate = MAX_PRIORITY/10;
+
             public TargetLocation(Location location, LocationType type, int priority, int desiredPirates = 1)
             {
                 Location = location;
@@ -23,13 +25,23 @@ namespace Skillz_Code
                 AssignedPirates = 0;
             }
 
-            public int ScoreForPirate(Pirate pirate)
+            public int Score(Pirate pirate)
             {
                 int score = ScaledDistance(pirate);
                 score -= DesiredPirates;
                 score += AssignedPirates;
                 score += Priority;
                 return score;
+            }
+
+            public int ScoreForPirate(Pirate pirate)
+            {
+                int penaltyForNoPush = (Type == LocationType.MyPirate || Type == LocationType.EnemyPirate) ?
+                    (pirate.PushReloadTurns - pirate.Steps(Location)).Clamp(0, MAX_PRIORITY) : 0;
+                return this.Priority + this.ScaledDistance(pirate) +
+                    PenaltyPerExtraPirate * (this.AssignedPirates >= this.DesiredPirates ? (AssignedPirates - DesiredPirates + 1) : 0) +
+                    penaltyForNoPush;
+
             }
 
             private int ScaledDistance(Pirate pirate)
@@ -52,12 +64,12 @@ namespace Skillz_Code
         // Moves remaining availablePirates according to Priorities 
         private void HandlePriorities()
         {
-            int min = int.MaxValue;
-            TargetLocation bestLocation = null;
-            Pirate bestPirate = null;
             var targetLocations = GetAllTargetLocations();
             while (availablePirates.Any())
             {
+                int min = int.MaxValue;
+                TargetLocation bestLocation = null;
+                Pirate bestPirate = null;
                 foreach (Pirate pirate in availablePirates)
                 {
                     foreach (TargetLocation targetLocation in targetLocations)
@@ -91,7 +103,6 @@ namespace Skillz_Code
             return targetLocations;
         }
 
-
         // TODO: Move to the right file and implement.
         private IEnumerable<TargetLocation> GetTargetLocationsAsteroids()
         {
@@ -100,12 +111,6 @@ namespace Skillz_Code
 
         // TODO: Move to the right file and implement.
         private IEnumerable<TargetLocation> GetTargetLocationsMyPirates()
-        {
-            return Enumerable.Empty<TargetLocation>();
-        }
-
-        // TODO: Move to the right file and implement.
-        private IEnumerable<TargetLocation> GetTargetLocationsEnemyPirates()
         {
             return Enumerable.Empty<TargetLocation>();
         }
