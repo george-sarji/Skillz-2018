@@ -203,5 +203,34 @@ namespace Skillz_Code
             return c + (x - a) * (d - c) / (b - a);
         }
 
+        protected IEnumerable<Pirate> GetEnemiesInBombRange(Pirate pirate)
+        {
+            return game.GetEnemyLivingPirates().Where(enemy => enemy.InRange(pirate, game.StickBombRange)).AsEnumerable();
+        }
+
+        private void PrintTargetLocations(List<TargetLocation> targetLocations)
+        {
+            ("Target Locations:").Print();
+
+            string header = string.Format("{0,-11}   {1,12}{2,10}", "", "  Location  ", "Priority");
+            foreach (var pirate in game.GetMyLivingPirates().OrderBy(pirate => pirate.Id))
+            {
+                header += string.Format("{0,10}", "Pirate " + pirate.Id);
+            }
+            (header).Print();
+
+            foreach (var targetLocation in targetLocations)
+            {
+                string line = string.Format("{0,-11} @ {1,12}{2,10}", targetLocation.Type, targetLocation.Location, targetLocation.Priority);
+                foreach (var pirate in game.GetMyLivingPirates().OrderBy(pirate => pirate.Id))
+                {
+                    line += string.Format("{0,10}", targetLocation.Score(pirate));
+                }
+                (line).Print();
+            }
+        }
+
+
+
     }
 }
