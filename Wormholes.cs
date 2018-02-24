@@ -6,7 +6,7 @@ namespace Skillz_Code
 {
     partial class SSJS12Bot : IPirateBot
     {
- protected int GetWormholeScoreForPlayer(Location wormholeLocation, Location partnerLocation, Player player)
+        protected int GetWormholeScoreForPlayer(Location wormholeLocation, Location partnerLocation, Player player)
         {
             if (!GetPlayerMotherships(player).Any() || !GetPlayerCapsules(player).Any())
             {
@@ -83,7 +83,7 @@ namespace Skillz_Code
         private IEnumerable<TargetLocation> GetTargetLocationsWormholes()
         {
             var targetLocations = new List<TargetLocation>();
-            foreach(Wormhole wormhole in game.GetAllWormholes().Where(wormhole => MakesSenseToPushWormhole(wormhole)))
+            foreach (Wormhole wormhole in game.GetAllWormholes().Where(wormhole => MakesSenseToPushWormhole(wormhole)))
             {
                 var targetLocation = new TargetLocation(wormhole.Location, LocationType.Wormhole, GetWormholePriority(wormhole));
                 targetLocations.Add(targetLocation);
