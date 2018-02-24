@@ -118,11 +118,8 @@ namespace Skillz_Code
                 var pushingPirates = availablePirates.Where(p => p.CanPush(capsule.Holder))
                     .OrderByDescending(p => p.PushDistance)
                     .Take(capsule.Holder.NumPushesForCapsuleLoss);
-                ("Pushing pirates: " + pushingPirates.Count()).Print();
                 var distanceToBorder = capsule.Holder.Distance(GetClosestToBorder(capsule.Location)) - capsule.Holder.MaxSpeed;
                 var pushDistance = pushingPirates.Sum(p => p.PushDistance);
-                ("Push distance: " + pushDistance).Print();
-                ("Distance to border: " + distanceToBorder).Print();
                 if (pushingPirates.Count() >= capsule.Holder.NumPushesForCapsuleLoss || pushDistance >= distanceToBorder)
                 {
                     Location pushLocation = (pushDistance >= distanceToBorder) ?
