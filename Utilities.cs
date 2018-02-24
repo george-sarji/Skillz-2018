@@ -271,11 +271,15 @@ namespace Skillz_Code
             return 0; // TODO: Scale improvementDelta / maxPossibleImprovement to priorities range and add/subtract bonus.
         }
 
-        private Dictionary<Wormhole, int> GetTargetLocationsWormholes()
+        private IEnumerable<TargetLocation> GetTargetLocationsWormholes()
         {
-            return game.GetAllWormholes()
-                .Where(MakesSenseToPushWormhole)
-                .ToDictionary(wormhole => wormhole, wormhole => GetWormholePriority(wormhole));
+            var targetLocations = new List<TargetLocation>();
+            foreach(Wormhole wormhole in game.GetAllWormholes().Where(wormhole => MakesSenseToPushWormhole(wormhole)))
+            {
+                var targetLocation = new TargetLocation(wormhole.Location, LocationType.Wormhole, GetWormholePriority(wormhole));
+                targetLocations.Add(targetLocation);
+            }
+            return targetLocations;
         }
 
     }
