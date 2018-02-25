@@ -33,7 +33,24 @@ namespace Skillz_Code
 
         private IEnumerable<TargetLocation> GetTargetLocationsMyPirates()
         {
-            return Enumerable.Empty<TargetLocation>();
+            List<Pirate> PiratesWithCapsule = game.GetMyLivingPirates().Where(p => p.HasCapsule()).ToList();
+            List<TargetLocation> targetLocations = new List<TargetLocation>();
+            foreach(Pirate pirate in PiratesWithCapsule)
+            {
+                var bestMothership = game.GetMyMotherships().OrderBy(mothership => pirate.Steps(mothership) / (int) ((double) mothership.ValueMultiplier).Sqrt()).FirstOrDefault();
+                if(!CheckIfCapsuleCanReachMothership(pirate, bestMothership))
+                {
+                    targetLocations.Add(new TargetLocation(pirate.Location, LocationType.MyPirate, 1));
+                }
+            }
+            foreach(var pair in pirateDestinations)
+            {
+                if(!pair.Key.HasCapsule() && !CheckIfPirateCanReach(pair.Key, pair.Value))
+                {
+                    targetLocations.Add(new TargetLocation(pair.Key.Location, LocationType.MyPirate, 4));
+                }
+            }
+            return targetLocations;
         }
     }
 }
