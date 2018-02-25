@@ -85,7 +85,7 @@ namespace Skillz_Code
             var targetLocations = new List<TargetLocation>();
             foreach (Wormhole wormhole in game.GetAllWormholes().Where(wormhole => MakesSenseToPushWormhole(wormhole)))
             {
-                var targetLocation = new TargetLocation(wormhole.Location, LocationType.Wormhole, GetWormholePriority(wormhole));
+                var targetLocation = new TargetLocation(wormhole.Location, LocationType.Wormhole, GetWormholePriority(wormhole), wormhole);
                 targetLocations.Add(targetLocation);
             }
             return targetLocations;

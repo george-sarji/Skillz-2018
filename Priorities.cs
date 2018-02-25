@@ -13,15 +13,17 @@ namespace Skillz_Code
             public int Priority { get; private set; }
             public int DesiredPirates { get; private set; }
             public int AssignedPirates { get; set; }
+            public GameObject TargetLocationObject {get; private set;}
 
             private const int PenaltyPerExtraPirate = MAX_PRIORITY/10;
 
-            public TargetLocation(Location location, LocationType type, int priority, int desiredPirates = 1)
+            public TargetLocation(Location location, LocationType type, int priority, GameObject targetLocationObject, int desiredPirates = 1)
             {
                 Location = location;
                 Type = type;
                 Priority = priority;
                 DesiredPirates = desiredPirates;
+                TargetLocationObject = targetLocationObject;
                 AssignedPirates = 0;
             }
 

@@ -14,7 +14,7 @@ namespace Skillz_Code
             var enemyCapsuleHolders = game.GetEnemyLivingPirates().Where(enemy => enemy.HasCapsule());
             foreach (var capsuleHolder in enemyCapsuleHolders)
             {
-                targetPirates.Add(new TargetLocation(capsuleHolder.Location, LocationType.EnemyPirate, 1,
+                targetPirates.Add(new TargetLocation(capsuleHolder.Location, LocationType.EnemyPirate, 1, capsuleHolder,
                     (game.StickyBombReloadTurns != 0) ? capsuleHolder.NumPushesForCapsuleLoss : 1));
             }
             if (!enemyCapsuleHolders.Any())
@@ -25,7 +25,7 @@ namespace Skillz_Code
                 //     .OrderByDescending(enemy => GetEnemiesInBombRange(enemy)).FirstOrDefault();
                 if (bestEnemy != null)
                     targetPirates.Add(new TargetLocation(bestEnemy.Location, LocationType.EnemyPirate,
-                        ScaleToRange(0, game.GetAllEnemyPirates().Count(), MAX_PRIORITY, MIN_PRIORITY, GetEnemiesInBombRange(bestEnemy).Count()), 1));
+                        ScaleToRange(0, game.GetAllEnemyPirates().Count(), MAX_PRIORITY, MIN_PRIORITY, GetEnemiesInBombRange(bestEnemy).Count()), bestEnemy, 1));
             }
 
             return targetPirates;
@@ -40,17 +40,27 @@ namespace Skillz_Code
                 var bestMothership = game.GetMyMotherships().OrderBy(mothership => pirate.Steps(mothership) / (int) ((double) mothership.ValueMultiplier).Sqrt()).FirstOrDefault();
                 if(!CheckIfCapsuleCanReachMothership(pirate, bestMothership))
                 {
-                    targetLocations.Add(new TargetLocation(pirate.Location, LocationType.MyPirate, 1));
+                    targetLocations.Add(new TargetLocation(pirate.Location, LocationType.MyPirate, 1, pirate));
                 }
             }
             foreach(var pair in pirateDestinations)
             {
                 if(!pair.Key.HasCapsule() && !CheckIfPirateCanReach(pair.Key, pair.Value))
                 {
-                    targetLocations.Add(new TargetLocation(pair.Key.Location, LocationType.MyPirate, 4));
+                    targetLocations.Add(new TargetLocation(pair.Key.Location, LocationType.MyPirate, 4, pair.Key));
                 }
             }
             return targetLocations;
+        }
+
+        private bool TryStickBomb(Pirate bomber, Pirate enemyToBomb)
+        {
+            if(game.GetMyself().TurnsToStickyBomb == 0 && bomber.InStickBombRange(enemyToBomb))
+            {
+                bomber.StickBomb(enemyToBomb);
+                return true;
+            }
+            return false;
         }
     }
 }
