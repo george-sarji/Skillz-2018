@@ -20,6 +20,7 @@ namespace Skillz_Code
                 var distanceToBorder = capsule.Distance(GetClosestToBorder(capsule.Location));
                 var useablePirates = availablePirates.Where(p => p.Steps(mothership) > p.PushReloadTurns)
                     .Where(p => p.Steps(mothership) < capsule.Holder.Steps(mothership))
+                    .Where(p => p.Capsule==null)
                     .OrderBy(p => p.Steps(mothership));
                 int count = 0, pushDistanceUsed = 0;
                 foreach (var pirate in useablePirates.OrderByDescending(p => p.PushDistance))
