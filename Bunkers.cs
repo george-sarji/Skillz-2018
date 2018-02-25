@@ -19,7 +19,7 @@ namespace Skillz_Code
             foreach (var mothership in game.GetEnemyMotherships())
             {
                 foreach (var capsule in game.GetEnemyCapsules().Where(cap => cap.Holder != null &&
-                        GetBestMothershipThroughWormholes(cap.Holder).Equals(mothership)))
+                        GetBestMothershipThroughWormholes(cap.Holder).Equals(mothership)).OrderBy(capsule => capsule.Holder.Steps(mothership)))
                 {
                     bunkerCount[mothership]++;
                     var distanceToBorder = capsule.Distance(GetClosestToBorder(capsule.Location));
