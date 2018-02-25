@@ -21,6 +21,7 @@ namespace Skillz_Code
         public void DoTurn(PirateGame game)
         {
             Initialize(game);
+            HandleSwitchPirateStates();
             PushAsteroids();
             PushEnemyCapsulesAggressively();
             if (!game.GetMyMotherships().Any() || !game.GetMyCapsules().Any())
