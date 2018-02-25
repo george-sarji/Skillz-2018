@@ -35,17 +35,17 @@ namespace Skillz_Code
         {
             List<Pirate> PiratesWithCapsule = game.GetMyLivingPirates().Where(p => p.HasCapsule()).ToList();
             List<TargetLocation> targetLocations = new List<TargetLocation>();
-            foreach(Pirate pirate in PiratesWithCapsule)
+            foreach (Pirate pirate in PiratesWithCapsule)
             {
                 var bestMothership = game.GetMyMotherships().OrderBy(mothership => pirate.Steps(mothership) / (int) ((double) mothership.ValueMultiplier).Sqrt()).FirstOrDefault();
-                if(!CheckIfCapsuleCanReachMothership(pirate, bestMothership))
+                if (!CheckIfCapsuleCanReachMothership(pirate, bestMothership))
                 {
                     targetLocations.Add(new TargetLocation(pirate.Location, LocationType.MyPirate, 1, pirate));
                 }
             }
-            foreach(var pair in pirateDestinations)
+            foreach (var pair in pirateDestinations)
             {
-                if(!pair.Key.HasCapsule() && !CheckIfPirateCanReach(pair.Key, pair.Value))
+                if (!pair.Key.HasCapsule() && !CheckIfPirateCanReach(pair.Key, pair.Value))
                 {
                     targetLocations.Add(new TargetLocation(pair.Key.Location, LocationType.MyPirate, 4, pair.Key));
                 }
@@ -55,9 +55,11 @@ namespace Skillz_Code
 
         private bool TryStickBomb(Pirate bomber, Pirate enemyToBomb)
         {
-            if(game.GetMyself().TurnsToStickyBomb == 0 && bomber.InStickBombRange(enemyToBomb))
+            if (!stickedBomb && game.GetMyself().TurnsToStickyBomb == 0 && bomber.InStickBombRange(enemyToBomb))
             {
                 bomber.StickBomb(enemyToBomb);
+                stickedBomb = true;
+                (bomber + " sticks a bomb on "+ enemyToBomb).Print();
                 return true;
             }
             return false;
