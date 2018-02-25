@@ -48,8 +48,8 @@ namespace Skillz_Code
             for (int i = 0; i < CircleSteps; i++)
             {
                 double angle = System.Math.PI * 2 * i / CircleSteps;
-                double deltaX = game.PushDistance * System.Math.Cos(angle);
-                double deltaY = game.PushDistance * System.Math.Sin(angle);
+                double deltaX = game.HeavyPushDistance * System.Math.Cos(angle);
+                double deltaY = game.HeavyPushDistance * System.Math.Sin(angle);
                 Location newWormholeLocation = new Location((int) (wormhole.Location.Row - deltaY), (int) (wormhole.Location.Col + deltaX));
                 int newLocationScore = GetWormholeScore(newWormholeLocation, wormhole.Partner.Location);
                 if (newLocationScore < bestOptionScore)
