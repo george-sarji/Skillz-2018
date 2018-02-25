@@ -18,7 +18,7 @@ Skillz code for 2018, revamped.
         <td>LargeRocks</td>
         <td>Win</td>
         <td>8/2</td>
-        <td>175</td>
+        <td>152</td>
         <td>-</td>
     </tr>
     <tr>
@@ -34,7 +34,7 @@ Skillz code for 2018, revamped.
         <td>Steroids</td>
         <td>Win</td>
         <td>8/0</td>
-        <td>172</td>
+        <td>168</td>
         <td>-</td>
     </tr>
     <tr>
@@ -42,7 +42,7 @@ Skillz code for 2018, revamped.
         <td>GeorgePushSenior</td>
         <td>Win</td>
         <td>8/2</td>
-        <td>89</td>
+        <td>96</td>
         <td>-</td>
     </tr>
     <tr>
@@ -50,7 +50,7 @@ Skillz code for 2018, revamped.
         <td>YouShallNotPass</td>
         <td>Win</td>
         <td>8/7</td>
-        <td>228</td>
+        <td>300</td>
         <td>-</td>
     </tr>
     <tr>
@@ -58,7 +58,7 @@ Skillz code for 2018, revamped.
         <td>Meteroite</td>
         <td>Win</td>
         <td>8/1</td>
-        <td>128</td>
+        <td>127</td>
         <td>-</td>
     </tr>
     <tr>
@@ -66,15 +66,15 @@ Skillz code for 2018, revamped.
         <td>Lepton</td>
         <td>Win</td>
         <td>8/5</td>
-        <td>288</td>
+        <td>286</td>
         <td>-</td>
     </tr>
     <tr>
         <td>4</td>
         <td>Voyager1</td>
         <td>Win</td>
-        <td>8/1</td>
-        <td>169</td>
+        <td>8/0</td>
+        <td>144</td>
         <td>-</td>
     </tr>
     <tr>
@@ -82,7 +82,7 @@ Skillz code for 2018, revamped.
         <td>Pullpullon</td>
         <td>Win</td>
         <td>8/1</td>
-        <td>207</td>
+        <td>376</td>
         <td>-</td>
     </tr>
 </table>
@@ -102,23 +102,23 @@ Skillz code for 2018, revamped.
         <td>SpaceTime</td>
         <td>Win</td>
         <td>8/7</td>
-        <td>262</td>
+        <td>269</td>
         <td>-</td>
     </tr>
     <tr>
         <td>1</td>
         <td>Momentum</td>
         <td>Win</td>
-        <td>1/0</td>
-        <td>750</td>
-        <td>Bot gets stuck in SmartSailing due to not taking the wormhole.</td>
+        <td>8/0</td>
+        <td>349</td>
+        <td>-</td>
     </tr>
     <tr>
         <td>2</td>
         <td>GravityWaves</td>
         <td>Win</td>
         <td>8/0</td>
-        <td>157</td>
+        <td>162</td>
         <td>-</td>
     </tr>
     <tr>
@@ -134,7 +134,7 @@ Skillz code for 2018, revamped.
         <td>Spaghettification</td>
         <td>Win</td>
         <td>8/7</td>
-        <td>281</td>
+        <td>268</td>
         <td>-</td>
     </tr>
     <tr>
@@ -142,15 +142,15 @@ Skillz code for 2018, revamped.
         <td>OutOfSpace</td>
         <td>Win</td>
         <td>8/1</td>
-        <td>282</td>
+        <td>309</td>
         <td>-</td>
     </tr>
     <tr>
         <td>3</td>
         <td>Pushti</td>
         <td><b>Loss</b></td>
-        <td>8/0</td>
-        <td>369</td>
+        <td>9/2</td>
+        <td>516</td>
         <td>-</td>
     </tr>
     <tr>
@@ -158,15 +158,15 @@ Skillz code for 2018, revamped.
         <td>William</td>
         <td><b>Loss</b></td>
         <td>8/3</td>
-        <td>263</td>
+        <td>188</td>
         <td>-</td>
     </tr>
     <tr>
         <td>4</td>
         <td>Pullpushon</td>
         <td><b>Loss</b></td>
-        <td>8/0</td>
-        <td>204</td>
+        <td>8/2</td>
+        <td>198</td>
         <td>-</td>
     </tr>
 </table>
@@ -186,15 +186,15 @@ Skillz code for 2018, revamped.
         <td>DeathStar</td>
         <td>Win</td>
         <td>12/1</td>
-        <td>216</td>
+        <td>254</td>
         <td>-</td>
     </tr>
     <tr>
         <td>1</td>
         <td>StaticVoid</td>
         <td>Win</td>
-        <td>8/1</td>
-        <td>215</td>
+        <td>8/2</td>
+        <td>194</td>
         <td>-</td>
     </tr>
     <tr>
@@ -224,25 +224,25 @@ Skillz code for 2018, revamped.
     <tr>
         <td>3</td>
         <td>HeavyLifting</td>
-        <td><b>Loss</b></td>
-        <td>8/5</td>
-        <td>345</td>
+        <td>Win</td>
+        <td>8/7</td>
+        <td>382</td>
         <td>-</td>
     </tr>
     <tr>
         <td>3</td>
         <td>NeutronStar</td>
         <td>Win</td>
-        <td>8/1</td>
-        <td>248</td>
+        <td>8/0</td>
+        <td>280</td>
         <td>-</td>
     </tr>
     <tr>
         <td>4</td>
         <td>Pushiner</td>
-        <td><b>Loss</b></td>
-        <td>8/6</td>
-        <td>228</td>
+        <td>Win</td>
+        <td>8/5</td>
+        <td>317</td>
         <td>-</td>
     </tr>
     <tr>
@@ -269,16 +269,16 @@ Skillz code for 2018, revamped.
         <td>1</td>
         <td>TodoBomb</td>
         <td>Win</td>
-        <td>8/2</td>
-        <td>183</td>
+        <td>8/5</td>
+        <td>185</td>
         <td>-</td>
     </tr>
     <tr>
         <td>1</td>
         <td>Matrix</td>
         <td>Win</td>
-        <td>8/4</td>
-        <td>120</td>
+        <td>8/6</td>
+        <td>124</td>
         <td>-</td>
     </tr>
     <tr>
@@ -286,22 +286,22 @@ Skillz code for 2018, revamped.
         <td>Kamikaze</td>
         <td>Win</td>
         <td>10/9</td>
-        <td>828</td>
+        <td>327</td>
         <td>-</td>
     </tr>
     <tr>
         <td>2</td>
         <td>StickyNotes</td>
         <td>Win</td>
-        <td>8/4</td>
-        <td>378</td>
+        <td>8/1</td>
+        <td>513</td>
         <td>-</td>
     </tr>
     <tr>
         <td>3</td>
         <td>HamannHarasha</td>
         <td><b>Loss</b></td>
-        <td>7/4</td>
+        <td>6/3</td>
         <td>750</td>
         <td>-</td>
     </tr>
@@ -309,16 +309,16 @@ Skillz code for 2018, revamped.
         <td>3</td>
         <td>CyberSpace</td>
         <td>Win</td>
-        <td>8/6</td>
-        <td>219</td>
+        <td>8/5</td>
+        <td>183</td>
         <td>-</td>
     </tr>
     <tr>
         <td>3</td>
         <td>Basmach</td>
         <td>Win</td>
-        <td>8/3</td>
-        <td>154</td>
+        <td>8/5</td>
+        <td>192</td>
         <td>-</td>
     </tr>
     <tr>
@@ -333,8 +333,8 @@ Skillz code for 2018, revamped.
         <td>4</td>
         <td>PushPullon</td>
         <td><b>Loss</b></td>
-        <td>10/2</td>
-        <td>163</td>
+        <td>10/0</td>
+        <td>196</td>
         <td>-</td>
     </tr>
 </table>
