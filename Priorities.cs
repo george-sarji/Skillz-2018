@@ -91,6 +91,9 @@ namespace Skillz_Code
                 }
                 if(bestLocation.Type == LocationType.Wormhole)
                     AssignDestination(bestPirate, bestLocation.Location.Towards(bestPirate, game.WormholeRange));
+                else if(bestLocation.Type == LocationType.EnemyPirate)
+                    if(!TryStickBomb(bestPirate, (Pirate)bestLocation.TargetLocationObject))
+                        AssignDestination(bestPirate, bestLocation.Location);
                 else
                     AssignDestination(bestPirate, bestLocation.Location);
                 bestLocation.AssignedPirates++;
