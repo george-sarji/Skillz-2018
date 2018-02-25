@@ -14,13 +14,16 @@ namespace Skillz_Code
             var enemyCapsuleHolders = game.GetEnemyLivingPirates().Where(enemy => enemy.HasCapsule());
             foreach (var capsuleHolder in enemyCapsuleHolders)
             {
-                targetPirates.Add(new TargetLocation(capsuleHolder.Location, LocationType.EnemyPirate, 1, capsuleHolder,
+                int priority = 1;
+                if(capsuleHolder.StickyBombs.Any())
+                    priority=10;
+                targetPirates.Add(new TargetLocation(capsuleHolder.Location, LocationType.EnemyPirate, priority, capsuleHolder,
                     (game.StickyBombReloadTurns != 0) ? capsuleHolder.NumPushesForCapsuleLoss : 1));
             }
             if (!enemyCapsuleHolders.Any())
             {
-                var bestEnemy = game.GetEnemyLivingPirates().Where(enemy => GetEnemiesInBombRange(enemy).Count() >= 2)
-                    .OrderByDescending(enemy => GetEnemiesInBombRange(enemy).Count()).FirstOrDefault();
+                var bestEnemy = game.GetEnemyLivingPirates().Where(enemy => GetEnemiesInBombRange(enemy).Count() >= 2 &&
+                    !enemy.StickyBombs.Any()).OrderByDescending(enemy => GetEnemiesInBombRange(enemy).Count()).FirstOrDefault();
                 // var centeredEnemy = game.GetEnemyLivingPirates().Where(enemy => GetEnemiesInBombRange(enemy).Count() >= 2)
                 //     .OrderByDescending(enemy => GetEnemiesInBombRange(enemy)).FirstOrDefault();
                 if (bestEnemy != null)
@@ -59,7 +62,7 @@ namespace Skillz_Code
             {
                 bomber.StickBomb(enemyToBomb);
                 stickedBomb = true;
-                (bomber + " sticks a bomb on "+ enemyToBomb).Print();
+                (bomber + " sticks a bomb on " + enemyToBomb).Print();
                 return true;
             }
             return false;

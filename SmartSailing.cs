@@ -39,7 +39,7 @@ namespace Skillz_Code
 
         public bool IsInDanger(Location loc, Location destination, Pirate pirate)
         {
-            return IsHittingAsteroid(loc) || IsInRangeOfEnemy(loc, pirate) || IsInWormholeDanger(loc, destination, pirate);
+            return IsHittingAsteroid(loc) || IsInRangeOfEnemy(loc, pirate) || IsInWormholeDanger(loc, destination, pirate) || IsInBombRange(loc, pirate);
         }
 
         public bool IsHittingAsteroid(Location loc)
@@ -74,6 +74,12 @@ namespace Skillz_Code
                 }
             }
             return count >= myPirate.NumPushesForCapsuleLoss;
+        }
+
+        public bool IsInBombRange(Location location, Pirate pirate)
+        {
+            var closestBomb = game.GetAllStickyBombs().OrderBy(bomb => bomb.Distance(pirate)).FirstOrDefault();
+            return closestBomb != null && location.InRange(closestBomb, closestBomb.ExplosionRange);
         }
     }
 }
