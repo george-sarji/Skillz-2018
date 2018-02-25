@@ -90,5 +90,16 @@ namespace Skillz_Code
             }
             return targetLocations;
         }
+        private bool TryPushWormhole(Pirate pirate, Location location)
+        {
+            foreach(Wormhole wormhole in game.GetAllWormholes())
+            {
+                if(wormhole.Location != location) continue;
+                if(!pirate.CanPush(wormhole)) return false;
+                pirate.Push(wormhole, BestWormholePushLocation(wormhole));
+                return true;
+            }
+            return false;
+        }
     }
 }
