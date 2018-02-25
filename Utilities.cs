@@ -139,7 +139,7 @@ namespace Skillz_Code
             return game.GetEnemyLivingPirates().Where(enemy => enemy.InRange(location, enemy.PushRange) && enemy.PushReloadTurns != 0).Count();
         }
 
-        public bool CheckIfCapsuleCanReach(Pirate capsuleHolder, Mothership mothership) //Working on this Function -Mahmoud
+        public bool CheckIfCapsuleCanReachMothership(Pirate capsuleHolder, Mothership mothership) //Working on this Function -Mahmoud
         {
             if (mothership == null) return false;
             if (capsuleHolder.InRange(mothership, mothership.UnloadRange * 3) &&
@@ -153,7 +153,7 @@ namespace Skillz_Code
             return false;
         }
 
-        public bool CheckIfCapturerCanReach(Pirate CapsuleCapturer, Location destination) //Working on this Function -Mahmoud
+        public bool CheckIfPirateCanReach(Pirate CapsuleCapturer, Location destination) //Working on this Function -Mahmoud
         {
             if (destination == null) return false;
             if (CapsuleCapturer.InRange(destination, CapsuleCapturer.MaxSpeed) &&
