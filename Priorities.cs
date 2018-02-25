@@ -48,8 +48,8 @@ namespace Skillz_Code
 
             private int ScaledDistance(Pirate pirate)
             {
-                // TODO(Mahmoud): consider clamping or scaling this depending on map size.
-                return pirate.Distance(Location);
+                int maxDistance = (int)((game.Cols.Power(2)+game.Rows.Power(2)).Sqrt());
+                return pirate.Distance(Location)/maxDistance * MAX_PRIORITY;
             }
         }
 
