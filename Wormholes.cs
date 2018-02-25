@@ -6,6 +6,8 @@ namespace Skillz_Code
 {
     partial class SSJS12Bot : IPirateBot
     {
+        private Dictionary<Wormhole, Location> movedWormholeLocations = new Dictionary<Wormhole, Location>();
+
         protected int GetWormholeScoreForPlayer(Location wormholeLocation, Location partnerLocation, Player player)
         {
             if (!GetPlayerMotherships(player).Any() || !GetPlayerCapsules(player).Any())
@@ -44,14 +46,14 @@ namespace Skillz_Code
         {
             // Returns the most favorable position to push the wormhole to, taking into consideration position of capsules and motherships.
             var bestOption = wormhole.Location;
-            var bestOptionScore = GetWormholeScore(wormhole.Location, wormhole.Partner.Location);
+            var bestOptionScore = GetWormholeScore(wormhole.Location, GetWormholeLocation(wormhole.Partner));
             for (int i = 0; i < CircleSteps; i++)
             {
                 double angle = System.Math.PI * 2 * i / CircleSteps;
                 double deltaX = game.HeavyPushDistance * System.Math.Cos(angle);
                 double deltaY = game.HeavyPushDistance * System.Math.Sin(angle);
                 Location newWormholeLocation = new Location((int) (wormhole.Location.Row - deltaY), (int) (wormhole.Location.Col + deltaX));
-                int newLocationScore = GetWormholeScore(newWormholeLocation, wormhole.Partner.Location);
+                int newLocationScore = GetWormholeScore(newWormholeLocation, GetWormholeLocation(wormhole.Partner));
                 if (newLocationScore < bestOptionScore)
                 {
                     bestOption = newWormholeLocation;
@@ -70,14 +72,19 @@ namespace Skillz_Code
 
         private int GetWormholePriority(Wormhole wormhole)
         {
-            int currentScore = GetWormholeScore(wormhole.Location, wormhole.Partner.Location);
-            int improvedScore = GetWormholeScore(BestWormholePushLocation(wormhole), wormhole.Partner.Location);
+            int currentScore = GetWormholeScore(wormhole.Location, GetWormholeLocation(wormhole.Partner));
+            int improvedScore = GetWormholeScore(BestWormholePushLocation(wormhole), GetWormholeLocation(wormhole.Partner));
 
             int improvementDelta = currentScore - improvedScore;
             int maxPossibleImprovement = game.PushDistance * 2; // Moved PushDistance away from enemy locations towards our locations.
 
             int bonus = wormhole.TurnsToReactivate == 0 ? 1 : 0;
             return ScaleToRange(0, maxPossibleImprovement, MAX_PRIORITY, MIN_PRIORITY, improvementDelta) - bonus; // TODO: Scale improvementDelta / maxPossibleImprovement to priorities range and add/subtract bonus.
+        }
+
+        private Location GetWormholeLocation(Wormhole wormhole)
+        {
+            return movedWormholeLocations.ContainsKey(wormhole) ? movedWormholeLocations[wormhole] : wormhole.Location;
         }
 
         private IEnumerable<TargetLocation> GetTargetLocationsWormholes()
@@ -97,6 +104,7 @@ namespace Skillz_Code
                 // Push the wormhole
                 var pushLocation = BestWormholePushLocation(wormhole);
                 pirate.Push(wormhole, pushLocation);
+                movedWormholeLocations[wormhole] = pushLocation;
                 (pirate + " pushes "+ wormhole + " towards "+ pushLocation).Print();
                 return true;
             }
