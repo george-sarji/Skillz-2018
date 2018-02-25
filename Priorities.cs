@@ -92,8 +92,10 @@ namespace Skillz_Code
                 if(bestLocation.Type == LocationType.Wormhole)
                     AssignDestination(bestPirate, bestLocation.Location.Towards(bestPirate, game.WormholeRange));
                 else if(bestLocation.Type == LocationType.EnemyPirate)
+                {
                     if(!TryStickBomb(bestPirate, (Pirate)bestLocation.TargetLocationObject))
                         AssignDestination(bestPirate, bestLocation.Location);
+                }
                 else
                     AssignDestination(bestPirate, bestLocation.Location);
                 bestLocation.AssignedPirates++;
@@ -106,7 +108,7 @@ namespace Skillz_Code
             var targetLocations = new List<TargetLocation>();
             targetLocations.AddRange(GetTargetLocationsWormholes());
             targetLocations.AddRange(GetTargetLocationsAsteroids());
-            targetLocations.AddRange(GetTargetLocationsMyPirates());
+            // targetLocations.AddRange(GetTargetLocationsMyPirates());
             targetLocations.AddRange(GetTargetLocationsEnemyPirates());
             return targetLocations;
         }
