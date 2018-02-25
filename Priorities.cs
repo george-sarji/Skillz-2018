@@ -49,7 +49,7 @@ namespace Skillz_Code
             private int ScaledDistance(Pirate pirate)
             {
                 int maxDistance = (int)((game.Cols.Power(2)+game.Rows.Power(2)).Sqrt());
-                return pirate.Distance(Location)/maxDistance * MAX_PRIORITY;
+                return (int)(((double)pirate.Distance(Location)/(double)maxDistance) * MAX_PRIORITY);
             }
         }
 
@@ -111,7 +111,7 @@ namespace Skillz_Code
             var targetLocations = new List<TargetLocation>();
             targetLocations.AddRange(GetTargetLocationsWormholes());
             targetLocations.AddRange(GetTargetLocationsAsteroids());
-            // targetLocations.AddRange(GetTargetLocationsMyPirates());
+            targetLocations.AddRange(GetTargetLocationsMyPirates());
             targetLocations.AddRange(GetTargetLocationsEnemyPirates());
             return targetLocations;
         }
