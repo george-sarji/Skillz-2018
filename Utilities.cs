@@ -209,7 +209,7 @@ namespace Skillz_Code
 
         private int ScaleToRange(int a, int b, int c, int d, int x)
         {
-            return c + (x - a) * (d - c) / (b - a);
+            return c + (x - a) * (d - c) / ((b - a == 0) ? 1 : b - a);
         }
 
         protected IEnumerable<Pirate> GetEnemiesInBombRange(Pirate pirate)
