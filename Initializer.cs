@@ -21,7 +21,7 @@ namespace Skillz_Code
         public void DoTurn(PirateGame game)
         {
             Initialize(game);
-            HandleSwitchPirateStates();
+            // HandleSwitchPirateStates();
             PushAsteroids();
             HandleBombCarriers();
             PushEnemyCapsulesAggressively();
