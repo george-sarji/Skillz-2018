@@ -112,10 +112,6 @@ namespace Skillz_Code
             return Enumerable.Empty<TargetLocation>();
         }
 
-        // TODO: Move to the right file and implement.
-        private IEnumerable<TargetLocation> GetTargetLocationsMyPirates()
-        {
-            return Enumerable.Empty<TargetLocation>();
-        }
+        
     }
 }
