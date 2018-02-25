@@ -155,12 +155,8 @@ namespace Skillz_Code
 
         public bool IsCapsuleHolderInDanger(Pirate pirate)
         {
-            //Checks if the capsule holder is in danger by checking if there are enough close enemies that are in range of pushing, or close to being in range to make the capsule holder lose his capsule.
-            if (!pirate.HasCapsule())
-                return false;
-            if (game.GetEnemyLivingPirates().Where(enemy => enemy.Distance(pirate) <= game.PushRange * 3).Count() >= game.NumPushesForCapsuleLoss)
-                return true;
-            return false;
+            // Checks if the capsule holder is in danger by checking if there are enough close enemies that are in range of pushing, or close to being in range to make the capsule holder lose his capsule.
+            return pirate.HasCapsule() && game.GetEnemyLivingPirates().Where(enemy => enemy.Distance(pirate) <= game.PushRange * 3).Count() >= game.NumPushesForCapsuleLoss;
         }
 
         public bool CheckIfPirateCanReach(Pirate CapsuleCapturer, Location destination) //Working on this Function -Mahmoud
