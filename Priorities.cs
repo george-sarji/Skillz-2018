@@ -111,7 +111,7 @@ namespace Skillz_Code
             var targetLocations = new List<TargetLocation>();
             targetLocations.AddRange(GetTargetLocationsWormholes());
             targetLocations.AddRange(GetTargetLocationsAsteroids());
-            targetLocations.AddRange(GetTargetLocationsMyPirates());
+            // targetLocations.AddRange(GetTargetLocationsMyPirates()); for now not using it since we need to interesect our pirates
             targetLocations.AddRange(GetTargetLocationsEnemyPirates());
             return targetLocations;
         }

@@ -46,13 +46,13 @@ namespace Skillz_Code
                     targetLocations.Add(new TargetLocation(pirate.Location, LocationType.MyPirate, 1, pirate));
                 }
             }
-            foreach (var pair in pirateDestinations)
-            {
-                if (!pair.Key.HasCapsule() && !CheckIfPirateCanReach(pair.Key, pair.Value))
-                {
-                    targetLocations.Add(new TargetLocation(pair.Key.Location, LocationType.MyPirate, 4, pair.Key));
-                }
-            }
+            // foreach (var pair in pirateDestinations)
+            // {
+            //     if (!pair.Key.HasCapsule() && !CheckIfPirateCanReach(pair.Key, pair.Value))
+            //     {
+            //         targetLocations.Add(new TargetLocation(pair.Key.Location, LocationType.MyPirate, 4, pair.Key));
+            //     }
+            // }
             return targetLocations;
         }
 
