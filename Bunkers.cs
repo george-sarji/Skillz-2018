@@ -6,7 +6,7 @@ namespace Skillz_Code
 {
     partial class SSJS12Bot : IPirateBot
     {
-        public static List<Pirate> bunkeringPirates = new List<Pirate>(); //List to add pirates used in bunker to, used in swapping states and finding preferred states.
+        
 
         public void PerformAggressiveBunker()
         {
