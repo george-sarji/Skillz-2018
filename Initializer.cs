@@ -22,6 +22,7 @@ namespace Skillz_Code
         {
             Initialize(game);
             PushAsteroids();
+            HandleBombCarriers();
             PushEnemyCapsulesAggressively();
             if (!game.GetMyMotherships().Any() || !game.GetMyCapsules().Any())
                 PerformDefensiveBunker();
