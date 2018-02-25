@@ -79,7 +79,7 @@ namespace Skillz_Code
         public bool IsInBombRange(Location location, Pirate pirate)
         {
             var closestBomb = game.GetAllStickyBombs().Where(bomb => !bomb.Carrier.Equals(pirate)).OrderBy(bomb => bomb.Distance(pirate)).FirstOrDefault();
-            return closestBomb != null && location.InRange(closestBomb, closestBomb.ExplosionRange);
+            return closestBomb != null && location.InRange(closestBomb, closestBomb.ExplosionRange+pirate.MaxSpeed/2);
         }
     }
 }
