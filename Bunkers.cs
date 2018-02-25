@@ -34,11 +34,11 @@ namespace Skillz_Code
                         }
                     }
                     var requiredPiratesCount = Min((count == 0) ? 1 : count, capsule.Holder.NumPushesForCapsuleLoss);
-                    var line = string.Format("{0, -8} {1, 9} @ {2, 12} {3,12} {4,12}", "ID: "+mothership.Id, "ID: "+capsule.Id, mothership.Location, capsule.Holder.NumPushesForCapsuleLoss, count);
-                    line.Print();
                     var bestWormhole = GetBestWormhole(mothership.Location, capsule.Holder);
                     if (useablePirates.Count() >= requiredPiratesCount)
                     {
+                        var line = string.Format("{0, -8} {1, 9} @ {2, 12} {3,12} {4,12}", "ID: "+mothership.Id, "ID: "+capsule.Id, mothership.Location, capsule.Holder.NumPushesForCapsuleLoss, count);
+                        line.Print();
                         if (requiredPiratesCount == count)
                             useablePirates = useablePirates.OrderByDescending(p => p.PushDistance);
                         var usedPirates = new List<Pirate>();
@@ -71,7 +71,12 @@ namespace Skillz_Code
 
         protected void PerformDefensiveBunker()
         {
-            ("Entered bunker").Print();
+            if(game.GetEnemyCapsules().Any(capsule => capsule.Holder!=null))
+            {
+                ("Defensive mothership bunkers: ").Print();
+                var header = string.Format("{0, -8} {1, 7} {2, 12} {3, 12} {4,12}", "Mothership", "Capsule", "  Location  ", "  Capsule loss  ", "  Border pushes  ");
+                header.Print();
+            }
             foreach (var capsule in game.GetEnemyCapsules().Where(cap => cap.Holder != null)
                     .OrderBy(cap => cap.Holder.Steps(GetBestMothershipThroughWormholes(cap.Holder).Location)))
             {
@@ -92,6 +97,8 @@ namespace Skillz_Code
                     var requiredPiratesCount = Min((count == 0) ? 1 : count, capsule.Holder.NumPushesForCapsuleLoss);
                     if (useablePirates.Count() >= requiredPiratesCount)
                     {
+                        var line = string.Format("{0, -8} {1, 9} @ {2, 12} {3,12} {4,12}", "ID: "+bestMothership.Id, "ID: "+capsule.Id, bestMothership.Location, capsule.Holder.NumPushesForCapsuleLoss, count);
+                        line.Print();
                         var usedPirates = new List<Pirate>();
                         foreach (var pirate in useablePirates.Take(requiredPiratesCount))
                         {
