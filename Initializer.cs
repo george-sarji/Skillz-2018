@@ -17,6 +17,7 @@ namespace Skillz_Code
         protected List<Asteroid> livingAsteroids;
         protected const int MAX_PRIORITY = 10;
         protected const int MIN_PRIORITY=1;
+        protected bool stickedBomb = false;
         public void DoTurn(PirateGame game)
         {
             Initialize(game);
