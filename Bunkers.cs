@@ -6,6 +6,8 @@ namespace Skillz_Code
 {
     partial class SSJS12Bot : IPirateBot
     {
+        public static List<Pirate> bunkeringPirates = new List<Pirate>(); //List to add pirates used in bunker to, used in swapping states and finding preferred states.
+
         public void PerformAggressiveBunker()
         {
             if(game.GetEnemyMotherships().Any() && game.GetEnemyCapsules().Any(capsule => capsule.Holder!=null))
@@ -61,6 +63,8 @@ namespace Skillz_Code
                                 AssignDestination(pirate, destinationBunker);
                             }
                             usedPirates.Add(pirate);
+                            bunkeringPirates.Add(pirate);
+
                         }
                         availablePirates = availablePirates.Except(usedPirates).ToList();
 
@@ -104,7 +108,7 @@ namespace Skillz_Code
                         {
                             AssignDestination(pirate, bestMothership.Location.Towards(capsule, (int) (capsule.Holder.MaxSpeed)));
                             usedPirates.Add(pirate);
-
+                            bunkeringPirates.Add(pirate);
                         }
                         availablePirates = availablePirates.Except(usedPirates).ToList();
                     }
