@@ -15,8 +15,8 @@ namespace Skillz_Code
             foreach (var capsuleHolder in enemyCapsuleHolders)
             {
                 int priority = 1;
-                if(capsuleHolder.StickyBombs.Any())
-                    priority=10;
+                if (capsuleHolder.StickyBombs.Any())
+                    priority = 10;
                 targetPirates.Add(new TargetLocation(capsuleHolder.Location, LocationType.EnemyPirate, priority, capsuleHolder,
                     (game.StickyBombReloadTurns != 0) ? capsuleHolder.NumPushesForCapsuleLoss : 1));
             }
@@ -33,7 +33,7 @@ namespace Skillz_Code
 
             return targetPirates;
         }
-        
+
         private IEnumerable<TargetLocation> GetTargetLocationsMyPirates()
         {
             List<Pirate> PiratesWithCapsule = game.GetMyLivingPirates().Where(p => p.HasCapsule()).ToList();
@@ -85,19 +85,36 @@ namespace Skillz_Code
             // Finally it tries to find pirates who want to swap with eachother, and if unsuccessful, looks for pirates who don't really have a preference to switch them with ones that do.
         }
 
-        
         private bool TrySwitchPirates(List<Pirate> group1, List<Pirate> group2)
         {
             // Tries to swap the states of two pirates from two groups, if successful returns true.
             var pirate1 = group1.FirstOrDefault();
             var pirate2 = group2.FirstOrDefault();
 
-            if (pirate1 != null && pirate2 != null) {
+            if (pirate1 != null && pirate2 != null)
+            {
                 pirate1.SwapStates(pirate2);
                 availablePirates.Remove(pirate1);
                 return true;
             }
             return false;
+        }
+
+        private void HandleBombCarriers()
+        {
+            var bombCarriers = game.GetMyLivingPirates().Where(pirate => pirate.StickyBombs.Any());
+            foreach (var carrier in bombCarriers)
+            {
+                // Get the best place to go to where the pirate can reach!
+                var bombCarried = carrier.StickyBombs.First();
+                var enemyPirate = game.GetEnemyLivingPirates().Where(enemy => carrier.Steps(enemy) <= bombCarried.Countdown)
+                    .OrderByDescending(enemy => GetEnemiesInBombRange(carrier).Count()).FirstOrDefault();
+                if(enemyPirate!=null)
+                {
+                    AssignDestination(carrier, enemyPirate.Location);
+                    availablePirates.Remove(carrier);
+                }
+            }
         }
     }
 }
