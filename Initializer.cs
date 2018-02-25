@@ -15,6 +15,8 @@ namespace Skillz_Code
         protected Dictionary<Capsule, int> capsulePushes;
         protected Dictionary<Pirate, Location> pirateDestinations;
         protected List<Asteroid> livingAsteroids;
+
+        public static List<Pirate> bunkeringPirates; //List to add pirates used in bunker to, used in swapping states and finding preferred states.
         protected const int MAX_PRIORITY = 10;
         protected const int MIN_PRIORITY=1;
         protected bool stickedBomb = false;
@@ -49,6 +51,7 @@ namespace Skillz_Code
             foreach (var capsule in game.GetEnemyCapsules())
                 capsulePushes[capsule] = 0;
             livingAsteroids = game.GetLivingAsteroids().ToList();
+            bunkeringPirates = new List<Pirate>();
         }
 
         protected void MovePirates()
