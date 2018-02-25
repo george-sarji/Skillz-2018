@@ -87,7 +87,10 @@ namespace Skillz_Code
                 {
                     break;
                 }
-                AssignDestination(bestPirate, bestLocation.Location);
+                if(bestLocation.Type == LocationType.Wormhole)
+                    AssignDestination(bestPirate, bestLocation.Location.Towards(bestPirate, game.WormholeRange));
+                else
+                    AssignDestination(bestPirate, bestLocation.Location);
                 bestLocation.AssignedPirates++;
                 availablePirates.Remove(bestPirate);
             }
