@@ -30,7 +30,7 @@ namespace Skillz_Code
 
             return targetPirates;
         }
-
+        
         private IEnumerable<TargetLocation> GetTargetLocationsMyPirates()
         {
             List<Pirate> PiratesWithCapsule = game.GetMyLivingPirates().Where(p => p.HasCapsule()).ToList();
@@ -60,6 +60,20 @@ namespace Skillz_Code
                 bomber.StickBomb(enemyToBomb);
                 stickedBomb = true;
                 (bomber + " sticks a bomb on "+ enemyToBomb).Print();
+                return true;
+            }
+            return false;
+        }
+
+        private bool TrySwitchPirates(List<Pirate> group1, List<Pirate> group2)
+        {
+            // Tries to swap the states of two pirates from two groups, if successful returns true.
+            var pirate1 = group1.FirstOrDefault();
+            var pirate2 = group2.FirstOrDefault();
+
+            if (pirate1 != null && pirate2 != null) {
+                pirate1.SwapStates(pirate2);
+                availablePirates.Remove(pirate1);
                 return true;
             }
             return false;
