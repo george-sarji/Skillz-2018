@@ -74,11 +74,23 @@ namespace Skillz_Code
             // Each pirate will be in 1 category if he wants to change(wantToBeXXXX), or doesn't mind it(willingToBeXXXXX). Otherwise he will remain in the same state.
             // We consider the following factors:
             // 1. Whether the pirate has a capsule. 2. Whether the pirate is in danger. 3. Whether the pirate is currently performing a bunker/wants to be.
-            List<Pirate> wantToBeHeavy = game.GetMyLivingPirates().Where(pirate => pirate.HasCapsule() && pirate.StateName == "normal" && IsCapsuleHolderInDanger(pirate)).ToList();
-            wantToBeHeavy.AddRange(game.GetMyLivingPirates().Where(pirate => bunkeringPirates.Contains(pirate)));
-            List<Pirate> wantToBeNormal = game.GetMyLivingPirates().Where(pirate => pirate.HasCapsule() && pirate.StateName == "heavy" && !IsCapsuleHolderInDanger(pirate)).ToList();
+            game.Debug(availablePirates.Count());
+            foreach(Pirate pirate in availablePirates.Where(pirate => pirate.HasCapsule()))
+            {
+                game.Debug(IsCapsuleHolderInDanger(pirate));
+            }
+            List<Pirate> wantToBeHeavy = availablePirates.Where(pirate => pirate.HasCapsule() && pirate.StateName == "normal" && IsCapsuleHolderInDanger(pirate)).ToList();
+            wantToBeHeavy.AddRange(availablePirates.Where(pirate => bunkeringPirates.Contains(pirate) &&
+             (game.GetMyMotherships().Where(mothership => mothership.Distance(pirate) < game.MothershipUnloadRange).Count() > 0 || game.GetEnemyMotherships()
+             .Where(mothership => mothership.Distance(pirate) < game.MothershipUnloadRange).Count() > 0)));
+            List<Pirate> wantToBeNormal = availablePirates.Where(pirate => pirate.HasCapsule() && pirate.StateName == "heavy" && !IsCapsuleHolderInDanger(pirate)).ToList();
             List<Pirate> willingToBeNormal = game.GetMyLivingPirates().Where(pirate => !bunkeringPirates.Contains(pirate) && !pirate.HasCapsule() && pirate.StateName == "heavy").ToList();
-            List<Pirate> willingToBeHeavy = game.GetMyLivingPirates().Where(pirate => !bunkeringPirates.Contains(pirate) && !pirate.HasCapsule() && pirate.StateName == "heavy").ToList();
+            List<Pirate> willingToBeHeavy = game.GetMyLivingPirates().Where(pirate => !bunkeringPirates.Contains(pirate) && !pirate.HasCapsule() && pirate.StateName == "normal").ToList();
+            game.Debug(wantToBeHeavy.Count());
+            game.Debug(wantToBeNormal.Count());
+            game.Debug(willingToBeNormal.Count());
+            game.Debug(willingToBeHeavy.Count());
+            game.Debug(bunkeringPirates.Count());
             return TrySwitchPirates(wantToBeHeavy, wantToBeNormal) ||
                 TrySwitchPirates(wantToBeHeavy, willingToBeNormal) ||
                 TrySwitchPirates(wantToBeNormal, willingToBeHeavy);
