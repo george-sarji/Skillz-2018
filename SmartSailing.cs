@@ -10,7 +10,7 @@ namespace Skillz_Code
         {
             List<Location> candidates = new List<Location>();
             var bestOption = pirate.GetLocation();
-            const int steps = 24;
+            const int steps = 30;
             Location PirateLocation = pirate.GetLocation();
             // if ((pirate.Location.Distance(destination)) - bestOption.Distance(destination) >= (pirate.MaxSpeed / 2) && pirate.HasCapsule())
             // {
@@ -68,7 +68,7 @@ namespace Skillz_Code
             int count = 0;
             foreach (Pirate pirate in game.GetEnemyLivingPirates())
             {
-                if (pirate.InRange(loc, pirate.PushRange + pirate.MaxSpeed) && pirate.PushReloadTurns < pirate.Steps(loc))
+                if (pirate.InRange(loc, pirate.PushRange) && pirate.PushReloadTurns < pirate.Steps(loc))
                 {
                     count++;
                 }
