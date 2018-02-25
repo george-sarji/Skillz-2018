@@ -90,7 +90,10 @@ namespace Skillz_Code
                     break;
                 }
                 if(bestLocation.Type == LocationType.Wormhole)
-                    AssignDestination(bestPirate, bestLocation.Location.Towards(bestPirate, game.WormholeRange));
+                {
+                    if(!TryPushWormhole(bestPirate, (Wormhole)bestLocation.TargetLocationObject))
+                        AssignDestination(bestPirate, bestLocation.Location.Towards(bestPirate, game.WormholeRange));
+                }
                 else if(bestLocation.Type == LocationType.EnemyPirate)
                 {
                     if(!TryStickBomb(bestPirate, (Pirate)bestLocation.TargetLocationObject))
