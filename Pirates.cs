@@ -65,6 +65,24 @@ namespace Skillz_Code
             return false;
         }
 
+        private bool HandleSwitchPirateStates()
+        {
+            // First we create 4 lists that describe the pirates' preference in terms of states.
+            // Each pirate will be in 1 category if he wants to change(wantToBeXXXX), or doesn't mind it(willingToBeXXXXX). Otherwise he will remain in the same state.
+            // We consider the following factors:
+            // 1. Whether the pirate has a capsule. 2. Whether the pirate is in danger. 3. Whether the pirate is currently performing a bunker/wants to be.
+            List<Pirate> wantToBeHeavy = game.GetMyLivingPirates().Where(pirate => pirate.HasCapsule() && pirate.StateName == "normal" && IsCapsuleHolderInDanger(pirate)).ToList();
+            wantToBeHeavy.AddRange(game.GetMyLivingPirates().Where(pirate => bunkeringPirates.Contains(pirate)));
+            List<Pirate> wantToBeNormal = game.GetMyLivingPirates().Where(pirate => pirate.HasCapsule() && pirate.StateName == "heavy" && !IsCapsuleHolderInDanger(pirate)).ToList();
+            List<Pirate> willingToBeNormal = game.GetMyLivingPirates().Where(pirate => !bunkeringPirates.Contains(pirate) && !pirate.HasCapsule() && pirate.StateName == "heavy").ToList();
+            List<Pirate> willingToBeHeavy = game.GetMyLivingPirates().Where(pirate => !bunkeringPirates.Contains(pirate) && !pirate.HasCapsule() && pirate.StateName == "heavy").ToList();
+            return TrySwitchPirates(wantToBeHeavy, wantToBeNormal) ||
+                TrySwitchPirates(wantToBeHeavy, willingToBeNormal) ||
+                TrySwitchPirates(wantToBeNormal, willingToBeHeavy);
+            // Finally it tries to find pirates who want to swap with eachother, and if unsuccessful, looks for pirates who don't really have a preference to switch them with ones that do.
+        }
+
+        
         private bool TrySwitchPirates(List<Pirate> group1, List<Pirate> group2)
         {
             // Tries to swap the states of two pirates from two groups, if successful returns true.
