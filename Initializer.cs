@@ -10,15 +10,15 @@ namespace Skillz_Code
         public const bool Debug = true;
         public Dictionary<Mothership, int> bunkerCount;
         protected List<Pirate> availablePirates;
-        protected static Dictionary<MapObject, int> Priorities = new Dictionary<MapObject, int>();//General priorities for each map object chosen without pirates
-        protected static Dictionary<MapObject, int> AssignedPirates = new Dictionary<MapObject, int>();//number of assigned pirates for each heading
+        protected static Dictionary<MapObject, int> Priorities = new Dictionary<MapObject, int>(); //General priorities for each map object chosen without pirates
+        protected static Dictionary<MapObject, int> AssignedPirates = new Dictionary<MapObject, int>(); //number of assigned pirates for each heading
         protected Dictionary<Capsule, int> capsulePushes;
         protected Dictionary<Pirate, Location> pirateDestinations;
         protected List<Asteroid> livingAsteroids;
 
         public static List<Pirate> bunkeringPirates; //List to add pirates used in bunker to, used in swapping states and finding preferred states.
         protected const int MAX_PRIORITY = 10;
-        protected const int MIN_PRIORITY=1;
+        protected const int MIN_PRIORITY = 1;
         protected bool stickedBomb = false;
         public void DoTurn(PirateGame game)
         {
