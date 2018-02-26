@@ -116,12 +116,6 @@ namespace Skillz_Code
             return targetLocations;
         }
 
-        // TODO: Move to the right file and implement.
-        private IEnumerable<TargetLocation> GetTargetLocationsAsteroids()
-        {
-            return Enumerable.Empty<TargetLocation>();
-        }
-
         
     }
 }

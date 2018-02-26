@@ -20,6 +20,8 @@ namespace Skillz_Code
         protected const int MAX_PRIORITY = 10;
         protected const int MIN_PRIORITY = 1;
         protected bool stickedBomb = false;
+
+        protected List<Asteroid> usedAsteroids; //All the asteroids pushed + exceptionList in Asteroids.PushAsteroids()
         public void DoTurn(PirateGame game)
         {
             Initialize(game);
@@ -55,6 +57,7 @@ namespace Skillz_Code
                 capsulePushes[capsule] = 0;
             livingAsteroids = game.GetLivingAsteroids().ToList();
             bunkeringPirates = new List<Pirate>();
+            usedAsteroids = new List<Asteroid>();
         }
 
         protected void MovePirates()
