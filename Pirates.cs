@@ -56,6 +56,25 @@ namespace Skillz_Code
             return targetLocations;
         }
 
+        private void PlantBombs()
+        {
+            if(game.GetMyself().TurnsToStickyBomb != 0) return;
+            foreach(Pirate pirate in availablePirates)
+            {
+                foreach(Pirate enemy in game.GetEnemyLivingPirates().Where(enemyPirate => enemyPirate.InStickBombRange(pirate)))
+                {
+                    if(game.GetEnemyLivingPirates().Where(enemyPirate => enemy != enemyPirate && enemy.Distance(enemyPirate) < game.StickyBombExplosionRange).Count() > 2)
+                    {
+                        pirate.StickBomb(enemy);
+                        stickedBomb = true;
+                        availablePirates.Remove(pirate);
+                        (pirate + " sticks a bomb on " + enemy).Print();
+                        return;
+                    }
+                }
+            }
+        }
+
         private bool TryStickBomb(Pirate bomber, Pirate enemyToBomb)
         {
             if (!stickedBomb && game.GetMyself().TurnsToStickyBomb == 0 && bomber.InStickBombRange(enemyToBomb))
@@ -83,10 +102,8 @@ namespace Skillz_Code
             wantToBeHeavy.AddRange(availablePirates.Where(pirate => bunkeringPirates.Contains(pirate) &&
              (game.GetMyMotherships().Where(mothership => mothership.Distance(pirate) < game.MothershipUnloadRange).Count() > 0 || game.GetEnemyMotherships()
              .Where(mothership => mothership.Distance(pirate) < game.MothershipUnloadRange).Count() > 0)));
-             wantToBeHeavy.AddRange(availablePirates.Where(pirate => IsPirateInExtremeDanger(pirate) && pirate.StateName == "normal"));
             List<Pirate> wantToBeNormal = availablePirates.Where(pirate => pirate.HasCapsule() && pirate.StateName == "heavy" && !IsCapsuleHolderInDanger(pirate)).ToList();
-             wantToBeNormal.AddRange(availablePirates.Where(pirate => !IsPirateInExtremeDanger(pirate) && pirate.StateName == "heavy"));
-            List<Pirate> willingToBeNormal = game.GetMyLivingPirates().Where(pirate => !IsPirateInExtremeDanger(pirate) && !bunkeringPirates.Contains(pirate) && !pirate.HasCapsule() && pirate.StateName == "heavy").ToList();
+            List<Pirate> willingToBeNormal = game.GetMyLivingPirates().Where(pirate =>  !bunkeringPirates.Contains(pirate) && !pirate.HasCapsule() && pirate.StateName == "heavy").ToList();
             List<Pirate> willingToBeHeavy = game.GetMyLivingPirates().Where(pirate => !bunkeringPirates.Contains(pirate) && !pirate.HasCapsule() && pirate.StateName == "normal").ToList();
             game.Debug(wantToBeHeavy.Count());
             game.Debug(wantToBeNormal.Count());
