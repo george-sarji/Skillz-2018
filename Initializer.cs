@@ -29,12 +29,12 @@ namespace Skillz_Code
             if (!game.GetMyMotherships().Any() || !game.GetMyCapsules().Any())
             {
                 PerformDefensiveBunker();
-                HandleSwitchPirateStates();
+                // HandleSwitchPirateStates();
             }
             else
             {
                 PerformAggressiveBunker();
-                HandleSwitchPirateStates();
+                // HandleSwitchPirateStates();
                 DeliverCapsules();
                 CaptureCapsules();
             }

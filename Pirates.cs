@@ -83,8 +83,10 @@ namespace Skillz_Code
             wantToBeHeavy.AddRange(availablePirates.Where(pirate => bunkeringPirates.Contains(pirate) &&
              (game.GetMyMotherships().Where(mothership => mothership.Distance(pirate) < game.MothershipUnloadRange).Count() > 0 || game.GetEnemyMotherships()
              .Where(mothership => mothership.Distance(pirate) < game.MothershipUnloadRange).Count() > 0)));
+             wantToBeHeavy.AddRange(availablePirates.Where(pirate => IsPirateInExtremeDanger(pirate) && pirate.StateName == "normal"));
             List<Pirate> wantToBeNormal = availablePirates.Where(pirate => pirate.HasCapsule() && pirate.StateName == "heavy" && !IsCapsuleHolderInDanger(pirate)).ToList();
-            List<Pirate> willingToBeNormal = game.GetMyLivingPirates().Where(pirate => !bunkeringPirates.Contains(pirate) && !pirate.HasCapsule() && pirate.StateName == "heavy").ToList();
+             wantToBeNormal.AddRange(availablePirates.Where(pirate => !IsPirateInExtremeDanger(pirate) && pirate.StateName == "heavy"));
+            List<Pirate> willingToBeNormal = game.GetMyLivingPirates().Where(pirate => !IsPirateInExtremeDanger(pirate) && !bunkeringPirates.Contains(pirate) && !pirate.HasCapsule() && pirate.StateName == "heavy").ToList();
             List<Pirate> willingToBeHeavy = game.GetMyLivingPirates().Where(pirate => !bunkeringPirates.Contains(pirate) && !pirate.HasCapsule() && pirate.StateName == "normal").ToList();
             game.Debug(wantToBeHeavy.Count());
             game.Debug(wantToBeNormal.Count());
