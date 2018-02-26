@@ -215,7 +215,7 @@ namespace Skillz_Code
 
         protected IEnumerable<Pirate> GetEnemiesInBombRange(Pirate pirate)
         {
-            return game.GetEnemyLivingPirates().Where(enemy => enemy.InRange(pirate, game.StickBombRange)).AsEnumerable();
+            return game.GetEnemyLivingPirates().Where(enemy => enemy.InRange(pirate, game.StickyBombExplosionRange)).AsEnumerable();
         }
 
         private void PrintTargetLocations(List<TargetLocation> targetLocations)
