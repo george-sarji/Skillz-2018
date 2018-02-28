@@ -39,7 +39,7 @@ namespace Skillz_Code
 
         public bool IsInDanger(Location loc, Location destination, Pirate pirate)
         {
-            return IsHittingAsteroid(loc) || IsInRangeOfEnemy(loc, pirate) || IsInWormholeDanger(loc, destination, pirate) || IsInBombRange(loc, pirate);
+            return IsHittingAsteroid(loc) || IsInEnemyRange(loc, pirate) || IsInWormholeDanger(loc, destination, pirate) || IsInBombRange(loc, pirate);
         }
 
         public bool IsHittingAsteroid(Location loc)
@@ -68,12 +68,18 @@ namespace Skillz_Code
             int count = 0;
             foreach (Pirate pirate in game.GetEnemyLivingPirates())
             {
-                if (pirate.InRange(loc, pirate.PushRange) && pirate.PushReloadTurns < pirate.Steps(loc))
+                if (pirate.InRange(loc, pirate.PushRange + pirate.MaxSpeed) && pirate.PushReloadTurns < pirate.Steps(loc))
                 {
                     count++;
                 }
             }
             return count >= myPirate.NumPushesForCapsuleLoss;
+        }
+        
+        public bool IsInEnemyRange(Location loc, Pirate myPirate)
+        {
+            return game.GetEnemyLivingPirates().Count(enemy => enemy.InRange(loc, enemy.PushRange + enemy.MaxSpeed)
+                && enemy.PushReloadTurns < enemy.Steps(loc)) >= myPirate.NumPushesForCapsuleLoss;
         }
 
         public bool IsInBombRange(Location location, Pirate pirate)

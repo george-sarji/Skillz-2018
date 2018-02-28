@@ -6,38 +6,49 @@ namespace Skillz_Code
 {
     partial class SSJS12Bot : IPirateBot
     {
+        private void PlantBombs()
+        {
+            if(game.GetMyself().TurnsToStickyBomb != 0) return;
+            foreach(Pirate pirate in availablePirates)
+            {
+                foreach(Pirate enemy in game.GetEnemyLivingPirates().Where(enemyPirate => enemyPirate.InStickBombRange(pirate)))
+                {
+                    if(game.GetEnemyLivingPirates().Where(enemyPirate => enemy != enemyPirate && enemy.Distance(enemyPirate) < game.StickyBombExplosionRange).Count() > 2)
+                    {
+                        pirate.StickBomb(enemy);
+                        stickedBomb = true;
+                        (pirate + " sticks a bomb on " + enemy).Print();
+                        availablePirates.Remove(pirate);
+                        return;
+                    }
+                }
+            }
+        }
         // a) Enemy is a capsule holder
         // b) Enemy pirate with high concentration around it
         private List<TargetLocation> GetTargetLocationsEnemyPirates()
         {
-            // Initite the target location list
             var targetPirates = new List<TargetLocation>();
-            // Get the enemy capsule holders
             var enemyCapsuleHolders = game.GetEnemyLivingPirates().Where(enemy => enemy.HasCapsule());
-            // Go over the capsule holders
             foreach (var capsuleHolder in enemyCapsuleHolders)
             {
-                // First priority is 1, this is changed further on.
                 int priority = 1;
-                // If the capsule holder already has a sticky bomb on it, change priority to 10 - we dont want any pirates to go to it.
                 if (capsuleHolder.StickyBombs.Any())
                     priority = 10;
-                // Add the pirate with the given priority, with the number of desired pirates as 1 if we can stick a bomb. If not, assign capsule loss count of pirates.
                 targetPirates.Add(new TargetLocation(capsuleHolder.Location, LocationType.EnemyPirate, priority, capsuleHolder,
                     (game.StickyBombReloadTurns != 0) ? capsuleHolder.NumPushesForCapsuleLoss : 1));
             }
-            // If there arent any enemy capsule holders, get the best enemy with the grouping (to stick a bomb)
             if (!enemyCapsuleHolders.Any())
             {
                 var bestEnemy = game.GetEnemyLivingPirates().Where(enemy => GetEnemiesInBombRange(enemy).Count() >= 2 &&
                     !enemy.StickyBombs.Any()).OrderByDescending(enemy => GetEnemiesInBombRange(enemy).Count()).FirstOrDefault();
                 // var centeredEnemy = game.GetEnemyLivingPirates().Where(enemy => GetEnemiesInBombRange(enemy).Count() >= 2)
                 //     .OrderByDescending(enemy => GetEnemiesInBombRange(enemy)).FirstOrDefault();
-                // If there is a good pirate to stick the bomb onto, add it into the target locations.
                 if (bestEnemy != null)
                     targetPirates.Add(new TargetLocation(bestEnemy.Location, LocationType.EnemyPirate,
                         ScaleToRange(0, game.GetAllEnemyPirates().Count(), MAX_PRIORITY, MIN_PRIORITY, GetEnemiesInBombRange(bestEnemy).Count()), bestEnemy, 1));
             }
+
             return targetPirates;
         }
 
@@ -63,25 +74,6 @@ namespace Skillz_Code
             return targetLocations;
         }
 
-        private void PlantBombs()
-        {
-            if (game.GetMyself().TurnsToStickyBomb != 0) return;
-            foreach (Pirate pirate in availablePirates)
-            {
-                foreach (Pirate enemy in game.GetEnemyLivingPirates().Where(enemyPirate => enemyPirate.InStickBombRange(pirate)))
-                {
-                    if (game.GetEnemyLivingPirates().Where(enemyPirate => enemy != enemyPirate && enemy.Distance(enemyPirate) < game.StickyBombExplosionRange).Count() > 2)
-                    {
-                        pirate.StickBomb(enemy);
-                        stickedBomb = true;
-                        availablePirates.Remove(pirate);
-                        (pirate + " sticks a bomb on " + enemy).Print();
-                        return;
-                    }
-                }
-            }
-        }
-
         private bool TryStickBomb(Pirate bomber, Pirate enemyToBomb)
         {
             if (!stickedBomb && game.GetMyself().TurnsToStickyBomb == 0 && bomber.InStickBombRange(enemyToBomb))
@@ -101,16 +93,16 @@ namespace Skillz_Code
             // We consider the following factors:
             // 1. Whether the pirate has a capsule. 2. Whether the pirate is in danger. 3. Whether the pirate is currently performing a bunker/wants to be.
             game.Debug(availablePirates.Count());
-            foreach (Pirate pirate in availablePirates.Where(pirate => pirate.HasCapsule()))
+            foreach(Pirate pirate in availablePirates.Where(pirate => pirate.HasCapsule()))
             {
                 game.Debug(IsCapsuleHolderInDanger(pirate));
             }
             List<Pirate> wantToBeHeavy = availablePirates.Where(pirate => pirate.HasCapsule() && pirate.StateName == "normal" && IsCapsuleHolderInDanger(pirate)).ToList();
-            wantToBeHeavy.AddRange(availablePirates.Where(pirate => bunkeringPirates.Contains(pirate) &&
-                (game.GetMyMotherships().Where(mothership => mothership.Distance(pirate) < game.MothershipUnloadRange).Count() > 0 || game.GetEnemyMotherships()
-                    .Where(mothership => mothership.Distance(pirate) < game.MothershipUnloadRange).Count() > 0)));
+            wantToBeHeavy.AddRange(availablePirates.Where(pirate => bunkeringPirates.Contains(pirate) && 
+             (game.GetMyMotherships().Where(mothership => mothership.Distance(pirate) < game.MothershipUnloadRange).Count() > 0 || game.GetEnemyMotherships()
+             .Where(mothership => mothership.Distance(pirate) < game.MothershipUnloadRange).Count() > 0)));
             List<Pirate> wantToBeNormal = availablePirates.Where(pirate => pirate.HasCapsule() && pirate.StateName == "heavy" && !IsCapsuleHolderInDanger(pirate)).ToList();
-            List<Pirate> willingToBeNormal = game.GetMyLivingPirates().Where(pirate => !bunkeringPirates.Contains(pirate) && !pirate.HasCapsule() && pirate.StateName == "heavy").ToList();
+            List<Pirate> willingToBeNormal = game.GetMyLivingPirates().Where(pirate =>  !bunkeringPirates.Contains(pirate) && !pirate.HasCapsule() && pirate.StateName == "heavy").ToList();
             List<Pirate> willingToBeHeavy = game.GetMyLivingPirates().Where(pirate => !bunkeringPirates.Contains(pirate) && !pirate.HasCapsule() && pirate.StateName == "normal").ToList();
             game.Debug(wantToBeHeavy.Count());
             game.Debug(wantToBeNormal.Count());
@@ -147,7 +139,7 @@ namespace Skillz_Code
                 var bombCarried = carrier.StickyBombs.First();
                 var enemyPirate = game.GetEnemyLivingPirates().Where(enemy => carrier.Steps(enemy) <= bombCarried.Countdown)
                     .OrderByDescending(enemy => GetEnemiesInBombRange(carrier).Count()).FirstOrDefault();
-                if (enemyPirate != null)
+                if(enemyPirate!=null)
                 {
                     AssignDestination(carrier, enemyPirate.Location);
                     availablePirates.Remove(carrier);

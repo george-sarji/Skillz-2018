@@ -7,7 +7,7 @@ namespace Skillz_Code
     partial class SSJS12Bot : IPirateBot
     {
         public static PirateGame game;
-        public const bool Debug = true;
+        public const bool Debug = false;
         public Dictionary<Mothership, int> bunkerCount;
         protected List<Pirate> availablePirates;
         protected static Dictionary<MapObject, int> Priorities = new Dictionary<MapObject, int>(); //General priorities for each map object chosen without pirates
@@ -20,7 +20,6 @@ namespace Skillz_Code
         protected const int MAX_PRIORITY = 10;
         protected const int MIN_PRIORITY = 1;
         protected bool stickedBomb = false;
-
         protected List<Asteroid> usedAsteroids; //All the asteroids pushed + exceptionList in Asteroids.PushAsteroids()
         public void DoTurn(PirateGame game)
         {

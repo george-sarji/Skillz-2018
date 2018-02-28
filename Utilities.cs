@@ -156,12 +156,12 @@ namespace Skillz_Code
         public bool IsPirateInExtremeDanger(Pirate pirate)
         {
             // Checks if a pirate is in extreme danger, and maybe then it will be woth swapping him with a heavy pirate. Working on it for StateMachine.
-            return game.GetEnemyLivingPirates().Where(enemy => enemy.Distance(pirate) < game.PushRange).Count() > game.NumPushesForCapsuleLoss * 2;
+            return game.GetEnemyLivingPirates().Where(enemy => enemy.Distance(pirate) < game.PushRange).Count() > game.NumPushesForCapsuleLoss;
         }
         public bool IsCapsuleHolderInDanger(Pirate pirate)
         {
             // Checks if the capsule holder is in danger by checking if there are enough close enemies that are in range of pushing, or close to being in range to make the capsule holder lose his capsule.
-            return pirate.HasCapsule() && game.GetEnemyLivingPirates().Where(enemy => enemy.Distance(pirate) <= game.PushRange * 3).Count() >= game.NumPushesForCapsuleLoss;
+            return pirate.HasCapsule() && game.GetEnemyLivingPirates().Where(enemy => enemy.InRange(pirate, enemy.PushRange + game.PirateMaxSpeed)).Count() >= game.NumPushesForCapsuleLoss;
         }
 
         public bool CheckIfPirateCanReach(Pirate CapsuleCapturer, Location destination) //Working on this Function -Mahmoud
