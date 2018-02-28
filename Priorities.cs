@@ -13,9 +13,9 @@ namespace Skillz_Code
             public int Priority { get; private set; }
             public int DesiredPirates { get; private set; }
             public int AssignedPirates { get; set; }
-            public GameObject TargetLocationObject {get; private set;}
+            public GameObject TargetLocationObject { get; private set; }
 
-            private const int PenaltyPerExtraPirate = MAX_PRIORITY/10;
+            private const int PenaltyPerExtraPirate = MAX_PRIORITY / 10;
 
             public TargetLocation(Location location, LocationType type, int priority, GameObject targetLocationObject, int desiredPirates = 1)
             {
@@ -48,8 +48,8 @@ namespace Skillz_Code
 
             private int ScaledDistance(Pirate pirate)
             {
-                int maxDistance = (int)((game.Cols.Power(2)+game.Rows.Power(2)).Sqrt());
-                return (int)(((double)pirate.Distance(Location)/(double)maxDistance) * MAX_PRIORITY);
+                int maxDistance = (int) ((game.Cols.Power(2) + game.Rows.Power(2)).Sqrt());
+                return (int) (((double) pirate.Distance(Location) / (double) maxDistance) * MAX_PRIORITY);
             }
         }
 
@@ -89,14 +89,14 @@ namespace Skillz_Code
                 {
                     break;
                 }
-                if(bestLocation.Type == LocationType.Wormhole)
+                if (bestLocation.Type == LocationType.Wormhole)
                 {
-                    if(!TryPushWormhole(bestPirate, (Wormhole)bestLocation.TargetLocationObject))
+                    if (!TryPushWormhole(bestPirate, (Wormhole) bestLocation.TargetLocationObject))
                         AssignDestination(bestPirate, bestLocation.Location.Towards(bestPirate, game.WormholeRange));
                 }
-                else if(bestLocation.Type == LocationType.EnemyPirate)
+                else if (bestLocation.Type == LocationType.EnemyPirate)
                 {
-                    if(!TryStickBomb(bestPirate, (Pirate)bestLocation.TargetLocationObject))
+                    if (!TryStickBomb(bestPirate, (Pirate) bestLocation.TargetLocationObject))
                         AssignDestination(bestPirate, bestLocation.Location);
                 }
                 else
@@ -116,7 +116,5 @@ namespace Skillz_Code
             return targetLocations;
         }
 
-
-        
     }
 }
