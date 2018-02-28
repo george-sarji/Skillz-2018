@@ -42,7 +42,7 @@ namespace Skillz_Code
                     penaltyForNoPush;
                 if (LocationType.MyPirate == Type)
                 {
-                    var bestMothership =  game.GetMyMotherships().OrderBy(mothership => pirate.Steps(mothership) / (int) ((double) mothership.ValueMultiplier).Sqrt()).FirstOrDefault();;
+                    var bestMothership = game.GetMyMotherships().OrderBy(mothership => pirate.Steps(mothership) / (int) ((double) mothership.ValueMultiplier).Sqrt()).FirstOrDefault();;
                     if (!CanCatchUpAndPush(pirate, (Pirate) TargetLocationObject, bestMothership.Location))
                     {
                         score += MAX_PRIORITY;
@@ -99,25 +99,27 @@ namespace Skillz_Code
                 {
                     break;
                 }
-                if (bestLocation.Type == LocationType.MyPirate)
+                switch (bestLocation.Type)
                 {
-                    if (!TryPushMyCapsule((Pirate) bestLocation.TargetLocationObject, bestPirate))
-                    {
+                    case LocationType.MyPirate:
+                        if (!TryPushMyCapsule((Pirate) bestLocation.TargetLocationObject, bestPirate))
+                            AssignDestination(bestPirate, bestLocation.Location);
+                        break;
+
+                    case LocationType.EnemyPirate:
+                        if (!TryStickBomb(bestPirate, (Pirate) bestLocation.TargetLocationObject))
+                            AssignDestination(bestPirate, bestLocation.Location);
+                        break;
+
+                    case LocationType.Wormhole:
+                        if (!TryPushWormhole(bestPirate, (Wormhole) bestLocation.TargetLocationObject))
+                            AssignDestination(bestPirate, bestLocation.Location.Towards(bestPirate, game.WormholeRange));
+                        break;
+                        
+                    default:
                         AssignDestination(bestPirate, bestLocation.Location);
-                    }
+                        break;
                 }
-                else if (bestLocation.Type == LocationType.Wormhole)
-                {
-                    if (!TryPushWormhole(bestPirate, (Wormhole) bestLocation.TargetLocationObject))
-                        AssignDestination(bestPirate, bestLocation.Location.Towards(bestPirate, game.WormholeRange));
-                }
-                else if (bestLocation.Type == LocationType.EnemyPirate)
-                {
-                    if (!TryStickBomb(bestPirate, (Pirate) bestLocation.TargetLocationObject))
-                        AssignDestination(bestPirate, bestLocation.Location);
-                }
-                else
-                    AssignDestination(bestPirate, bestLocation.Location);
                 bestLocation.AssignedPirates++;
                 availablePirates.Remove(bestPirate);
             }
