@@ -75,17 +75,17 @@ namespace Skillz_Code
             }
             return count >= myPirate.NumPushesForCapsuleLoss;
         }
-        
+
         public bool IsInEnemyRange(Location loc, Pirate myPirate)
         {
-            return game.GetEnemyLivingPirates().Count(enemy => enemy.InRange(loc, enemy.PushRange + enemy.MaxSpeed)
-                && enemy.PushReloadTurns < enemy.Steps(loc)) >= myPirate.NumPushesForCapsuleLoss;
+            return game.GetEnemyLivingPirates().Count(enemy => enemy.InRange(loc, enemy.PushRange + enemy.MaxSpeed) &&
+                enemy.PushReloadTurns<enemy.Steps(loc))>= myPirate.NumPushesForCapsuleLoss;
         }
 
         public bool IsInBombRange(Location location, Pirate pirate)
         {
             var closestBomb = game.GetAllStickyBombs().Where(bomb => !bomb.Carrier.Equals(pirate)).OrderBy(bomb => bomb.Distance(pirate)).FirstOrDefault();
-            return closestBomb != null && location.InRange(closestBomb, closestBomb.ExplosionRange+pirate.MaxSpeed/2);
+            return closestBomb != null && location.InRange(closestBomb, closestBomb.ExplosionRange + pirate.MaxSpeed / 2);
         }
     }
 }

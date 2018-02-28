@@ -99,13 +99,13 @@ namespace Skillz_Code
         }
         private bool TryPushWormhole(Pirate pirate, Wormhole wormhole)
         {
-            if(pirate.CanPush(wormhole))
+            if (pirate.CanPush(wormhole))
             {
                 // Push the wormhole
                 var pushLocation = BestWormholePushLocation(wormhole);
                 pirate.Push(wormhole, pushLocation);
                 movedWormholeLocations[wormhole] = pushLocation;
-                (pirate + " pushes "+ wormhole + " towards "+ pushLocation).Print();
+                (pirate + " pushes " + wormhole + " towards " + pushLocation).Print();
                 return true;
             }
             return false;

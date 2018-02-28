@@ -71,7 +71,7 @@ namespace Skillz_Code
             return !asteroid.Location.Towards(pushDestination, pirate.PushDistance).InMap() ? false :
                 asteroid.Location.Towards(pushDestination, pirate.PushDistance).Distance(pirate) <= asteroid.Size;
         }
-        
+
         private IEnumerable<TargetLocation> GetTargetLocationsAsteroids()
         {
             IEnumerable<Asteroid> targetAsteroids = null;
