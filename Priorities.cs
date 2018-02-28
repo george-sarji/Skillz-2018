@@ -42,7 +42,7 @@ namespace Skillz_Code
                     penaltyForNoPush;
                 if (LocationType.MyPirate == Type)
                 {
-                    var bestMothership = game.GetMyMotherships().OrderBy(mothership => pirate.Steps(mothership) / (int) ((double) mothership.ValueMultiplier).Sqrt()).FirstOrDefault();
+                    var bestMothership =  game.GetMyMotherships().OrderBy(mothership => pirate.Steps(mothership) / (int) ((double) mothership.ValueMultiplier).Sqrt()).FirstOrDefault();;
                     if (!CanCatchUpAndPush(pirate, (Pirate) TargetLocationObject, bestMothership.Location))
                     {
                         score += MAX_PRIORITY;
@@ -99,7 +99,6 @@ namespace Skillz_Code
                 {
                     break;
                 }
-<<<<<<< HEAD
                 if (bestLocation.Type == LocationType.MyPirate)
                 {
                     if (!TryPushMyCapsule((Pirate) bestLocation.TargetLocationObject, bestPirate))
@@ -109,10 +108,6 @@ namespace Skillz_Code
                 }
                 else if (bestLocation.Type == LocationType.Wormhole)
                 {
-=======
-                if (bestLocation.Type == LocationType.Wormhole)
-                {
->>>>>>> 23564a01f9266c27a993484df0484c975139f2b2
                     if (!TryPushWormhole(bestPirate, (Wormhole) bestLocation.TargetLocationObject))
                         AssignDestination(bestPirate, bestLocation.Location.Towards(bestPirate, game.WormholeRange));
                 }
