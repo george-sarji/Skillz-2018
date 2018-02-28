@@ -156,11 +156,6 @@ namespace Skillz_Code
             }
             availablePirates.Remove(pirate);
             pushesForCapsulePirates[myPirateWithCapsule]++;
-            if(pirate.HasCapsule())
-            {
-                PushPair(myPirateWithCapsule, pirate, destination.Location);
-                return true;
-            }
             pirate.Push(
                         myPirateWithCapsule,
                         game.GetMyMotherships().OrderBy(mothership => mothership.Distance(myPirateWithCapsule))
