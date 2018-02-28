@@ -8,7 +8,7 @@ namespace Skillz_Code
     {
         public void CaptureCapsules()
         {
-            if (game.GetMyself().Score + (game.GetMyLivingPirates().Where(p => p.HasCapsule()).ToList().Count) >= game.MaxPoints)
+            if (game.GetMyself().Score + (game.GetMyLivingPirates().Where(p => p.HasCapsule())).ToList().Count) >= game.MaxPoints)
             {
                 return;
             }
