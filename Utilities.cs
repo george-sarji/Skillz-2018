@@ -113,12 +113,12 @@ namespace Skillz_Code
             return availablePirates.Where(p => p.CanPush(pirate)).Count();
         }
 
-        private bool IsOnTheWay(Location a, Location b, Location c, int buffer)
+        private static bool IsOnTheWay(Location a, Location b, Location c, int buffer)
         {
             return b.Distance(c) <= a.Distance(c) && DistanceLP(a, b, c) <= buffer;
         }
 
-        private int DistanceLP(Location a, Location b, Location c)
+        private static int DistanceLP(Location a, Location b, Location c)
         {
             int numerator = System.Math.Abs((b.Col - a.Col) * c.Row - (b.Row - a.Row) * c.Col + b.Row * a.Col - b.Col * a.Row);
             double denominator = a.Distance(b);
@@ -175,7 +175,7 @@ namespace Skillz_Code
             return false;
         }
 
-        public Location Interception(Location a, Location b, Location c)
+        public static Location Interception(Location a, Location b, Location c)
         {
             int numerator = (c.Row - a.Row).Power(2) + (c.Col - a.Col).Power(2);
             int denominator = 2 * ((b.Row - a.Row) * (c.Row - a.Row) + (b.Col - a.Col) * (c.Col - a.Col));
@@ -234,7 +234,7 @@ namespace Skillz_Code
                 string line = string.Format("{0,-11} @ {1,12}{2,10}", targetLocation.Type, targetLocation.Location, targetLocation.Priority);
                 foreach (var pirate in game.GetMyLivingPirates().OrderBy(pirate => pirate.Id))
                 {
-                    line += string.Format("{0,10}", targetLocation.Score(pirate));
+                    line += string.Format("{0,10}", targetLocation.ScoreForPirate(pirate));
                 }
                 (line).Print();
             }

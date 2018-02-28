@@ -14,6 +14,7 @@ namespace Skillz_Code
         protected static Dictionary<MapObject, int> AssignedPirates = new Dictionary<MapObject, int>(); //number of assigned pirates for each heading
         protected Dictionary<Capsule, int> capsulePushes;
         protected Dictionary<Pirate, Location> pirateDestinations;
+        protected Dictionary<Pirate, int> pushesForCapsulePirates;
         protected List<Asteroid> livingAsteroids;
 
         public static List<Pirate> bunkeringPirates; //List to add pirates used in bunker to, used in swapping states and finding preferred states.
@@ -58,6 +59,11 @@ namespace Skillz_Code
             livingAsteroids = game.GetLivingAsteroids().ToList();
             bunkeringPirates = new List<Pirate>();
             usedAsteroids = new List<Asteroid>();
+            pushesForCapsulePirates = new Dictionary<Pirate, int>();
+            foreach(Pirate pirate in game.GetMyLivingPirates().Where(p => p.HasCapsule()))
+            {
+                pushesForCapsulePirates.Add(pirate, 0);
+            }
         }
 
         protected void MovePirates()
