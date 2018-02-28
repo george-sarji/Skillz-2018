@@ -146,7 +146,7 @@ namespace Skillz_Code
                 NumberOfAvailableEnemyPushers(capsuleHolder) < capsuleHolder.NumPushesForCapsuleLoss &&
                 NumberOfEnemiesOnTheWay(capsuleHolder, mothership.Location) < capsuleHolder.NumPushesForCapsuleLoss)
             {
-                AssignDestination(capsuleHolder, mothership.Location);
+                // AssignDestination(capsuleHolder, mothership.Location);
                 availablePirates.Remove(capsuleHolder);
                 return true;
             }
