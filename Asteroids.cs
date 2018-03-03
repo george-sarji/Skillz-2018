@@ -9,7 +9,7 @@ namespace Skillz_Code
         public void PushAsteroids()
         {
             var exceptionList = new List<Asteroid>();
-            foreach (Asteroid asteroid in livingAsteroids)
+            foreach (Asteroid asteroid in game.GetLivingAsteroids())
             {
                 var pirate = availablePirates.Where(p => p.CanPush(asteroid)).OrderByDescending(p => AsteroidHeadingTowardsPirate(asteroid, p)).FirstOrDefault();
                 if (pirate != null && availablePirates.Where(p => p.CanPush(asteroid)).Any() && !exceptionList.Contains(asteroid))
@@ -20,7 +20,7 @@ namespace Skillz_Code
                         .OrderByDescending(enemy => enemy.PushReloadTurns > 0)
                         .OrderBy(enemy => enemy.Distance(asteroid)).FirstOrDefault();
                     // get the closest asteroid
-                    var closestAsteroid = livingAsteroids.OrderBy(ast => ast.Distance(asteroid)).Where(ast => ast != asteroid).FirstOrDefault();
+                    var closestAsteroid = game.GetLivingAsteroids().OrderBy(ast => ast.Distance(asteroid)).Where(ast => ast != asteroid).FirstOrDefault();
                     // get the ooposite direction of the astroid you're pushing
                     var oppositeDirection = new Location(asteroid.Location.Row * (-1), asteroid.Location.Col * (-1));
                     // this variable is to simplify the IF below it
