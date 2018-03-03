@@ -97,21 +97,27 @@ namespace Skillz_Code
             {
                (IsCapsuleHolderInDanger(pirate)).ToString().Print();
             }
-            List<Pirate> wantToBeHeavy = availablePirates.Where(pirate => pirate.HasCapsule() && pirate.StateName == "normal" && IsCapsuleHolderInDanger(pirate)).ToList();
+            List<Pirate> wantToBeHeavy = availablePirates
+                .Where(pirate => pirate.HasCapsule() && pirate.StateName == "normal" && IsCapsuleHolderInDanger(pirate))
+                .ToList();
             wantToBeHeavy.AddRange(availablePirates.Where(pirate => bunkeringPirates.Contains(pirate) &&
                 (game.GetMyMotherships().Where(mothership => mothership.Distance(pirate) < game.MothershipUnloadRange).Count() > 0 || game.GetEnemyMotherships()
                     .Where(mothership => mothership.Distance(pirate) < game.MothershipUnloadRange).Count() > 0)));
             List<Pirate> wantToBeNormal = availablePirates.Where(pirate => pirate.HasCapsule() && pirate.StateName == "heavy" && !IsCapsuleHolderInDanger(pirate)).ToList();
-            List<Pirate> willingToBeNormal = game.GetMyLivingPirates().Where(pirate => !bunkeringPirates.Contains(pirate) && !pirate.HasCapsule() && pirate.StateName == "heavy").ToList();
-            List<Pirate> willingToBeHeavy = game.GetMyLivingPirates().Where(pirate => !bunkeringPirates.Contains(pirate) && !pirate.HasCapsule() && pirate.StateName == "normal").ToList();
+            List<Pirate> willingToBeNormal = game.GetMyLivingPirates()
+                    .Where(pirate => !bunkeringPirates.Contains(pirate) 
+                    && !pirate.HasCapsule() && pirate.StateName == "heavy").ToList();
+            List<Pirate> willingToBeHeavy = game.GetMyLivingPirates()
+                    .Where(pirate => !bunkeringPirates.Contains(pirate)
+                    && !pirate.HasCapsule() && pirate.StateName == "normal").ToList();
             (wantToBeHeavy.Count()).ToString().Print();
             (wantToBeNormal.Count()).ToString().Print();
             (willingToBeNormal.Count()).ToString().Print();
             (willingToBeHeavy.Count()).ToString().Print();
             (bunkeringPirates.Count()).ToString().Print();
             return TrySwitchPirates(wantToBeHeavy, wantToBeNormal) ||
-                TrySwitchPirates(wantToBeHeavy, willingToBeNormal) ||
-                TrySwitchPirates(wantToBeNormal, willingToBeHeavy);
+                TrySwitchPirates(willingToBeHeavy, wantToBeNormal) || 
+                TrySwitchPirates(willingToBeNormal, wantToBeHeavy);
             // Finally it tries to find pirates who want to swap with eachother, and if unsuccessful, looks for pirates who don't really have a preference to switch them with ones that do.
         }
 
