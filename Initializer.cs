@@ -14,19 +14,16 @@ namespace Skillz_Code
         protected static Dictionary<MapObject, int> AssignedPirates = new Dictionary<MapObject, int>(); //number of assigned pirates for each heading
         protected Dictionary<Capsule, int> capsulePushes;
         protected Dictionary<Pirate, Location> pirateDestinations;
-        protected Dictionary<Pirate, int> pushesForCapsulePirates;
-        protected List<Asteroid> livingAsteroids;
-
+        protected Dictionary<Pirate, int> myPiratesWithCapsulePushes;
         public static List<Pirate> bunkeringPirates; //List to add pirates used in bunker to, used in swapping states and finding preferred states.
         protected const int MAX_PRIORITY = 10;
         protected const int MIN_PRIORITY = 1;
         protected bool stickedBomb = false;
-        protected List<Asteroid> usedAsteroids; //All the asteroids pushed + exceptionList in Asteroids.PushAsteroids()
         public void DoTurn(PirateGame game)
         {
             Initialize(game);
-            PlantBombs();
             PushAsteroids();
+            PlantBombs();
             HandleBombCarriers();
             PushEnemyCapsulesAggressively();
             if (!game.GetMyMotherships().Any() || !game.GetMyCapsules().Any())
@@ -56,13 +53,11 @@ namespace Skillz_Code
             capsulePushes = new Dictionary<Capsule, int>();
             foreach (var capsule in game.GetEnemyCapsules())
                 capsulePushes[capsule] = 0;
-            livingAsteroids = game.GetLivingAsteroids().ToList();
             bunkeringPirates = new List<Pirate>();
-            usedAsteroids = new List<Asteroid>();
-            pushesForCapsulePirates = new Dictionary<Pirate, int>();
+            myPiratesWithCapsulePushes = new Dictionary<Pirate, int>();
             foreach(Pirate pirate in game.GetMyLivingPirates().Where(p => p.HasCapsule()))
             {
-                pushesForCapsulePirates.Add(pirate, 0);
+                myPiratesWithCapsulePushes.Add(pirate, 0);
             }
         }
 
