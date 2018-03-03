@@ -143,7 +143,7 @@ namespace Skillz_Code
 
         public bool TryPushMyCapsule(Pirate myPirateWithCapsule, Pirate pirate)
         {
-            if(!pirate.CanPush(myPirateWithCapsule) || pushesForCapsulePirates[myPirateWithCapsule]== myPirateWithCapsule.NumPushesForCapsuleLoss-1)
+            if(!pirate.CanPush(myPirateWithCapsule) || myPiratesWithCapsulePushes[myPirateWithCapsule]== myPirateWithCapsule.NumPushesForCapsuleLoss-1)
             {
                 return false;
             }
@@ -155,7 +155,7 @@ namespace Skillz_Code
                 return false;
             }
             availablePirates.Remove(pirate);
-            pushesForCapsulePirates[myPirateWithCapsule]++;
+            myPiratesWithCapsulePushes[myPirateWithCapsule]++;
             pirate.Push(
                         myPirateWithCapsule,
                         game.GetMyMotherships().OrderBy(mothership => mothership.Distance(myPirateWithCapsule))
