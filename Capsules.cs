@@ -43,7 +43,7 @@ namespace Skillz_Code
                         {
                             var BestPirate = availablePirates.OrderBy(p => p.Distance(closestPirate))
                                 .OrderByDescending(p => p.IsSameState(closestPirate)).FirstOrDefault();
-                            AssignDestination(closestPirate, SmartSail(closestPirate, capsule.InitialLocation));
+                            AssignDestination(closestPirate, SmartSail(closestPirate, capsule.InitialLocation.Towards(closestPirate, capsule.PickupRange - 1)));
                         }
                     }
                 }
@@ -64,7 +64,7 @@ namespace Skillz_Code
                         AssignDestination(pirate, SmartSail(pirate, bestWormhole));
                     }
                     else
-                        AssignDestination(pirate, SmartSail(pirate, bestMothership.Location));
+                        AssignDestination(pirate, SmartSail(pirate, bestMothership.Location.Towards(pirate, bestMothership.UnloadRange - 1)));
                     availablePirates.Remove(pirate);
                 }
             }
@@ -143,7 +143,7 @@ namespace Skillz_Code
 
         public bool TryPushMyCapsule(Pirate myPirateWithCapsule, Pirate pirate)
         {
-            if(!pirate.CanPush(myPirateWithCapsule) || myPiratesWithCapsulePushes[myPirateWithCapsule]== myPirateWithCapsule.NumPushesForCapsuleLoss-1)
+            if (!pirate.CanPush(myPirateWithCapsule) || myPiratesWithCapsulePushes[myPirateWithCapsule] == myPirateWithCapsule.NumPushesForCapsuleLoss - 1)
             {
                 return false;
             }
@@ -157,9 +157,9 @@ namespace Skillz_Code
             availablePirates.Remove(pirate);
             myPiratesWithCapsulePushes[myPirateWithCapsule]++;
             pirate.Push(
-                        myPirateWithCapsule,
-                        game.GetMyMotherships().OrderBy(mothership => mothership.Distance(myPirateWithCapsule))
-                        .FirstOrDefault());
+                myPirateWithCapsule,
+                game.GetMyMotherships().OrderBy(mothership => mothership.Distance(myPirateWithCapsule))
+                .FirstOrDefault());
             return true;
         }
         // public Location TryPushMyCapsule(Pirate myPirateWithCapsule)
