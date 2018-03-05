@@ -63,7 +63,7 @@ namespace Skillz_Code
                 var pirate = map.Key;
                 var destination = map.Value;
                 pirate.Sail(destination);
-                (pirate + " sails towards " + destination).Print();
+                Print(pirate + " sails towards " + destination);
             }
         }
     }

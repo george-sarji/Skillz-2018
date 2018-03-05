@@ -6,12 +6,6 @@ namespace Skillz_Code
 {
     public static class Extensions
     {
-        public static void Print(this string s)
-        {
-            if (SSJS12Bot.Debug)
-                SSJS12Bot.game.Debug(s);
-        }
-
         public static int Power(this int num, int power)
         {
             return (int) System.Math.Pow(num, power);
@@ -50,6 +44,5 @@ namespace Skillz_Code
             return x<min ? min : x> max ? max :
                 x;
         }
-
     }
 }

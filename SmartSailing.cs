@@ -60,20 +60,6 @@ namespace Skillz_Code
                 .Where(wormhole => wormhole.TurnsToReactivate < pirate.Steps(destination) / 4 &&
                     wormhole.InRange(location, wormhole.WormholeRange));
             return wormholes.FirstOrDefault() != null && wormholes.FirstOrDefault().Equals(GetBestWormhole(pirate, destination));
-
-        }
-
-        public bool IsInRangeOfEnemy(Location loc, Pirate myPirate)
-        {
-            int count = 0;
-            foreach (Pirate pirate in game.GetEnemyLivingPirates())
-            {
-                if (pirate.InRange(loc, pirate.PushRange + pirate.MaxSpeed) && pirate.PushReloadTurns < pirate.Steps(loc))
-                {
-                    count++;
-                }
-            }
-            return count >= myPirate.NumPushesForCapsuleLoss;
         }
 
         public bool IsInEnemyRange(Location loc, Pirate myPirate)

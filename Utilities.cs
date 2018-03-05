@@ -6,6 +6,13 @@ namespace Skillz_Code
 {
     partial class SSJS12Bot : IPirateBot
     {
+        private void Print(string s)
+        {
+            if (Debug)
+            {
+                System.Console.WriteLine(s);
+            }
+        }
 
         protected static Location Closest(Location location, params Location[] locations)
         {
@@ -149,14 +156,14 @@ namespace Skillz_Code
 
         private void PrintTargetLocations(List<TargetLocation> targetLocations)
         {
-            ("Target Locations:").Print();
+            Print("Target Locations:");
 
             string header = string.Format("{0,-11}   {1,12}{2,10}", "", "  Location  ", "Priority");
             foreach (var pirate in game.GetMyLivingPirates().OrderBy(pirate => pirate.Id))
             {
                 header += string.Format("{0,10}", "Pirate " + pirate.Id);
             }
-            (header).Print();
+            Print(header);
 
             foreach (var targetLocation in targetLocations)
             {
@@ -165,7 +172,7 @@ namespace Skillz_Code
                 {
                     line += string.Format("{0,10}", targetLocation.ScoreForPirate(pirate));
                 }
-                (line).Print();
+                Print(line);
             }
         }
 

@@ -105,7 +105,7 @@ namespace Skillz_Code
                 var pushLocation = BestWormholePushLocation(wormhole);
                 pirate.Push(wormhole, pushLocation);
                 movedWormholeLocations[wormhole] = pushLocation;
-                (pirate + " pushes " + wormhole + " towards " + pushLocation).Print();
+                Print(pirate + " pushes " + wormhole + " towards " + pushLocation);
                 return true;
             }
             return false;
@@ -130,8 +130,9 @@ namespace Skillz_Code
             return from.Distance(to);
         }
 
-        protected IEnumerable<Wormhole> GetViableWormholes(Pirate pirate) {
-            return game.GetAllWormholes()  //.Except(usedWormholes)
+        protected IEnumerable<Wormhole> GetViableWormholes(Pirate pirate)
+        {
+            return game.GetAllWormholes() //.Except(usedWormholes)
                 .Where(wormhole => wormhole.TurnsToReactivate <= pirate.Steps(wormhole) + 2);
         }
 
@@ -157,36 +158,21 @@ namespace Skillz_Code
             return null;
         }
 
-        protected Mothership GetBestMothershipThroughWormholes(Pirate pirate)
+        private Mothership GetBestMothershipThroughWormholes(Pirate pirate, IEnumerable<Mothership> motherships)
         {
-            var mothershipWormholes = new Dictionary<Mothership, int>();
-            Mothership bestMothership = null;
-            int distance = int.MaxValue;
-            foreach (var mothership in game.GetEnemyMotherships())
-            {
-                var distances = new List<int>();
-                foreach (var wormhole in game.GetAllWormholes().Where(wormhole => wormhole.TurnsToReactivate < pirate.Steps(mothership) / 4))
-                {
-                    var distanceThroughCurrent = DistanceThroughWormhole(pirate.Location, mothership.Location, wormhole, game.GetAllWormholes().Where(hole => hole.TurnsToReactivate < pirate.Steps(mothership) / 4));
-                    distances.Add(distanceThroughCurrent);
-                }
-                var normalDistance = pirate.Distance(mothership);
-                if (distances.Any() && distances.Min() < distance)
-                {
-                    bestMothership = mothership;
-                    distance = distances.Min();
-                }
-                if (distances.Any() && normalDistance < distance)
-                {
-                    bestMothership = mothership;
-                    distance = normalDistance;
-                }
-            }
-            if (bestMothership == null)
-            {
-                bestMothership = game.GetEnemyMotherships().OrderBy(mothership => pirate.Steps(mothership) / (int) ((double) mothership.ValueMultiplier).Sqrt()).FirstOrDefault();
-            }
-            return bestMothership;
+            return motherships
+                .OrderBy(mothership => ClosestDistance(pirate.Location, mothership, GetViableWormholes(pirate)))
+                .FirstOrDefault();
+        }
+
+        protected Mothership GetMyBestMothershipThroughWormholes(Pirate myPirate)
+        {
+            return GetBestMothershipThroughWormholes(myPirate, game.GetMyMotherships());
+        }
+
+        protected Mothership GetEnemyBestMothershipThroughWormholes(Pirate enemy)
+        {
+            return GetBestMothershipThroughWormholes(enemy, game.GetEnemyMotherships());
         }
 
         public Location AdjustDestinationForWormholes(Pirate pirate, Location destination)

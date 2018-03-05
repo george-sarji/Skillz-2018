@@ -15,9 +15,9 @@ namespace Skillz_Code
 
             var header = string.Format("Mothership bunkers:\n{0, -8} {1, 7} {2, 12} {3, 12} {4,12}", "Mothership", "Capsule", "  Location  ", "  Capsule loss  ", "  Border pushes  ");
             foreach (var capsule in game.GetEnemyCapsules().Where(capsule => capsule.Holder != null)
-                    .OrderBy(capsule => capsule.Holder.Steps(GetBestMothershipThroughWormholes(capsule.Holder))))
+                    .OrderBy(capsule => capsule.Holder.Steps(GetEnemyBestMothershipThroughWormholes(capsule.Holder))))
             {
-                var mothership = GetBestMothershipThroughWormholes(capsule.Holder);
+                var mothership = GetEnemyBestMothershipThroughWormholes(capsule.Holder);
 
                 bunkerCount[mothership]++;
                 var distanceToBorder = capsule.Distance(GetClosestToBorder(capsule.Location));
@@ -40,8 +40,8 @@ namespace Skillz_Code
                 {
                     header += string.Format("\n{0, -8} {1, 9} @ {2, 12} {3,12} {4,12}", "ID: " + mothership.Id, "ID: " + capsule.Id, mothership.Location, capsule.Holder.NumPushesForCapsuleLoss, count);
                     if (game.GetEnemyCapsules().Where(cap => cap.Holder != null)
-                        .OrderBy(cap => cap.Holder.Steps(GetBestMothershipThroughWormholes(cap.Holder))).Last().Equals(capsule))
-                        header.Print();
+                        .OrderBy(cap => cap.Holder.Steps(GetEnemyBestMothershipThroughWormholes(cap.Holder))).Last().Equals(capsule))
+                        Print(header);
                     if (requiredPiratesCount == count)
                         useablePirates = useablePirates.OrderByDescending(p => p.PushDistance);
                     var usedPirates = new List<Pirate>();
@@ -76,14 +76,14 @@ namespace Skillz_Code
         {
             if (game.GetEnemyCapsules().Any(capsule => capsule.Holder != null))
             {
-                ("Defensive mothership bunkers: ").Print();
+                Print("Defensive mothership bunkers: ");
                 var header = string.Format("{0, -8} {1, 7} {2, 12} {3, 12} {4,12}", "Mothership", "Capsule", "  Location  ", "  Capsule loss  ", "  Border pushes  ");
-                header.Print();
+                Print(header);
             }
             foreach (var capsule in game.GetEnemyCapsules().Where(cap => cap.Holder != null)
-                    .OrderBy(cap => cap.Holder.Steps(GetBestMothershipThroughWormholes(cap.Holder).Location)))
+                    .OrderBy(cap => cap.Holder.Steps(GetEnemyBestMothershipThroughWormholes(cap.Holder).Location)))
             {
-                var bestMothership = GetBestMothershipThroughWormholes(capsule.Holder);
+                var bestMothership = GetEnemyBestMothershipThroughWormholes(capsule.Holder);
                 if (bestMothership != null)
                 {
                     var distanceToBorder = capsule.Distance(GetClosestToBorder(capsule.Location));
@@ -101,7 +101,7 @@ namespace Skillz_Code
                     if (useablePirates.Count() >= requiredPiratesCount)
                     {
                         var line = string.Format("{0, -8} {1, 9} @ {2, 12} {3,12} {4,12}", "ID: " + bestMothership.Id, "ID: " + capsule.Id, bestMothership.Location, capsule.Holder.NumPushesForCapsuleLoss, count);
-                        line.Print();
+                        Print(line);
                         var usedPirates = new List<Pirate>();
                         foreach (var pirate in useablePirates.Take(requiredPiratesCount))
                         {

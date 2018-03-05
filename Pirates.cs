@@ -17,7 +17,7 @@ namespace Skillz_Code
                     {
                         pirate.StickBomb(enemy);
                         stickedBomb = true;
-                        (pirate + " sticks a bomb on " + enemy).Print();
+                        Print(pirate + " sticks a bomb on " + enemy);
                         availablePirates.Remove(pirate);
                         return;
                     }
@@ -80,7 +80,7 @@ namespace Skillz_Code
             {
                 bomber.StickBomb(enemyToBomb);
                 stickedBomb = true;
-                (bomber + " sticks a bomb on " + enemyToBomb).Print();
+                Print(bomber + " sticks a bomb on " + enemyToBomb);
                 return true;
             }
             return false;
@@ -92,10 +92,10 @@ namespace Skillz_Code
             // Each pirate will be in 1 category if he wants to change(wantToBeXXXX), or doesn't mind it(willingToBeXXXXX). Otherwise he will remain in the same state.
             // We consider the following factors:
             // 1. Whether the pirate has a capsule. 2. Whether the pirate is in danger. 3. Whether the pirate is currently performing a bunker/wants to be.
-            (availablePirates.Count()).ToString().Print();
+            Print(availablePirates.Count().ToString());
             foreach (Pirate pirate in availablePirates.Where(pirate => pirate.HasCapsule()))
             {
-                (IsCapsuleHolderInDanger(pirate)).ToString().Print();
+                Print(IsCapsuleHolderInDanger(pirate).ToString());
             }
             List<Pirate> wantToBeHeavy = availablePirates
                 .Where(pirate => pirate.HasCapsule() && pirate.IsNormal() && IsCapsuleHolderInDanger(pirate))
@@ -109,11 +109,11 @@ namespace Skillz_Code
             List<Pirate> willingToBeHeavy = game.GetMyLivingPirates()
                 .Except(bunkeringPirates)
                 .Where(pirate => !pirate.HasCapsule() && pirate.IsNormal()).ToList();
-            (wantToBeHeavy.Count()).ToString().Print();
-            (wantToBeNormal.Count()).ToString().Print();
-            (willingToBeNormal.Count()).ToString().Print();
-            (willingToBeHeavy.Count()).ToString().Print();
-            (bunkeringPirates.Count()).ToString().Print();
+            Print(wantToBeHeavy.Count().ToString());
+            Print(wantToBeNormal.Count().ToString());
+            Print(willingToBeNormal.Count().ToString());
+            Print(willingToBeHeavy.Count().ToString());
+            Print(bunkeringPirates.Count().ToString());
             return TrySwitchPirates(wantToBeHeavy, wantToBeNormal) ||
                 TrySwitchPirates(willingToBeHeavy, wantToBeNormal) ||
                 TrySwitchPirates(willingToBeNormal, wantToBeHeavy);
