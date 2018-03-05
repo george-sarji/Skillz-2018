@@ -9,9 +9,9 @@ namespace Skillz_Code
         private Location SmartSail(Pirate pirate, MapObject destination)
         {
             var candidates = new List<Location>();
-            if (!IsInDanger(pirate.Location, destination.GetLocation(), pirate)) {
-                candidates.Add(pirate.Location);
-            }
+            // if (!IsInDanger(pirate.Location, destination.GetLocation(), pirate)) {
+            //     candidates.Add(pirate.Location);
+            // }
             for (int i = 0; i < CircleSteps; i++)
             {
                 double angle = System.Math.PI * 2 * i / CircleSteps;
