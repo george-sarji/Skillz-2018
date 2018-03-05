@@ -105,7 +105,7 @@ namespace Skillz_Code
                         if (!TryPushMyCapsule((Pirate) bestLocation.TargetLocationObject, bestPirate))
                         {
                             AssignDestination(bestPirate,
-                            Interception(bestLocation.Location, GetMyBestMothershipThroughWormholes((Pirate)bestLocation.TargetLocationObject).Location, bestPirate.Location));
+                                Interception(bestLocation.Location, GetMyBestMothershipThroughWormholes((Pirate) bestLocation.TargetLocationObject).Location, bestPirate.Location));
                         }
                         break;
 

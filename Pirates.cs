@@ -128,7 +128,7 @@ namespace Skillz_Code
             var pirate2 = group2.FirstOrDefault();
             if (pirate1 != null && pirate2 != null)
             {
-                if(pirateDestinations.ContainsKey(pirate1))
+                if (pirateDestinations.ContainsKey(pirate1))
                     pirateDestinations.Remove(pirate1);
                 pirate1.SwapStates(pirate2);
                 availablePirates.Remove(pirate1);

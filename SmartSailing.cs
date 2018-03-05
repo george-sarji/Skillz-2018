@@ -25,9 +25,9 @@ namespace Skillz_Code
 
             }
 
-            var bestOption = candidates.Any()
-                ? candidates.OrderBy(option => option.Distance(destination)).First()
-                : destination.GetLocation();
+            var bestOption = candidates.Any() ?
+                candidates.OrderBy(option => option.Distance(destination)).First() :
+                destination.GetLocation();
 
             return bestOption;
         }

@@ -50,7 +50,7 @@ namespace Skillz_Code
                 enemyCapsulePushes[capsule] = 0;
             bunkeringPirates = new List<Pirate>();
             myPiratesWithCapsulePushes = new Dictionary<Pirate, int>();
-            foreach(Pirate pirate in game.GetMyLivingPirates().Where(p => p.HasCapsule()))
+            foreach (Pirate pirate in game.GetMyLivingPirates().Where(p => p.HasCapsule()))
             {
                 myPiratesWithCapsulePushes.Add(pirate, 0);
             }
