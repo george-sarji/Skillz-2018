@@ -8,32 +8,27 @@ namespace Skillz_Code
     {
         private Location SmartSail(Pirate pirate, MapObject destination)
         {
-            List<Location> candidates = new List<Location>();
-            var bestOption = pirate.GetLocation();
-            const int steps = 30;
-            Location PirateLocation = pirate.GetLocation();
-            // if ((pirate.Location.Distance(destination)) - bestOption.Distance(destination) >= (pirate.MaxSpeed / 2) && pirate.HasCapsule())
-            // {
-            //     var LocationOfPush = TryPushMyCapsule(pirate);
-            //     if (PirateLocation != null)
-            //         PirateLocation = LocationOfPush;
-            // }
-            for (int i = 0; i < steps; i++)
+            var candidates = new List<Location>();
+            if (!IsInDanger(pirate.Location, destination.GetLocation(), pirate)) {
+                candidates.Add(pirate.Location);
+            }
+            for (int i = 0; i < CircleSteps; i++)
             {
-                double angle = System.Math.PI * 2 * i / steps;
+                double angle = System.Math.PI * 2 * i / CircleSteps;
                 double deltaX = pirate.MaxSpeed * System.Math.Cos(angle);
                 double deltaY = pirate.MaxSpeed * System.Math.Sin(angle);
-                Location option = new Location((int) (PirateLocation.Row - deltaY), (int) (PirateLocation.Col + deltaX));
+                Location option = new Location((int) (pirate.Location.Row - deltaY), (int) (pirate.Location.Col + deltaX));
                 if (!IsInDanger(option, destination.GetLocation(), pirate) && option.InMap())
                 {
                     candidates.Add(option);
                 }
 
             }
-            if (candidates.Any())
-            {
-                bestOption = candidates.OrderBy(option => option.Distance(destination)).First();
-            }
+
+            var bestOption = candidates.Any()
+                ? candidates.OrderBy(option => option.Distance(destination)).First()
+                : destination.GetLocation();
+
             return bestOption;
         }
 
