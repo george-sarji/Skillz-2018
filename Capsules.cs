@@ -38,7 +38,8 @@ namespace Skillz_Code
 
         public void DeliverCapsules()
         {
-            foreach (var pirate in availablePirates.Where(p => p.HasCapsule()).ToList())
+            var capsuleHolders = availablePirates.Where(p => p.HasCapsule());
+            foreach (var pirate in capsuleHolders)
             {
                 var bestMothership = GetMyBestMothershipThroughWormholes(pirate);
                 if (bestMothership != null)
@@ -48,6 +49,7 @@ namespace Skillz_Code
                     AssignDestination(pirate, sailTo);
                 }
             }
+            availablePirates = availablePirates.Except(capsuleHolders).ToList();
         }
 
         protected void PushEnemyCapsulesAggressively()

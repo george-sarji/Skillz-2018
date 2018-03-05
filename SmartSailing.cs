@@ -55,11 +55,13 @@ namespace Skillz_Code
 
         public bool IsInWormholeDanger(Location location, Location destination, Pirate pirate)
         {
-            // Get the closest wormhole to the current locatio.
-            var wormholes = game.GetAllWormholes()
-                .Where(wormhole => wormhole.TurnsToReactivate < pirate.Steps(destination) / 4 &&
-                    wormhole.InRange(location, wormhole.WormholeRange));
-            return wormholes.FirstOrDefault() != null && wormholes.FirstOrDefault().Equals(GetBestWormhole(pirate, destination));
+            // Dangerous wormholes are (1) active (2) close to location (3) and not my destination.
+            var dangerousWormholes = game.GetAllWormholes()
+                .Where(wormhole =>
+                    wormhole.TurnsToReactivate <= 1 &&
+                    wormhole.InRange(location, wormhole.WormholeRange) &&
+                    wormhole.Location != destination);
+            return dangerousWormholes.Any();
         }
 
         public bool IsInEnemyRange(Location loc, Pirate myPirate)
