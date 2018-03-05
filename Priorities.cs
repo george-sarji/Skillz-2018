@@ -104,8 +104,8 @@ namespace Skillz_Code
                     case LocationType.MyPirate:
                         if (!TryPushMyCapsule((Pirate) bestLocation.TargetLocationObject, bestPirate))
                         {
-                            AssignDestination(bestPirate, 
-                            Interception(bestLocation.Location, pirateDestinations[(Pirate)bestLocation.TargetLocationObject], bestPirate.Location));
+                            AssignDestination(bestPirate,
+                            Interception(bestLocation.Location, GetMyBestMothershipThroughWormholes((Pirate)bestLocation.TargetLocationObject).Location, bestPirate.Location));
                         }
                         break;
 
