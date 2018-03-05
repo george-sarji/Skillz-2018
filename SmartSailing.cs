@@ -6,7 +6,7 @@ namespace Skillz_Code
 {
     partial class SSJS12Bot : IPirateBot
     {
-        public Location SmartSail(Pirate pirate, MapObject destination)
+        private Location SmartSail(Pirate pirate, MapObject destination)
         {
             List<Location> candidates = new List<Location>();
             var bestOption = pirate.GetLocation();
@@ -37,12 +37,12 @@ namespace Skillz_Code
             return bestOption;
         }
 
-        public bool IsInDanger(Location loc, Location destination, Pirate pirate)
+        private bool IsInDanger(Location loc, Location destination, Pirate pirate)
         {
             return IsHittingAsteroid(loc) || IsInEnemyRange(loc, pirate) || IsInWormholeDanger(loc, destination, pirate) || IsInBombRange(loc, pirate);
         }
 
-        public bool IsHittingAsteroid(Location loc)
+        private bool IsHittingAsteroid(Location loc)
         {
             bool hitting = false;
             foreach (Asteroid asteroid in game.GetLivingAsteroids())
@@ -53,7 +53,7 @@ namespace Skillz_Code
             return hitting;
         }
 
-        public bool IsInWormholeDanger(Location location, Location destination, Pirate pirate)
+        private bool IsInWormholeDanger(Location location, Location destination, Pirate pirate)
         {
             // Dangerous wormholes are (1) active (2) close to location (3) and not my destination.
             var dangerousWormholes = game.GetAllWormholes()
@@ -64,13 +64,13 @@ namespace Skillz_Code
             return dangerousWormholes.Any();
         }
 
-        public bool IsInEnemyRange(Location loc, Pirate myPirate)
+        private bool IsInEnemyRange(Location loc, Pirate myPirate)
         {
             return game.GetEnemyLivingPirates().Count(enemy => enemy.InRange(loc, enemy.PushRange + enemy.MaxSpeed) &&
                 enemy.PushReloadTurns<enemy.Steps(loc))>= myPirate.NumPushesForCapsuleLoss;
         }
 
-        public bool IsInBombRange(Location location, Pirate pirate)
+        private bool IsInBombRange(Location location, Pirate pirate)
         {
             var closestBomb = game.GetAllStickyBombs().Where(bomb => !bomb.Carrier.Equals(pirate)).OrderBy(bomb => bomb.Distance(pirate)).FirstOrDefault();
             return closestBomb != null && location.InRange(closestBomb, closestBomb.ExplosionRange + pirate.MaxSpeed / 2);

@@ -6,7 +6,7 @@ namespace Skillz_Code
 {
     partial class SSJS12Bot : IPirateBot
     {
-        public void CaptureCapsules()
+        private void CaptureCapsules()
         {
             if (game.GetMyself().Score + (game.GetMyLivingPirates().Count(p => p.HasCapsule())) >= game.MaxPoints)
             {
@@ -36,7 +36,7 @@ namespace Skillz_Code
             }
         }
 
-        public void DeliverCapsules()
+        private void DeliverCapsules()
         {
             var capsuleHolders = availablePirates.Where(p => p.HasCapsule());
             foreach (var pirate in capsuleHolders)
@@ -52,7 +52,7 @@ namespace Skillz_Code
             availablePirates = availablePirates.Except(capsuleHolders).ToList();
         }
 
-        protected void PushEnemyCapsulesAggressively()
+        private void PushEnemyCapsulesAggressively()
         {
             foreach (var capsule in game.GetEnemyCapsules().Where(cap => cap.Holder != null))
             {
@@ -78,7 +78,7 @@ namespace Skillz_Code
             }
         }
 
-        public bool TryPushMyCapsule(Pirate myPirateWithCapsule, Pirate pirate)
+        private bool TryPushMyCapsule(Pirate myPirateWithCapsule, Pirate pirate)
         {
             if (!pirate.CanPush(myPirateWithCapsule) ||
                 myPiratesWithCapsulePushes[myPirateWithCapsule] == myPirateWithCapsule.NumPushesForCapsuleLoss - 1)
@@ -100,7 +100,7 @@ namespace Skillz_Code
             return true;
         }
 
-        public bool IsWorthPushing(Pirate pirate, Location locationOfPush, Location destination)
+        private bool IsWorthPushing(Pirate pirate, Location locationOfPush, Location destination)
         {
             int count = game.GetEnemyLivingPirates()
                 .Where(enemy => enemy.HasCapsule() && pirate.Distance(destination) < enemy.Distance(

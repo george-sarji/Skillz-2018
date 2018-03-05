@@ -7,7 +7,7 @@ namespace Skillz_Code
     partial class SSJS12Bot : IPirateBot
     {
 
-        protected void PerformAggressiveBunker()
+        private void PerformAggressiveBunker()
         {
             Dictionary<Mothership, int> bunkerCount = game.GetEnemyMotherships()
                 .ToDictionary(mothership => mothership, mothership => 0);
@@ -72,7 +72,7 @@ namespace Skillz_Code
             }
         }
 
-        protected void PerformDefensiveBunker()
+        private void PerformDefensiveBunker()
         {
             if (game.GetEnemyCapsules().Any(capsule => capsule.Holder != null))
             {

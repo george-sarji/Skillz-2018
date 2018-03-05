@@ -8,7 +8,7 @@ namespace Skillz_Code
     {
         private Dictionary<Wormhole, Location> movedWormholeLocations = new Dictionary<Wormhole, Location>();
 
-        protected int GetWormholeScoreForPlayer(Location wormholeLocation, Location partnerLocation, Player player)
+        private int GetWormholeScoreForPlayer(Location wormholeLocation, Location partnerLocation, Player player)
         {
             if (!GetPlayerMotherships(player).Any() || !GetPlayerCapsules(player).Any())
             {
@@ -31,7 +31,7 @@ namespace Skillz_Code
         }
 
         // Returns how good having a wormhole in this location is. Lower is better (distances).
-        protected int GetWormholeScore(Location wormholeLocation, Location partnerLocation)
+        private int GetWormholeScore(Location wormholeLocation, Location partnerLocation)
         {
             // Gets the total score for a wormhole by finding our score as well as the enemy's.
             var enemyScore = GetWormholeScoreForPlayer(wormholeLocation, partnerLocation, game.GetEnemy());
@@ -42,7 +42,7 @@ namespace Skillz_Code
         // How many angles to check when circling around a location. 24 steps = 15 degrees steps (360/24 = 15).
         private const int CircleSteps = 24;
 
-        protected Location BestWormholePushLocation(Wormhole wormhole)
+        private Location BestWormholePushLocation(Wormhole wormhole)
         {
             // Returns the most favorable position to push the wormhole to, taking into consideration position of capsules and motherships.
             var bestOption = wormhole.Location;
@@ -110,14 +110,14 @@ namespace Skillz_Code
             }
             return false;
         }
-        protected static int DistanceThroughWormhole(Location from, MapObject to, Wormhole wormhole, IEnumerable<Wormhole> wormholes)
+        private static int DistanceThroughWormhole(Location from, MapObject to, Wormhole wormhole, IEnumerable<Wormhole> wormholes)
         {
             return from.Distance(wormhole) +
                 ClosestDistance(wormhole.Partner.Location, to,
                     wormholes.Where(w => w.Id != wormhole.Id && w.Id != wormhole.Partner.Id));
         }
 
-        protected static int ClosestDistance(Location from, MapObject to, IEnumerable<Wormhole> wormholes)
+        private static int ClosestDistance(Location from, MapObject to, IEnumerable<Wormhole> wormholes)
         {
             if (wormholes.Any())
             {
@@ -130,14 +130,14 @@ namespace Skillz_Code
             return from.Distance(to);
         }
 
-        protected IEnumerable<Wormhole> GetViableWormholes(Pirate pirate)
+        private IEnumerable<Wormhole> GetViableWormholes(Pirate pirate)
         {
             return game.GetAllWormholes() //.Except(usedWormholes)
                 .Where(wormhole => wormhole.TurnsToReactivate <= pirate.Steps(wormhole) + 2);
         }
 
         // Returns the best wormhole for the pirate to get to the destination through, or null if there are no good wormholes.
-        protected Wormhole GetBestWormhole(Pirate pirate, Location destination)
+        private Wormhole GetBestWormhole(Pirate pirate, Location destination)
         {
             var wormholeDistances = new Dictionary<Wormhole, int>();
             var wormholes = game.GetAllWormholes().Where(wormhole => wormhole.TurnsToReactivate < pirate.Steps(destination) / 4);
@@ -165,17 +165,17 @@ namespace Skillz_Code
                 .FirstOrDefault();
         }
 
-        protected Mothership GetMyBestMothershipThroughWormholes(Pirate myPirate)
+        private Mothership GetMyBestMothershipThroughWormholes(Pirate myPirate)
         {
             return GetBestMothershipThroughWormholes(myPirate, game.GetMyMotherships());
         }
 
-        protected Mothership GetEnemyBestMothershipThroughWormholes(Pirate enemy)
+        private Mothership GetEnemyBestMothershipThroughWormholes(Pirate enemy)
         {
             return GetBestMothershipThroughWormholes(enemy, game.GetEnemyMotherships());
         }
 
-        public Location AdjustDestinationForWormholes(Pirate pirate, Location destination)
+        private Location AdjustDestinationForWormholes(Pirate pirate, Location destination)
         {
             var bestWormhole = GetBestWormhole(pirate, destination);
 

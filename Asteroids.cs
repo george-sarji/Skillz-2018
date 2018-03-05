@@ -6,7 +6,7 @@ namespace Skillz_Code
 {
     partial class SSJS12Bot : IPirateBot
     {
-        public void PushAsteroids()
+        private void PushAsteroids()
         {
             var exceptionList = new List<Asteroid>();
             foreach (Asteroid asteroid in game.GetLivingAsteroids())
@@ -58,14 +58,14 @@ namespace Skillz_Code
 
         }
 
-        public bool AsteroidHeadingTowardsPirate(Asteroid asteroid, Pirate pirate)
+        private bool AsteroidHeadingTowardsPirate(Asteroid asteroid, Pirate pirate)
         {
             // check if the asteroid is heading towards the pirate
             return !asteroid.Location.Add(asteroid.Direction).InMap() ? false :
                 asteroid.Location.Add(asteroid.Direction).Distance(pirate) <= asteroid.Size;
         }
 
-        public bool IsSelfKilling(Pirate pirate, Asteroid asteroid, Location pushDestination)
+        private bool IsSelfKilling(Pirate pirate, Asteroid asteroid, Location pushDestination)
         {
             // checks if the asteroid gonna kill the pirate after he pushes it to the pushDestination
             return !asteroid.Location.Towards(pushDestination, pirate.PushDistance).InMap() ? false :

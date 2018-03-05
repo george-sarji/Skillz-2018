@@ -7,15 +7,15 @@ namespace Skillz_Code
     partial class SSJS12Bot : IPirateBot
     {
         public static PirateGame game;
-        public const bool Debug = false;
-        protected List<Pirate> availablePirates;
-        protected Dictionary<Pirate, Location> pirateDestinations;
-        protected Dictionary<Capsule, int> enemyCapsulePushes;
-        protected Dictionary<Pirate, int> myPiratesWithCapsulePushes;
-        public static List<Pirate> bunkeringPirates; //List to add pirates used in bunker to, used in swapping states and finding preferred states.
-        protected const int MAX_PRIORITY = 10;
-        protected const int MIN_PRIORITY = 1;
-        protected bool stickedBomb = false;
+        private const bool Debug = false;
+        private List<Pirate> availablePirates;
+        private Dictionary<Pirate, Location> pirateDestinations;
+        private Dictionary<Capsule, int> enemyCapsulePushes;
+        private Dictionary<Pirate, int> myPiratesWithCapsulePushes;
+        private static List<Pirate> bunkeringPirates; //List to add pirates used in bunker to, used in swapping states and finding preferred states.
+        private const int MAX_PRIORITY = 10;
+        private const int MIN_PRIORITY = 1;
+        private bool stickedBomb = false;
 
         public void DoTurn(PirateGame game)
         {
@@ -40,7 +40,7 @@ namespace Skillz_Code
             PrintTargetLocations(GetAllTargetLocations());
             MovePirates();
         }
-        protected void Initialize(PirateGame pirateGame)
+        private void Initialize(PirateGame pirateGame)
         {
             game = pirateGame;
             availablePirates = pirateGame.GetMyLivingPirates().ToList();
@@ -56,7 +56,7 @@ namespace Skillz_Code
             }
         }
 
-        protected void MovePirates()
+        private void MovePirates()
         {
             foreach (var map in pirateDestinations)
             {
