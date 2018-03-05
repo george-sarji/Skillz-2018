@@ -103,7 +103,10 @@ namespace Skillz_Code
                 {
                     case LocationType.MyPirate:
                         if (!TryPushMyCapsule((Pirate) bestLocation.TargetLocationObject, bestPirate))
-                            AssignDestination(bestPirate, bestLocation.Location);
+                        {
+                            AssignDestination(bestPirate, 
+                            Interception(bestLocation.Location, pirateDestinations[(Pirate)bestLocation.TargetLocationObject], bestPirate.Location));
+                        }
                         break;
 
                     case LocationType.EnemyPirate:
@@ -115,7 +118,7 @@ namespace Skillz_Code
                         if (!TryPushWormhole(bestPirate, (Wormhole) bestLocation.TargetLocationObject))
                             AssignDestination(bestPirate, bestLocation.Location.Towards(bestPirate, game.WormholeRange));
                         break;
-                        
+
                     default:
                         AssignDestination(bestPirate, bestLocation.Location);
                         break;
