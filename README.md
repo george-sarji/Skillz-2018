@@ -255,7 +255,7 @@ Skillz code for 2018, revamped.
     </tr>
 </table>
 
-### Week 4:
+### Week 4 (7/9):
 <table>
     <tr>
         <td>Level</td>
