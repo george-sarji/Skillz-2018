@@ -35,7 +35,7 @@ namespace Skillz_Code
                     }
                 }
                 var requiredPiratesCount = Min((count == 0) ? 1 : count, capsule.Holder.NumPushesForCapsuleLoss);
-                var bestWormhole = GetBestWormhole(mothership.Location, capsule.Holder);
+                var bestWormhole = GetBestWormhole(capsule.Holder, mothership.Location);
                 if (useablePirates.Count() >= requiredPiratesCount)
                 {
                     header += string.Format("\n{0, -8} {1, 9} @ {2, 12} {3,12} {4,12}", "ID: " + mothership.Id, "ID: " + capsule.Id, mothership.Location, capsule.Holder.NumPushesForCapsuleLoss, count);

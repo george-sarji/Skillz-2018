@@ -6,78 +6,6 @@ namespace Skillz_Code
 {
     partial class SSJS12Bot : IPirateBot
     {
-        protected static int DistanceThroughWormhole(Location from, MapObject to, Wormhole wormhole, IEnumerable<Wormhole> wormholes)
-        {
-            return from.Distance(wormhole) +
-                ClosestDistance(wormhole.Partner.Location, to,
-                    wormholes.Where(w => w.Id != wormhole.Id && w.Id != wormhole.Partner.Id));
-        }
-
-        protected static int ClosestDistance(Location from, MapObject to, IEnumerable<Wormhole> wormholes)
-        {
-            if (wormholes.Any())
-            {
-                int distanceWithoutWormholes = from.Distance(to);
-                int distanceWithWormholes = wormholes
-                    .Select(wormhole => DistanceThroughWormhole(from, to, wormhole, wormholes))
-                    .Min();
-                return System.Math.Min(distanceWithoutWormholes, distanceWithWormholes);
-            }
-            return from.Distance(to);
-        }
-
-        protected Wormhole GetBestWormhole(Location destination, Pirate pirate)
-        {
-            var wormholeDistances = new Dictionary<Wormhole, int>();
-            var wormholes = game.GetAllWormholes().Where(wormhole => wormhole.TurnsToReactivate < pirate.Steps(destination) / 4);
-            foreach (var wormhole in wormholes)
-            {
-                //    Assign the closest distance for the wormhole
-                wormholeDistances.Add(wormhole, DistanceThroughWormhole(pirate.Location, destination, wormhole, wormholes));
-            }
-            //    Get the minimum
-            var bestWormhole = wormholeDistances.OrderBy(map => map.Value).FirstOrDefault();
-            if (bestWormhole.Key != null)
-            {
-                // Check the regular distance.
-                var normalDistance = pirate.Distance(destination);
-                if (bestWormhole.Value < normalDistance)
-                    return bestWormhole.Key;
-            }
-            return null;
-        }
-
-        protected Mothership GetBestMothershipThroughWormholes(Pirate pirate)
-        {
-            var mothershipWormholes = new Dictionary<Mothership, int>();
-            Mothership bestMothership = null;
-            int distance = int.MaxValue;
-            foreach (var mothership in game.GetEnemyMotherships())
-            {
-                var distances = new List<int>();
-                foreach (var wormhole in game.GetAllWormholes().Where(wormhole => wormhole.TurnsToReactivate < pirate.Steps(mothership) / 4))
-                {
-                    var distanceThroughCurrent = DistanceThroughWormhole(pirate.Location, mothership.Location, wormhole, game.GetAllWormholes().Where(hole => hole.TurnsToReactivate < pirate.Steps(mothership) / 4));
-                    distances.Add(distanceThroughCurrent);
-                }
-                var normalDistance = pirate.Distance(mothership);
-                if (distances.Any() && distances.Min() < distance)
-                {
-                    bestMothership = mothership;
-                    distance = distances.Min();
-                }
-                if (distances.Any() && normalDistance < distance)
-                {
-                    bestMothership = mothership;
-                    distance = normalDistance;
-                }
-            }
-            if (bestMothership == null)
-            {
-                bestMothership = game.GetEnemyMotherships().OrderBy(mothership => pirate.Steps(mothership) / (int) ((double) mothership.ValueMultiplier).Sqrt()).FirstOrDefault();
-            }
-            return bestMothership;
-        }
 
         protected static Location Closest(Location location, params Location[] locations)
         {
@@ -202,6 +130,7 @@ namespace Skillz_Code
             // Returns the best mothership for a given player and a mapobject, taking into consideration the mothership's value multiplier and distance.
             return GetPlayerMotherships(player).OrderBy(mothership => mothership.Distance(mapObject) / mothership.ValueMultiplier).FirstOrDefault();
         }
+
         protected Capsule GetClosestCapsule(MapObject mapObject, Player player)
         {
             // Returns the best capsule for a given player and a mapobject, taking into consideration the capsule's distance.

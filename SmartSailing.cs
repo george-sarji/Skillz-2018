@@ -59,7 +59,7 @@ namespace Skillz_Code
             var wormholes = game.GetAllWormholes()
                 .Where(wormhole => wormhole.TurnsToReactivate < pirate.Steps(destination) / 4 &&
                     wormhole.InRange(location, wormhole.WormholeRange));
-            return wormholes.FirstOrDefault() != null && wormholes.FirstOrDefault().Equals(GetBestWormhole(destination, pirate));
+            return wormholes.FirstOrDefault() != null && wormholes.FirstOrDefault().Equals(GetBestWormhole(pirate, destination));
 
         }
 

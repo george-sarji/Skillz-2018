@@ -14,37 +14,22 @@ namespace Skillz_Code
             }
             if (availablePirates.Any())
             {
-                foreach (var capsule in game.GetMyCapsules().OrderBy(
-                        capsule => capsule.Distance(
-                            availablePirates.OrderBy(p => ClosestDistance(
-                                p.Location, capsule.Location,
-                                game.GetAllWormholes().Where(wormhole => wormhole.TurnsToReactivate < p.Steps(capsule.InitialLocation))
-                            )).FirstOrDefault()
-                        )
-                    ))
+                var capsulesOrdered = game.GetMyCapsules()
+                    .OrderBy(capsule => capsule.Distance(
+                        availablePirates.OrderBy(p => ClosestDistance(p.Location, capsule.Location, GetViableWormholes(p))).First()));
+                foreach (var capsule in capsulesOrdered)
                 {
-                    var piratesOrdered = availablePirates.Where(p => !p.HasCapsule()).OrderBy(p => p.Steps(capsule.InitialLocation))
-                        .OrderBy(p => ClosestDistance(p.Location, capsule.InitialLocation, game.GetAllWormholes()
-                            .Where(wormhole => wormhole.TurnsToReactivate < p.Steps(capsule.InitialLocation) / 4)) / p.MaxSpeed);
+                    var piratesOrdered = availablePirates
+                        .OrderBy(pirate => ClosestDistance(pirate.Location, capsule.InitialLocation, GetViableWormholes(pirate)));
                     // Check if we have a close pirate to the capsule.
                     if (piratesOrdered.Any())
                     {
                         // Send the closest pirate to the spawn.
                         var closestPirate = piratesOrdered.First();
-                        var bestWormhole = GetBestWormhole(capsule.InitialLocation, closestPirate);
                         availablePirates.Remove(closestPirate);
-                        if (bestWormhole != null)
-                        {
-                            var BestPirate = availablePirates.OrderBy(p => p.Distance(closestPirate))
-                                .OrderByDescending(p => p.IsSameState(closestPirate)).FirstOrDefault();
-                            AssignDestination(closestPirate, SmartSail(closestPirate, bestWormhole));
-                        }
-                        else
-                        {
-                            var BestPirate = availablePirates.OrderBy(p => p.Distance(closestPirate))
-                                .OrderByDescending(p => p.IsSameState(closestPirate)).FirstOrDefault();
-                            AssignDestination(closestPirate, SmartSail(closestPirate, capsule.InitialLocation.Towards(closestPirate, capsule.PickupRange - 1)));
-                        }
+
+                        var sailTo = SmartSail(closestPirate, AdjustDestinationForWormholes(closestPirate, capsule.InitialLocation));
+                        AssignDestination(closestPirate, sailTo);
                     }
                 }
             }
@@ -54,11 +39,13 @@ namespace Skillz_Code
         {
             foreach (var pirate in availablePirates.Where(p => p.HasCapsule()).ToList())
             {
-                var bestMothership = game.GetMyMotherships().OrderBy(mothership => ClosestDistance(pirate.Location, mothership, game.GetAllWormholes().Where(wormhole => wormhole.TurnsToReactivate > pirate.Steps(mothership) / 4)) / ((double) mothership.ValueMultiplier).Sqrt()).FirstOrDefault();
+                var bestMothership = game.GetMyMotherships()
+                    .OrderBy(mothership => ClosestDistance(pirate.Location, mothership, game.GetAllWormholes().Where(wormhole => wormhole.TurnsToReactivate > pirate.Steps(mothership) / 4)) / ((double) mothership.ValueMultiplier).Sqrt())
+                    .FirstOrDefault();
                 if (bestMothership != null)
                 {
                     // Get best wormhole
-                    var bestWormhole = GetBestWormhole(bestMothership.Location, pirate);
+                    var bestWormhole = GetBestWormhole(pirate, bestMothership.Location);
                     if (bestWormhole != null)
                     {
                         AssignDestination(pirate, SmartSail(pirate, bestWormhole));
