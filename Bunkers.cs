@@ -6,7 +6,6 @@ namespace Skillz_Code
 {
     partial class SSJS12Bot : IPirateBot
     {
-        
 
         protected void PerformAggressiveBunker()
         {
@@ -20,7 +19,7 @@ namespace Skillz_Code
                 var distanceToBorder = capsule.Distance(GetClosestToBorder(capsule.Location));
                 var useablePirates = availablePirates.Where(p => p.Steps(mothership) > p.PushReloadTurns)
                     .Where(p => p.Steps(mothership) < capsule.Holder.Steps(mothership))
-                    .Where(p => p.Capsule==null)
+                    .Where(p => p.Capsule == null)
                     .OrderBy(p => p.Steps(mothership));
                 int count = 0, pushDistanceUsed = 0;
                 foreach (var pirate in useablePirates.OrderByDescending(p => p.PushDistance))
@@ -35,9 +34,9 @@ namespace Skillz_Code
                 var bestWormhole = GetBestWormhole(mothership.Location, capsule.Holder);
                 if (useablePirates.Count() >= requiredPiratesCount)
                 {
-                    header+=string.Format("\n{0, -8} {1, 9} @ {2, 12} {3,12} {4,12}", "ID: " + mothership.Id, "ID: " + capsule.Id, mothership.Location, capsule.Holder.NumPushesForCapsuleLoss, count);
-                    if(game.GetEnemyCapsules().Where(cap => cap.Holder != null)
-                    .OrderBy(cap => cap.Holder.Steps(GetBestMothershipThroughWormholes(cap.Holder))).Last().Equals(capsule))
+                    header += string.Format("\n{0, -8} {1, 9} @ {2, 12} {3,12} {4,12}", "ID: " + mothership.Id, "ID: " + capsule.Id, mothership.Location, capsule.Holder.NumPushesForCapsuleLoss, count);
+                    if (game.GetEnemyCapsules().Where(cap => cap.Holder != null)
+                        .OrderBy(cap => cap.Holder.Steps(GetBestMothershipThroughWormholes(cap.Holder))).Last().Equals(capsule))
                         header.Print();
                     if (requiredPiratesCount == count)
                         useablePirates = useablePirates.OrderByDescending(p => p.PushDistance);
