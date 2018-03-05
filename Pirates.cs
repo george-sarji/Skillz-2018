@@ -100,6 +100,7 @@ namespace Skillz_Code
             List<Pirate> wantToBeHeavy = availablePirates
                 .Where(pirate => pirate.HasCapsule() && pirate.IsNormal() && IsCapsuleHolderInDanger(pirate))
                 .ToList();
+            // wantToBeHeavy.AddRange(bunkeringPirates.Where(pirate => (pirateDestinations.ContainsKey(pirate) && pirate.Location.InRange(pirateDestinations[pirate], pirate.MaxSpeed)) || !pirateDestinations.ContainsKey(pirate)));
             wantToBeHeavy.AddRange(bunkeringPirates.Where(pirate =>(game.GetMyMotherships().Where(mothership => mothership.Distance(pirate) < game.MothershipUnloadRange).Count() > 0 || game.GetEnemyMotherships()
                 .Where(mothership => mothership.Distance(pirate) < game.MothershipUnloadRange).Count() > 0)));
             List<Pirate> wantToBeNormal = availablePirates.Where(pirate => pirate.HasCapsule() && pirate.IsHeavy() && !IsCapsuleHolderInDanger(pirate)).ToList();
@@ -125,9 +126,10 @@ namespace Skillz_Code
             // Tries to swap the states of two pirates from two groups, if successful returns true.
             var pirate1 = group1.FirstOrDefault();
             var pirate2 = group2.FirstOrDefault();
-
             if (pirate1 != null && pirate2 != null)
             {
+                if(pirateDestinations.ContainsKey(pirate1))
+                    pirateDestinations.Remove(pirate1);
                 pirate1.SwapStates(pirate2);
                 availablePirates.Remove(pirate1);
                 return true;
