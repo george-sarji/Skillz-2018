@@ -43,7 +43,7 @@ namespace Skillz_Code
         }
         public static int Steps(this Pirate pirate, MapObject mapObject)
         {
-            return (int) (pirate.Distance(mapObject) / (pirate.MaxSpeed + 1));
+            return pirate.Distance(mapObject) / (pirate.MaxSpeed + 1);
         }
         public static int Clamp(this int x, int min, int max)
         {

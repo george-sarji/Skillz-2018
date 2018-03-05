@@ -8,7 +8,7 @@ namespace Skillz_Code
     {
         public void CaptureCapsules()
         {
-            if (game.GetMyself().Score + (game.GetMyLivingPirates().Where(p => p.HasCapsule()).ToList().Count) >= game.MaxPoints)
+            if (game.GetMyself().Score + (game.GetMyLivingPirates().Count(p => p.HasCapsule())) >= game.MaxPoints)
             {
                 return;
             }
@@ -209,10 +209,10 @@ namespace Skillz_Code
         {
             int count = game.GetEnemyLivingPirates()
                 .Where(enemy => enemy.HasCapsule() && pirate.Distance(destination) < enemy.Distance(
-                    game.GetEnemyMotherships().OrderBy(mothership => mothership.Distance(enemy)).FirstOrDefault())).ToList().Count;
+                    game.GetEnemyMotherships().OrderBy(mothership => mothership.Distance(enemy)).FirstOrDefault())).Count();
             if (count < (game.GetEnemyLivingPirates()
                     .Where(enemy => enemy.HasCapsule() && locationOfPush.Distance(destination) < enemy.Distance(
-                        game.GetEnemyMotherships().OrderBy(mothership => mothership.Distance(enemy)).FirstOrDefault())).ToList().Count))
+                        game.GetEnemyMotherships().OrderBy(mothership => mothership.Distance(enemy)).FirstOrDefault())).Count()))
             {
                 return true;
             }

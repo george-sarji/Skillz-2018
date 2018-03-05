@@ -9,6 +9,10 @@ namespace Skillz_Code
 
         protected void PerformAggressiveBunker()
         {
+            Dictionary<Mothership, int> bunkerCount = game.GetEnemyMotherships()
+                .ToDictionary(mothership => mothership, mothership => 0);
+
+
             var header = string.Format("Mothership bunkers:\n{0, -8} {1, 7} {2, 12} {3, 12} {4,12}", "Mothership", "Capsule", "  Location  ", "  Capsule loss  ", "  Border pushes  ");
             foreach (var capsule in game.GetEnemyCapsules().Where(capsule => capsule.Holder != null)
                     .OrderBy(capsule => capsule.Holder.Steps(GetBestMothershipThroughWormholes(capsule.Holder))))
