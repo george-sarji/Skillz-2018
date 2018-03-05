@@ -3,7 +3,7 @@ Skillz code for 2018, revamped.
 
 ## Bot stats:
 
-### Week 1:
+### Week 1 (9/9):
 <table>
     <tr>
         <td>Level</td>
@@ -18,7 +18,7 @@ Skillz code for 2018, revamped.
         <td>LargeRocks</td>
         <td>Win</td>
         <td>8/2</td>
-        <td>152</td>
+        <td>176</td>
         <td>-</td>
     </tr>
     <tr>
@@ -33,16 +33,16 @@ Skillz code for 2018, revamped.
         <td>1</td>
         <td>Steroids</td>
         <td>Win</td>
-        <td>8/0</td>
-        <td>168</td>
+        <td>8/1</td>
+        <td>256</td>
         <td>-</td>
     </tr>
     <tr>
         <td>2</td>
         <td>GeorgePushSenior</td>
         <td>Win</td>
-        <td>8/2</td>
-        <td>96</td>
+        <td>8/3</td>
+        <td>89</td>
         <td>-</td>
     </tr>
     <tr>
@@ -50,15 +50,15 @@ Skillz code for 2018, revamped.
         <td>YouShallNotPass</td>
         <td>Win</td>
         <td>8/7</td>
-        <td>300</td>
+        <td>228</td>
         <td>-</td>
     </tr>
     <tr>
         <td>3</td>
         <td>Meteroite</td>
         <td>Win</td>
-        <td>8/1</td>
-        <td>127</td>
+        <td>8/2</td>
+        <td>165</td>
         <td>-</td>
     </tr>
     <tr>
@@ -66,28 +66,28 @@ Skillz code for 2018, revamped.
         <td>Lepton</td>
         <td>Win</td>
         <td>8/5</td>
-        <td>286</td>
+        <td>288</td>
         <td>-</td>
     </tr>
     <tr>
         <td>4</td>
         <td>Voyager1</td>
         <td>Win</td>
-        <td>8/0</td>
-        <td>144</td>
+        <td>8/1</td>
+        <td>210</td>
         <td>-</td>
     </tr>
     <tr>
         <td>4</td>
         <td>Pullpullon</td>
         <td>Win</td>
-        <td>8/1</td>
-        <td>376</td>
+        <td>8/0</td>
+        <td>245</td>
         <td>-</td>
     </tr>
 </table>
 
-### Week 2:
+### Week 2 (9/9):
 <table>
     <tr>
         <td>Level</td>
@@ -102,15 +102,15 @@ Skillz code for 2018, revamped.
         <td>SpaceTime</td>
         <td>Win</td>
         <td>8/7</td>
-        <td>269</td>
+        <td>262</td>
         <td>-</td>
     </tr>
     <tr>
         <td>1</td>
         <td>Momentum</td>
         <td>Win</td>
-        <td>8/0</td>
-        <td>349</td>
+        <td>1/0</td>
+        <td>750</td>
         <td>-</td>
     </tr>
     <tr>
@@ -118,7 +118,7 @@ Skillz code for 2018, revamped.
         <td>GravityWaves</td>
         <td>Win</td>
         <td>8/0</td>
-        <td>162</td>
+        <td>125</td>
         <td>-</td>
     </tr>
     <tr>
@@ -126,7 +126,7 @@ Skillz code for 2018, revamped.
         <td>Graviton</td>
         <td>Win</td>
         <td>3/2</td>
-        <td>42</td>
+        <td>39</td>
         <td>-</td>
     </tr>
     <tr>
@@ -134,7 +134,7 @@ Skillz code for 2018, revamped.
         <td>Spaghettification</td>
         <td>Win</td>
         <td>8/7</td>
-        <td>268</td>
+        <td>281</td>
         <td>-</td>
     </tr>
     <tr>
@@ -142,36 +142,36 @@ Skillz code for 2018, revamped.
         <td>OutOfSpace</td>
         <td>Win</td>
         <td>8/1</td>
-        <td>309</td>
+        <td>212</td>
         <td>-</td>
     </tr>
     <tr>
         <td>3</td>
         <td>Pushti</td>
-        <td><b>Loss</b></td>
-        <td>9/2</td>
-        <td>516</td>
+        <td>Win</td>
+        <td>8/3</td>
+        <td>405</td>
         <td>-</td>
     </tr>
     <tr>
         <td>4</td>
         <td>William</td>
-        <td><b>Loss</b></td>
+        <td>Win</td>
         <td>8/3</td>
-        <td>188</td>
+        <td>416</td>
         <td>-</td>
     </tr>
     <tr>
         <td>4</td>
         <td>Pullpushon</td>
-        <td><b>Loss</b></td>
-        <td>8/2</td>
-        <td>198</td>
+        <td>Win</td>
+        <td>8/4</td>
+        <td>443</td>
         <td>-</td>
     </tr>
 </table>
 
-### Week 3:
+### Week 3 (6/9):
 <table>
     <tr>
         <td>Level</td>
@@ -185,16 +185,16 @@ Skillz code for 2018, revamped.
         <td>1</td>
         <td>DeathStar</td>
         <td>Win</td>
-        <td>12/1</td>
-        <td>254</td>
+        <td>12/2</td>
+        <td>181</td>
         <td>-</td>
     </tr>
     <tr>
         <td>1</td>
         <td>StaticVoid</td>
         <td>Win</td>
-        <td>8/2</td>
-        <td>194</td>
+        <td>8/0</td>
+        <td>190</td>
         <td>-</td>
     </tr>
     <tr>
@@ -217,7 +217,7 @@ Skillz code for 2018, revamped.
         <td>3</td>
         <td>DarkInvasion</td>
         <td>Win</td>
-        <td>2/1</td>
+        <td>2/0</td>
         <td>400</td>
         <td>-</td>
     </tr>
@@ -225,8 +225,8 @@ Skillz code for 2018, revamped.
         <td>3</td>
         <td>HeavyLifting</td>
         <td>Win</td>
-        <td>8/7</td>
-        <td>382</td>
+        <td>1/0</td>
+        <td>22</td>
         <td>-</td>
     </tr>
     <tr>
@@ -234,22 +234,22 @@ Skillz code for 2018, revamped.
         <td>NeutronStar</td>
         <td>Win</td>
         <td>8/0</td>
-        <td>280</td>
+        <td>228</td>
         <td>-</td>
     </tr>
     <tr>
         <td>4</td>
         <td>Pushiner</td>
         <td>Win</td>
-        <td>8/5</td>
-        <td>317</td>
+        <td>8/2</td>
+        <td>200</td>
         <td>-</td>
     </tr>
     <tr>
         <td>4</td>
         <td>GravitySlingshot</td>
         <td><b>Loss</b></td>
-        <td>4/1</td>
+        <td>4/2</td>
         <td>47</td>
         <td>-</td>
     </tr>
@@ -269,16 +269,16 @@ Skillz code for 2018, revamped.
         <td>1</td>
         <td>TodoBomb</td>
         <td>Win</td>
-        <td>8/5</td>
-        <td>185</td>
+        <td>8/3</td>
+        <td>179</td>
         <td>-</td>
     </tr>
     <tr>
         <td>1</td>
         <td>Matrix</td>
         <td>Win</td>
-        <td>8/6</td>
-        <td>124</td>
+        <td>8/5</td>
+        <td>150</td>
         <td>-</td>
     </tr>
     <tr>
@@ -286,7 +286,7 @@ Skillz code for 2018, revamped.
         <td>Kamikaze</td>
         <td>Win</td>
         <td>10/9</td>
-        <td>327</td>
+        <td>220</td>
         <td>-</td>
     </tr>
     <tr>
@@ -294,31 +294,31 @@ Skillz code for 2018, revamped.
         <td>StickyNotes</td>
         <td>Win</td>
         <td>8/1</td>
-        <td>513</td>
+        <td>260</td>
         <td>-</td>
     </tr>
     <tr>
         <td>3</td>
         <td>HamannHarasha</td>
-        <td><b>Loss</b></td>
+        <td>Win</td>
         <td>6/3</td>
-        <td>750</td>
+        <td>695</td>
         <td>-</td>
     </tr>
     <tr>
         <td>3</td>
         <td>CyberSpace</td>
         <td>Win</td>
-        <td>8/5</td>
-        <td>183</td>
+        <td>8/3</td>
+        <td>130</td>
         <td>-</td>
     </tr>
     <tr>
         <td>3</td>
         <td>Basmach</td>
         <td>Win</td>
-        <td>8/5</td>
-        <td>192</td>
+        <td>8/4</td>
+        <td>185</td>
         <td>-</td>
     </tr>
     <tr>
@@ -332,9 +332,9 @@ Skillz code for 2018, revamped.
     <tr>
         <td>4</td>
         <td>PushPullon</td>
-        <td><b>Loss</b></td>
-        <td>10/0</td>
-        <td>196</td>
+        <td><b>Tie</b></td>
+        <td>9/9</td>
+        <td>750</td>
         <td>-</td>
     </tr>
 </table>
