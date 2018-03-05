@@ -92,10 +92,10 @@ namespace Skillz_Code
             // Each pirate will be in 1 category if he wants to change(wantToBeXXXX), or doesn't mind it(willingToBeXXXXX). Otherwise he will remain in the same state.
             // We consider the following factors:
             // 1. Whether the pirate has a capsule. 2. Whether the pirate is in danger. 3. Whether the pirate is currently performing a bunker/wants to be.
-           (availablePirates.Count()).ToString().Print();
+            (availablePirates.Count()).ToString().Print();
             foreach (Pirate pirate in availablePirates.Where(pirate => pirate.HasCapsule()))
             {
-               (IsCapsuleHolderInDanger(pirate)).ToString().Print();
+                (IsCapsuleHolderInDanger(pirate)).ToString().Print();
             }
             List<Pirate> wantToBeHeavy = availablePirates
                 .Where(pirate => pirate.HasCapsule() && pirate.StateName == "normal" && IsCapsuleHolderInDanger(pirate))
@@ -103,20 +103,20 @@ namespace Skillz_Code
             wantToBeHeavy.AddRange(availablePirates.Where(pirate => bunkeringPirates.Contains(pirate) &&
                 (game.GetMyMotherships().Where(mothership => mothership.Distance(pirate) < game.MothershipUnloadRange).Count() > 0 || game.GetEnemyMotherships()
                     .Where(mothership => mothership.Distance(pirate) < game.MothershipUnloadRange).Count() > 0)));
-            List<Pirate> wantToBeNormal = availablePirates.Where(pirate => pirate.HasCapsule() && pirate.StateName == "heavy" && !IsCapsuleHolderInDanger(pirate)).ToList();
+            List<Pirate> wantToBeNormal = availablePirates.Where(pirate => pirate.HasCapsule() && pirate.IsHeavy() && !IsCapsuleHolderInDanger(pirate)).ToList();
             List<Pirate> willingToBeNormal = game.GetMyLivingPirates()
-                    .Where(pirate => !bunkeringPirates.Contains(pirate) 
-                    && !pirate.HasCapsule() && pirate.StateName == "heavy").ToList();
+                .Where(pirate => !bunkeringPirates.Contains(pirate) &&
+                    !pirate.HasCapsule() && pirate.IsHeavy()).ToList();
             List<Pirate> willingToBeHeavy = game.GetMyLivingPirates()
-                    .Where(pirate => !bunkeringPirates.Contains(pirate)
-                    && !pirate.HasCapsule() && pirate.StateName == "normal").ToList();
+                .Where(pirate => !bunkeringPirates.Contains(pirate) &&
+                    !pirate.HasCapsule() && pirate.IsNormal()).ToList();
             (wantToBeHeavy.Count()).ToString().Print();
             (wantToBeNormal.Count()).ToString().Print();
             (willingToBeNormal.Count()).ToString().Print();
             (willingToBeHeavy.Count()).ToString().Print();
             (bunkeringPirates.Count()).ToString().Print();
             return TrySwitchPirates(wantToBeHeavy, wantToBeNormal) ||
-                TrySwitchPirates(willingToBeHeavy, wantToBeNormal) || 
+                TrySwitchPirates(willingToBeHeavy, wantToBeNormal) ||
                 TrySwitchPirates(willingToBeNormal, wantToBeHeavy);
             // Finally it tries to find pirates who want to swap with eachother, and if unsuccessful, looks for pirates who don't really have a preference to switch them with ones that do.
         }
