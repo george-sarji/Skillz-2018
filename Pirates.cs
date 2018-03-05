@@ -100,9 +100,8 @@ namespace Skillz_Code
             List<Pirate> wantToBeHeavy = availablePirates
                 .Where(pirate => pirate.HasCapsule() && pirate.IsNormal() && IsCapsuleHolderInDanger(pirate))
                 .ToList();
-            wantToBeHeavy.AddRange(availablePirates.Where(pirate => bunkeringPirates.Contains(pirate) &&
-                (game.GetMyMotherships().Where(mothership => mothership.Distance(pirate) < game.MothershipUnloadRange).Count() > 0 || game.GetEnemyMotherships()
-                    .Where(mothership => mothership.Distance(pirate) < game.MothershipUnloadRange).Count() > 0)));
+            wantToBeHeavy.AddRange(bunkeringPirates.Where(pirate =>(game.GetMyMotherships().Where(mothership => mothership.Distance(pirate) < game.MothershipUnloadRange).Count() > 0 || game.GetEnemyMotherships()
+                .Where(mothership => mothership.Distance(pirate) < game.MothershipUnloadRange).Count() > 0)));
             List<Pirate> wantToBeNormal = availablePirates.Where(pirate => pirate.HasCapsule() && pirate.IsHeavy() && !IsCapsuleHolderInDanger(pirate)).ToList();
             List<Pirate> willingToBeNormal = game.GetMyLivingPirates()
                 .Except(bunkeringPirates)
