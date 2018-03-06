@@ -7,7 +7,7 @@ namespace Skillz_Code
     partial class SSJS12Bot : IPirateBot
     {
         public static PirateGame game;
-        private const bool Debug = true;
+        private const bool Debug = false;
         private List<Pirate> availablePirates;
         private Dictionary<Pirate, Location> pirateDestinations;
         private Dictionary<Capsule, int> enemyCapsulePushes;
