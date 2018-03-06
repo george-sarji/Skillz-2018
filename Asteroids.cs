@@ -23,7 +23,7 @@ namespace Skillz_Code
                     var bestCapsule = game.GetEnemyCapsules().Where(capsule => capsule.Holder != null &&
                             GetEnemyBestMothershipThroughWormholes(capsule.Holder) != null &&
                             GetOptimalAsteroidInterception(capsule.Holder, pirate, asteroid, GetEnemyBestMothershipThroughWormholes(capsule.Holder).GetLocation()) != null)
-                        .OrderBy(capsule => capsule.Holder.Steps(GetEnemyBestMothershipThroughWormholes(capsule.Holder))).FirstOrDefault();
+                        .OrderByDescending(capsule => capsule.Holder.Steps(GetEnemyBestMothershipThroughWormholes(capsule.Holder))).FirstOrDefault();
                     // get the closest asteroid
                     var closestAsteroid = game.GetLivingAsteroids().OrderBy(ast => ast.Distance(asteroid)).Where(ast => ast != asteroid).FirstOrDefault();
                     // get the ooposite direction of the astroid you're pushing
@@ -72,29 +72,9 @@ namespace Skillz_Code
 
         }
 
-        private void InterceptCapsules()
+        private void PushAsteroid(Pirate pirate, Asteroid asteroid)
         {
-            foreach (var asteroid in game.GetLivingAsteroids())
-            {
-                // Get the pirate that can push the asteroid.
-                var pirate = availablePirates.Where(p => p.CanPush(asteroid)).OrderByDescending(p => AsteroidHeadingTowardsPirate(asteroid, p)).FirstOrDefault();
-                if (pirate != null)
-                {
-                    // Get the capsule that can be intercepted and is the closest
-                    var bestCapsule = game.GetEnemyCapsules().Where(capsule => capsule.Holder != null &&
-                            GetEnemyBestMothershipThroughWormholes(capsule.Holder) != null &&
-                            GetOptimalAsteroidInterception(capsule.Holder, pirate, asteroid, GetEnemyBestMothershipThroughWormholes(capsule.Holder).GetLocation()) != null)
-                        .OrderBy(capsule => capsule.Holder.Steps(GetEnemyBestMothershipThroughWormholes(capsule.Holder))).FirstOrDefault();
-                    if (bestCapsule != null)
-                    {
-                        // Make the pirate push the asteroid towards the optimal interception.
-                        var pushLocation = GetOptimalAsteroidInterception(bestCapsule.Holder, pirate, asteroid, GetEnemyBestMothershipThroughWormholes(bestCapsule.Holder).Location);
-                        pirate.Push(asteroid, pushLocation);
-                        Print(pirate + " pushes " + asteroid + " towards " + pushLocation + " to intercept " + bestCapsule);
-                        availablePirates.Remove(pirate);
-                    }
-                }
-            }
+            // Push the asteroid towards: 1) capsule that can be intercepted, 2) 
         }
 
         private bool AsteroidHeadingTowardsPirate(Asteroid asteroid, Pirate pirate)
