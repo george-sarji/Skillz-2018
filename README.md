@@ -102,15 +102,15 @@ Skillz code for 2018, revamped.
         <td>SpaceTime</td>
         <td>Win</td>
         <td>8/7</td>
-        <td>262</td>
+        <td>300</td>
         <td>-</td>
     </tr>
     <tr>
         <td>1</td>
         <td>Momentum</td>
         <td>Win</td>
-        <td>1/0</td>
-        <td>750</td>
+        <td>8/0</td>
+        <td>300</td>
         <td>-</td>
     </tr>
     <tr>
@@ -118,7 +118,7 @@ Skillz code for 2018, revamped.
         <td>GravityWaves</td>
         <td>Win</td>
         <td>8/0</td>
-        <td>125</td>
+        <td>157</td>
         <td>-</td>
     </tr>
     <tr>
@@ -142,15 +142,15 @@ Skillz code for 2018, revamped.
         <td>OutOfSpace</td>
         <td>Win</td>
         <td>8/1</td>
-        <td>212</td>
+        <td>392</td>
         <td>-</td>
     </tr>
     <tr>
         <td>3</td>
         <td>Pushti</td>
         <td>Win</td>
-        <td>8/3</td>
-        <td>405</td>
+        <td>8/1</td>
+        <td>370</td>
         <td>-</td>
     </tr>
     <tr>
@@ -158,15 +158,15 @@ Skillz code for 2018, revamped.
         <td>William</td>
         <td>Win</td>
         <td>8/3</td>
-        <td>416</td>
+        <td>294</td>
         <td>-</td>
     </tr>
     <tr>
         <td>4</td>
         <td>Pullpushon</td>
         <td>Win</td>
-        <td>8/4</td>
-        <td>443</td>
+        <td>8/6</td>
+        <td>659</td>
         <td>-</td>
     </tr>
 </table>
