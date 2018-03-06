@@ -78,14 +78,15 @@ namespace Skillz_Code
             }
         }
 
-        private bool TryPushMyCapsule(Pirate myPirateWithCapsule, Pirate pirate)
+        public bool TryPushMyCapsule(Pirate myPirateWithCapsule, Pirate pirate)
         {
             if (!pirate.CanPush(myPirateWithCapsule) ||
                 myPiratesWithCapsulePushes[myPirateWithCapsule] == myPirateWithCapsule.NumPushesForCapsuleLoss - 1)
             {
                 return false;
             }
-            var destination = GetMyBestMothershipThroughWormholes(myPirateWithCapsule);
+            var destination = game.GetMyMotherships().OrderBy(mothership => mothership.Distance(myPirateWithCapsule))
+                .FirstOrDefault();
             var locationOfPush = myPirateWithCapsule.Location.Towards(destination, pirate.PushDistance);
             if (!IsWorthPushing(pirate, locationOfPush, destination.Location))
             {

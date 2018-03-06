@@ -117,24 +117,34 @@ namespace Skillz_Code
 
         private IEnumerable<TargetLocation> GetTargetLocationsAsteroids()
         {
-            var AsteroidCapsulePair = new Dictionary<Asteroid, Capsule>();
             List<TargetLocation> targetAsteroids = new List<TargetLocation>();
             var availableCapsules = game.GetEnemyCapsules().Where(capsule => capsule.Holder != null).ToList();
-            foreach (var asteroid in availableAsteroids.ToList())
-            {
-                Capsule bestCapsule = GetBestCapsuleForAsteroid(asteroid, availableCapsules);
-                if (bestCapsule != null)
-                {
-                    AsteroidCapsulePair.Add(asteroid, bestCapsule);
-                    availableAsteroids.Remove(asteroid);
-                    availableCapsules.Remove(bestCapsule);
-                }
-            }
-            AsteroidCapsulePair.OrderBy(entry => entry.Key.Steps(entry.Value) + entry.Value.Holder.Steps(GetEnemyBestMothershipThroughWormholes(entry.Value.Holder)));
             int count = 1;
-            foreach (var entry in AsteroidCapsulePair)
+            while (availableAsteroids.Where(a => a.Location.Add(a.Direction).Distance(a.Location) == 0).Any())
             {
-                targetAsteroids.Add(new TargetLocation(entry.Key.Location, LocationType.Asteroid, count, entry.Key, this));
+                Capsule bestCapsule = null;
+                Asteroid bestAsteroid = null;
+                int bestScore = 0;
+                foreach (var asteroid in availableAsteroids.Where(a => a.Location.Add(a.Direction).Distance(a.Location) == 0))
+                {
+                    var bestCapsuleForAsteroid = GetBestCapsuleForAsteroid(asteroid, availableCapsules);
+                    if (bestCapsuleForAsteroid == null)
+                        break;
+                    var score = asteroid.Steps(bestCapsuleForAsteroid) +
+                        bestCapsuleForAsteroid.Holder.Steps(GetEnemyBestMothershipThroughWormholes(bestCapsuleForAsteroid.Holder));
+                    if (bestCapsule == null || bestAsteroid == null || score < bestScore)
+                    {
+                        bestScore = asteroid.Steps(bestCapsuleForAsteroid) +
+                            bestCapsuleForAsteroid.Holder.Steps(GetEnemyBestMothershipThroughWormholes(bestCapsuleForAsteroid.Holder));
+                        bestCapsule = bestCapsuleForAsteroid;
+                        bestAsteroid = asteroid;
+                    }
+                }
+                if(bestCapsule == null || bestAsteroid == null)
+                    break;
+                targetAsteroids.Add(new TargetLocation(bestAsteroid.Location, LocationType.Asteroid, count, bestAsteroid, this));
+                availableAsteroids.Remove(bestAsteroid);
+                availableCapsules.Remove(bestCapsule);
                 count++;
             }
             return targetAsteroids;
