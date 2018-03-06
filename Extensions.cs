@@ -39,6 +39,12 @@ namespace Skillz_Code
         {
             return pirate.Distance(mapObject) / (pirate.MaxSpeed + 1);
         }
+
+        public static int Steps(this Asteroid asteroid, MapObject mapObject)
+        {
+            return asteroid.Distance(mapObject) / (asteroid.Speed + 1);
+        }
+
         public static int Clamp(this int x, int min, int max)
         {
             return x<min ? min : x> max ? max :
