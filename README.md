@@ -34,7 +34,7 @@ Skillz code for 2018, revamped.
         <td>Steroids</td>
         <td>Win</td>
         <td>8/1</td>
-        <td>249</td>
+        <td>243</td>
         <td>-</td>
     </tr>
     <tr>
@@ -74,7 +74,7 @@ Skillz code for 2018, revamped.
         <td>Voyager1</td>
         <td>Win</td>
         <td>8/1</td>
-        <td>148</td>
+        <td>171</td>
         <td>-</td>
     </tr>
     <tr>
@@ -194,7 +194,7 @@ Skillz code for 2018, revamped.
         <td>StaticVoid</td>
         <td>Win</td>
         <td>8/0</td>
-        <td>171</td>
+        <td>172</td>
         <td>-</td>
     </tr>
     <tr>
@@ -255,7 +255,7 @@ Skillz code for 2018, revamped.
     </tr>
 </table>
 
-### Week 4 (7/9):
+### Week 4 (8/9):
 <table>
     <tr>
         <td>Level</td>
@@ -269,8 +269,8 @@ Skillz code for 2018, revamped.
         <td>1</td>
         <td>TodoBomb</td>
         <td>Win</td>
-        <td>8/0</td>
-        <td>183</td>
+        <td>8/2</td>
+        <td>189</td>
         <td>-</td>
     </tr>
     <tr>
@@ -309,16 +309,16 @@ Skillz code for 2018, revamped.
         <td>3</td>
         <td>CyberSpace</td>
         <td>Win</td>
-        <td>8/0</td>
-        <td>151</td>
+        <td>8/3</td>
+        <td>259</td>
         <td>-</td>
     </tr>
     <tr>
         <td>3</td>
         <td>Basmach</td>
         <td>Win</td>
-        <td>8/3</td>
-        <td>186</td>
+        <td>8/4</td>
+        <td>201</td>
         <td>-</td>
     </tr>
     <tr>
@@ -332,9 +332,9 @@ Skillz code for 2018, revamped.
     <tr>
         <td>4</td>
         <td>PushPullon</td>
-        <td><b>Loss</b></td>
-        <td>8/10</td>
-        <td>517</td>
+        <td>Win</td>
+        <td>10/8</td>
+        <td>678</td>
         <td>-</td>
     </tr>
 </table>
