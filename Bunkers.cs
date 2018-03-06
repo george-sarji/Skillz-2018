@@ -49,6 +49,17 @@ namespace Skillz_Code
                         if (bestWormhole != null && bestWormhole.Partner != null &&
                             bestWormhole.Partner.InRange(mothership, mothership.UnloadRange * 3))
                         {
+                            // Get the steps needed for the pirate to go to the wormhole's partner, push it and come back.
+                            var friendlyStepsNeeded = pirate.Steps(bestWormhole.Partner) * 2 + 1 + pirate.PushReloadTurns + game.PushMaxReloadTurns;
+                            // Get the steps needed for the enemy pirate to arrive to the mothership
+                            var enemyStepsNeeded = capsule.Holder.Steps(mothership);
+                            if (friendlyStepsNeeded < enemyStepsNeeded)
+                            {
+                                var wormhole = bestWormhole.Partner;
+                                if (!TryPushWormhole(pirate, wormhole))
+                                    AssignDestination(pirate, wormhole.Location.Towards(pirate, wormhole.WormholeRange));
+                                usedPirates.Add(pirate);
+                            }
                             // Add push wormhole here
                         }
                         else
