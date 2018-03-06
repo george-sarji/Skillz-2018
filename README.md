@@ -87,7 +87,7 @@ Skillz code for 2018, revamped.
     </tr>
 </table>
 
-### Week 2 (9/9):
+### Week 2 (7/9):
 <table>
     <tr>
         <td>Level</td>
@@ -100,7 +100,7 @@ Skillz code for 2018, revamped.
     <tr>
         <td>1</td>
         <td>SpaceTime</td>
-        <td>Win</td>
+        <td><b>Loss</b></td>
         <td>8/7</td>
         <td>300</td>
         <td>-</td>
@@ -164,7 +164,7 @@ Skillz code for 2018, revamped.
     <tr>
         <td>4</td>
         <td>Pullpushon</td>
-        <td>Win</td>
+        <td><b>Loss</b></td>
         <td>8/6</td>
         <td>659</td>
         <td>-</td>
