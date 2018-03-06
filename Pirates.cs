@@ -153,5 +153,19 @@ namespace Skillz_Code
                 }
             }
         }
+
+        private Location GetPirateOptimalInterception(Pirate friendly, Pirate enemy, Location destination)
+        {
+            var steps = enemy.Steps(destination.Towards(enemy, enemy.MaxSpeed));
+            for (int i = 0; i < steps; i++)
+            {
+                // Get the new location for each of the pirates
+                var enemyLocation = enemy.Location.Towards(destination, enemy.MaxSpeed * i);
+                var friendlyLocation = friendly.Location.Towards(enemyLocation, friendly.MaxSpeed * i);
+                if (friendlyLocation.InRange(enemyLocation, friendly.PushRange))
+                    return enemyLocation;
+            }
+            return null;
+        }
     }
 }
