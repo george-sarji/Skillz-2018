@@ -8,10 +8,11 @@ namespace Skillz_Code
     {
         private void PushAsteroids()
         {
+            var exceptionList = new List<Asteroid>();
             foreach (Asteroid asteroid in game.GetLivingAsteroids())
             {
                 var pirate = availablePirates.Where(p => p.CanPush(asteroid)).OrderByDescending(p => AsteroidHeadingTowardsPirate(asteroid, p)).FirstOrDefault();
-                if (pirate != null && availablePirates.Where(p => p.CanPush(asteroid)).Any() && availableAsteroids.Contains(asteroid))
+                if (pirate != null && availableAsteroids.Contains(asteroid))
                 {
                     // get the best enemy to push asteroid towards
                     var bestEnemy = game.GetEnemyLivingPirates()
@@ -31,7 +32,7 @@ namespace Skillz_Code
                     bool bestEnemyIsCloserThanClosestAsteroid = (closestAsteroid == null) || (bestEnemy != null && bestEnemy.Distance(pirate) <= closestAsteroid.Distance(pirate));
                     // the 4 "IF"s below check if the asteroid is going to kill the pirate pushing it before pushing.
                     if (bestCapsule != null &&
-                        !IsSelfKilling(pirate, asteroid, GetOptimalAsteroidInterception(bestCapsule.Holder, pirate, asteroid,
+                        !IsKillingMyPirates(pirate, asteroid, GetOptimalAsteroidInterception(bestCapsule.Holder, pirate, asteroid,
                             GetEnemyBestMothershipThroughWormholes(bestCapsule.Holder).GetLocation())))
                     {
                         var interceptionPoint = GetOptimalAsteroidInterception(bestCapsule.Holder, pirate, asteroid,
@@ -39,14 +40,14 @@ namespace Skillz_Code
                         pirate.Push(asteroid, interceptionPoint);
                         availablePirates.Remove(pirate);
                     }
-                    else if (bestEnemy != null && !IsSelfKilling(pirate, asteroid, bestEnemy.Location) &&
+                    else if (bestEnemy != null && !IsKillingMyPirates(pirate, asteroid, bestEnemy.Location) &&
                         bestEnemyIsCloserThanClosestAsteroid)
                     {
                         // push asteroid towards the closest enemy
                         pirate.Push(asteroid, bestEnemy);
                         availablePirates.Remove(pirate);
                     }
-                    else if (closestAsteroid != null && !IsSelfKilling(pirate, asteroid, closestAsteroid.Location))
+                    else if (closestAsteroid != null && !IsKillingMyPirates(pirate, asteroid, closestAsteroid.Location))
                     {
                         // push asteroid towards the closest asteroid
                         pirate.Push(asteroid, closestAsteroid);
@@ -54,17 +55,33 @@ namespace Skillz_Code
                         availableAsteroids.Remove(closestAsteroid);
                     }
                     // if the asteroid is standing still dont pushing to the opposite direction.
-                    else if (!IsSelfKilling(pirate, asteroid, asteroid.Location.Towards(asteroid.Location.Add(oppositeDirection), pirate.PushDistance)) && asteroid.Direction.Distance(new Location(0, 0)) != 0)
+                    else if (!IsKillingMyPirates(pirate, asteroid, asteroid.Location.Towards(asteroid.Location.Add(oppositeDirection), pirate.PushDistance)) && asteroid.Direction.Distance(new Location(0, 0)) != 0)
                     {
                         // push asteroid in it's opposite direction
                         pirate.Push(asteroid, asteroid.Location.Towards(asteroid.Location.Add(oppositeDirection), pirate.PushDistance));
                         availablePirates.Remove(pirate);
                     }
-                    else if (!IsSelfKilling(pirate, asteroid, GetClosestToBorder(asteroid.Location)))
+                    else if (!IsKillingMyPirates(pirate, asteroid, GetClosestToBorder(asteroid.Location)))
                     {
                         // push asteroid towards the closest border
                         pirate.Push(asteroid, GetClosestToBorder(asteroid.Location));
                         availablePirates.Remove(pirate);
+                    }
+                    else
+                    {
+                        var bestOption = asteroid.Location;
+                        for (int i = 0; i < CircleSteps; i++)
+                        {
+                            double angle = System.Math.PI * 2 * i / CircleSteps;
+                            double deltaX = pirate.PushDistance * System.Math.Cos(angle);
+                            double deltaY = pirate.PushDistance * System.Math.Sin(angle);
+                            Location newAsteroidLocation = new Location((int) (asteroid.Location.Row - deltaY), (int) (asteroid.Location.Col + deltaX));
+                            if(!(game.GetMyLivingPirates().Where(p => !newAsteroidLocation.InMap() ? false : newAsteroidLocation.Distance(p) <= asteroid.Size).Any()))
+                            {
+                                pirate.Push(asteroid, newAsteroidLocation);
+                                availableAsteroids.Remove(asteroid);
+                            }
+                        }
                     }
                 }
             }
@@ -100,50 +117,47 @@ namespace Skillz_Code
             return false;
         }
 
-        private bool AsteroidHeadingTowardsPirate(Asteroid asteroid, Pirate pirate)
+        public bool AsteroidHeadingTowardsPirates(Asteroid asteroid)
+        {
+            // check if the asteroid is heading towards any of our pirates
+            return game.GetMyLivingPirates().Where(pirate => !asteroid.Location.Add(asteroid.Direction).InMap() ? false :
+                asteroid.Location.Add(asteroid.Direction).Distance(pirate) <= asteroid.Size).Any();
+        }
+
+        public bool AsteroidHeadingTowardsPirate(Asteroid asteroid, Pirate pirate)
         {
             // check if the asteroid is heading towards the pirate
             return !asteroid.Location.Add(asteroid.Direction).InMap() ? false :
                 asteroid.Location.Add(asteroid.Direction).Distance(pirate) <= asteroid.Size;
         }
 
-        private bool IsSelfKilling(Pirate pirate, Asteroid asteroid, Location pushDestination)
+        public bool IsKillingMyPirates(Pirate pirate, Asteroid asteroid, Location pushDestination)
         {
-            // checks if the asteroid gonna kill the pirate after he pushes it to the pushDestination
-            return !asteroid.Location.Towards(pushDestination, pirate.PushDistance).InMap() ? false :
-                asteroid.Location.Towards(pushDestination, pirate.PushDistance).Distance(pirate) <= asteroid.Size;
+            // checks if the asteroid gonna kill any of our pirates after he pushes it to the pushDestination
+            return game.GetMyLivingPirates().Where(p => !asteroid.Location.Towards(pushDestination, pirate.PushDistance).InMap() ? false :
+                asteroid.Location.Towards(pushDestination, pirate.PushDistance).Distance(p) <= asteroid.Size).Any() ;
         }
 
         private IEnumerable<TargetLocation> GetTargetLocationsAsteroids()
         {
+            var AsteroidCapsulePair = new Dictionary<Asteroid, Capsule>();
             List<TargetLocation> targetAsteroids = new List<TargetLocation>();
             var availableCapsules = game.GetEnemyCapsules().Where(capsule => capsule.Holder != null).ToList();
-            int count = 1;
-            while (availableAsteroids.Where(a => a.Location.Add(a.Direction).Distance(a.Location) == 0).Any())
+            foreach (var asteroid in availableAsteroids.ToList())
             {
-                Capsule bestCapsule = null;
-                Asteroid bestAsteroid = null;
-                int bestScore = 0;
-                foreach (var asteroid in availableAsteroids.Where(a => a.Location.Add(a.Direction).Distance(a.Location) == 0))
+                Capsule bestCapsule = GetBestCapsuleForAsteroid(asteroid, availableCapsules);
+                if (bestCapsule != null)
                 {
-                    var bestCapsuleForAsteroid = GetBestCapsuleForAsteroid(asteroid, availableCapsules);
-                    if (bestCapsuleForAsteroid == null)
-                        break;
-                    var score = asteroid.Steps(bestCapsuleForAsteroid) +
-                        bestCapsuleForAsteroid.Holder.Steps(GetEnemyBestMothershipThroughWormholes(bestCapsuleForAsteroid.Holder));
-                    if (bestCapsule == null || bestAsteroid == null || score < bestScore)
-                    {
-                        bestScore = asteroid.Steps(bestCapsuleForAsteroid) +
-                            bestCapsuleForAsteroid.Holder.Steps(GetEnemyBestMothershipThroughWormholes(bestCapsuleForAsteroid.Holder));
-                        bestCapsule = bestCapsuleForAsteroid;
-                        bestAsteroid = asteroid;
-                    }
+                    AsteroidCapsulePair.Add(asteroid, bestCapsule);
+                    availableAsteroids.Remove(asteroid);
+                    availableCapsules.Remove(bestCapsule);
                 }
-                if(bestCapsule == null || bestAsteroid == null)
-                    break;
-                targetAsteroids.Add(new TargetLocation(bestAsteroid.Location, LocationType.Asteroid, count, bestAsteroid, this));
-                availableAsteroids.Remove(bestAsteroid);
-                availableCapsules.Remove(bestCapsule);
+            }
+            AsteroidCapsulePair.OrderBy(entry => entry.Key.Steps(entry.Value) + entry.Value.Holder.Steps(GetEnemyBestMothershipThroughWormholes(entry.Value.Holder)));
+            int count = 1;
+            foreach (var entry in AsteroidCapsulePair)
+            {
+                targetAsteroids.Add(new TargetLocation(entry.Key.Location, LocationType.Asteroid, count, entry.Key, this));
                 count++;
             }
             return targetAsteroids;
