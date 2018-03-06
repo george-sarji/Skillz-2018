@@ -234,7 +234,7 @@ Skillz code for 2018, revamped.
         <td>NeutronStar</td>
         <td>Win</td>
         <td>8/2</td>
-        <td>365</td>
+        <td>287</td>
         <td>-</td>
     </tr>
     <tr>
@@ -269,16 +269,16 @@ Skillz code for 2018, revamped.
         <td>1</td>
         <td>TodoBomb</td>
         <td>Win</td>
-        <td>8/2</td>
-        <td>189</td>
+        <td>8/4</td>
+        <td>203</td>
         <td>-</td>
     </tr>
     <tr>
         <td>1</td>
         <td>Matrix</td>
         <td>Win</td>
-        <td>8/5</td>
-        <td>150</td>
+        <td>8/7</td>
+        <td>217</td>
         <td>-</td>
     </tr>
     <tr>
@@ -286,39 +286,39 @@ Skillz code for 2018, revamped.
         <td>Kamikaze</td>
         <td>Win</td>
         <td>10/9</td>
-        <td>220</td>
+        <td>279</td>
         <td>-</td>
     </tr>
     <tr>
         <td>2</td>
         <td>StickyNotes</td>
         <td>Win</td>
-        <td>8/1</td>
-        <td>398</td>
+        <td>8/3</td>
+        <td>740</td>
         <td>-</td>
     </tr>
     <tr>
         <td>3</td>
         <td>HamannHarasha</td>
         <td>Win</td>
-        <td>8/2</td>
-        <td>634</td>
+        <td>8/4</td>
+        <td>521</td>
         <td>-</td>
     </tr>
     <tr>
         <td>3</td>
         <td>CyberSpace</td>
         <td>Win</td>
-        <td>8/3</td>
-        <td>259</td>
+        <td>8/1</td>
+        <td>159</td>
         <td>-</td>
     </tr>
     <tr>
         <td>3</td>
         <td>Basmach</td>
         <td>Win</td>
-        <td>8/4</td>
-        <td>201</td>
+        <td>8/1</td>
+        <td>163</td>
         <td>-</td>
     </tr>
     <tr>
@@ -333,8 +333,8 @@ Skillz code for 2018, revamped.
         <td>4</td>
         <td>PushPullon</td>
         <td>Win</td>
-        <td>10/8</td>
-        <td>678</td>
+        <td>10/6</td>
+        <td>193</td>
         <td>-</td>
     </tr>
 </table>
