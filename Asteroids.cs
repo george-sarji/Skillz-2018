@@ -12,7 +12,7 @@ namespace Skillz_Code
             foreach (Asteroid asteroid in game.GetLivingAsteroids())
             {
                 var pirate = availablePirates.Where(p => p.CanPush(asteroid)).OrderByDescending(p => AsteroidHeadingTowardsPirate(asteroid, p)).FirstOrDefault();
-                if (pirate != null && availablePirates.Where(p => p.CanPush(asteroid)).Any() && !exceptionList.Contains(asteroid))
+                if (pirate != null && availablePirates.Where(p => p.CanPush(asteroid)).Any() && availableAsteroids.Contains(asteroid))
                 {
                     // get the best enemy to push asteroid towards
                     var bestEnemy = game.GetEnemyLivingPirates()
@@ -52,7 +52,7 @@ namespace Skillz_Code
                         // push asteroid towards the closest asteroid
                         pirate.Push(asteroid, closestAsteroid);
                         availablePirates.Remove(pirate);
-                        exceptionList.Add(closestAsteroid);
+                        availableAsteroids.Remove(closestAsteroid);
                     }
                     // if the asteroid is standing still dont pushing to the opposite direction.
                     else if (!IsSelfKilling(pirate, asteroid, asteroid.Location.Towards(asteroid.Location.Add(oppositeDirection), pirate.PushDistance)) && asteroid.Direction.Distance(new Location(0, 0)) != 0)
@@ -69,7 +69,6 @@ namespace Skillz_Code
                     }
                 }
             }
-
         }
 
         private bool PushAsteroid(Pirate pirate, Asteroid asteroid)
@@ -118,20 +117,38 @@ namespace Skillz_Code
 
         private IEnumerable<TargetLocation> GetTargetLocationsAsteroids()
         {
-            IEnumerable<Asteroid> targetAsteroids = null;
-            List<TargetLocation> targetLocations = new List<TargetLocation>();
-            // foreach(Mothership enemyShip in game.GetEnemyMotherships())
-            // {
-            //     Capsule closestCapsuleToMothership = game.GetEnemyCapsules().Where(cap => cap.Holder!=null)
-            //         .OrderBy(cap => cap.Distance(enemyShip)).FirstOrDefault();
-            //     targetAsteroids = game.GetLivingAsteroids().Where(ast => !usedAsteroids.Contains(ast))
-            //         .Where(ast => ast.Distance(enemyShip)<=closestCapsuleToMothership.Distance(enemyShip));
-            //     foreach(Asteroid asteroid in targetAsteroids)
-            //     {
-            //         targetLocations.Add(new TargetLocation(asteroid.Location,LocationType.Asteroid,(int)(closestCapsuleToMothership.Distance(enemyShip)/asteroid.Distance(enemyShip)),asteroid));
-            //     }
-            // }
-            return targetLocations;
+            var AsteroidCapsulePair = new Dictionary<Asteroid, Capsule>();
+            List<TargetLocation> targetAsteroids = new List<TargetLocation>();
+            var availableCapsules = game.GetEnemyCapsules().Where(capsule => capsule.InitialLocation != capsule.Location);
+            foreach (var asteroid in availableAsteroids.Where( a => a.Location.Add(a.Direction) == a.Location))
+            {
+                Capsule bestCapsule = null;
+                foreach (Capsule capsule in availableCapsules)
+                {
+                    var bestMothership = GetEnemyBestMothershipThroughWormholes(capsule.Holder);
+                    int distance = asteroid.Steps(capsule) + capsule.Holder.Steps(GetEnemyBestMothershipThroughWormholes(capsule.Holder));
+                    if (bestCapsule == null ||
+                        (asteroid.Steps(capsule) < capsule.Holder.Steps(bestMothership)) &&
+                        distance < bestCapsule.Distance(asteroid) + bestCapsule.Holder.Distance(GetEnemyBestMothershipThroughWormholes(bestCapsule.Holder)))
+                    {
+                        bestCapsule = capsule;
+                    }
+                }
+                if (bestCapsule != null &&
+                    availablePirates.OrderBy(p => p.Steps(asteroid)).FirstOrDefault().Steps(asteroid) <
+                    bestCapsule.Holder.Distance(GetEnemyBestMothershipThroughWormholes(bestCapsule.Holder)))
+                {
+                    AsteroidCapsulePair.Add(asteroid, bestCapsule);
+                }
+            }
+            AsteroidCapsulePair.OrderBy( entry => entry.Key.Steps(entry.Value) + entry.Value.Holder.Steps(GetEnemyBestMothershipThroughWormholes(entry.Value.Holder)));
+            int count = 1;
+            foreach( var entry in AsteroidCapsulePair)
+            {
+                targetAsteroids.Add(new TargetLocation(entry.Key.Location,LocationType.Asteroid,count,entry.Key));
+                count++;
+            }
+            return targetAsteroids;
         }
 
         private Location GetOptimalAsteroidInterception(Pirate enemy, Pirate friendly, Asteroid asteroid, Location destination)
