@@ -102,11 +102,11 @@ namespace Skillz_Code
 
        private bool IsWorthPushing(Pirate myPirateWithCapsule, Pirate piratePusher, Location locationOfPush, Location destination)
         {
-            return false;
-            // return availablePirates.Where(p => p.CanPush(myPirateWithCapsule))
-            //        .OrderByDescending(p => p.PushDistance)
-            //        .Take(myPirateWithCapsule.NumPushesForCapsuleLoss-myPiratesWithCapsulePushes[myPirateWithCapsule])
-            //        .Contains(piratePusher);
+            // return false;
+            return availablePirates.Where(p => p.CanPush(myPirateWithCapsule))
+                   .OrderByDescending(p => p.PushDistance)
+                   .Take(myPirateWithCapsule.NumPushesForCapsuleLoss-myPiratesWithCapsulePushes[myPirateWithCapsule])
+                   .Contains(piratePusher);
         }
 
     }
