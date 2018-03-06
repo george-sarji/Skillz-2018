@@ -78,41 +78,35 @@ namespace Skillz_Code
             }
         }
 
-        public bool TryPushMyCapsule(Pirate myPirateWithCapsule, Pirate pirate)
+        public bool TryPushMyCapsule(Pirate myPirateWithCapsule, Pirate pusherPirate)
         {
-            if (!pirate.CanPush(myPirateWithCapsule) ||
+            if (!pusherPirate.CanPush(myPirateWithCapsule) ||
                 myPiratesWithCapsulePushes[myPirateWithCapsule] == myPirateWithCapsule.NumPushesForCapsuleLoss - 1)
             {
                 return false;
             }
-            var destination = game.GetMyMotherships().OrderBy(mothership => mothership.Distance(myPirateWithCapsule))
-                .FirstOrDefault();
-            var locationOfPush = myPirateWithCapsule.Location.Towards(destination, pirate.PushDistance);
-            if (!IsWorthPushing(pirate, locationOfPush, destination.Location))
+            var destination = GetMyBestMothershipThroughWormholes(myPirateWithCapsule);
+            var locationOfPush = myPirateWithCapsule.Location.Towards(destination, pusherPirate.PushDistance);
+            if (!IsWorthPushing(myPirateWithCapsule ,pusherPirate, locationOfPush, destination.Location))
             {
                 return false;
             }
-            availablePirates.Remove(pirate);
+            availablePirates.Remove(pusherPirate);
             myPiratesWithCapsulePushes[myPirateWithCapsule]++;
-            pirate.Push(
+            pusherPirate.Push(
                 myPirateWithCapsule,
                 game.GetMyMotherships().OrderBy(mothership => mothership.Distance(myPirateWithCapsule))
                 .FirstOrDefault());
             return true;
         }
 
-        private bool IsWorthPushing(Pirate pirate, Location locationOfPush, Location destination)
+        private bool IsWorthPushing(Pirate myPirateWithCapsule, Pirate piratePusher, Location locationOfPush, Location destination)
         {
-            int count = game.GetEnemyLivingPirates()
-                .Where(enemy => enemy.HasCapsule() && pirate.Distance(destination) < enemy.Distance(
-                    game.GetEnemyMotherships().OrderBy(mothership => mothership.Distance(enemy)).FirstOrDefault())).Count();
-            if (count < (game.GetEnemyLivingPirates()
-                    .Where(enemy => enemy.HasCapsule() && locationOfPush.Distance(destination) < enemy.Distance(
-                        game.GetEnemyMotherships().OrderBy(mothership => mothership.Distance(enemy)).FirstOrDefault())).Count()))
-            {
-                return true;
-            }
-            return false;
+
+            return availablePirates.Where(p => p.CanPush(myPirateWithCapsule))
+                   .OrderByDescending(p => p.PushDistance)
+                   .Take(myPirateWithCapsule.NumPushesForCapsuleLoss-myPiratesWithCapsulePushes[myPirateWithCapsule])
+                   .Contains(piratePusher);
         }
 
     }
