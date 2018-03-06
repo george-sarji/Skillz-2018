@@ -92,7 +92,7 @@ namespace Skillz_Code
             var targetLocations = new List<TargetLocation>();
             foreach (Wormhole wormhole in game.GetAllWormholes().Where(wormhole => MakesSenseToPushWormhole(wormhole)))
             {
-                var targetLocation = new TargetLocation(wormhole.Location, LocationType.Wormhole, GetWormholePriority(wormhole), wormhole);
+                var targetLocation = new TargetLocation(wormhole.Location, LocationType.Wormhole, GetWormholePriority(wormhole), wormhole, this);
                 targetLocations.Add(targetLocation);
             }
             return targetLocations;
@@ -130,7 +130,7 @@ namespace Skillz_Code
             return from.Distance(to);
         }
 
-        private IEnumerable<Wormhole> GetViableWormholes(Pirate pirate)
+        public static IEnumerable<Wormhole> GetViableWormholes(Pirate pirate)
         {
             return game.GetAllWormholes() //.Except(usedWormholes)
                 .Where(wormhole => wormhole.TurnsToReactivate <= pirate.Steps(wormhole) + 2);

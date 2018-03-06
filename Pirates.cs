@@ -35,7 +35,7 @@ namespace Skillz_Code
                 int priority = 1;
                 if (capsuleHolder.StickyBombs.Any())
                     priority = 10;
-                targetPirates.Add(new TargetLocation(capsuleHolder.Location, LocationType.EnemyPirate, priority, capsuleHolder,
+                targetPirates.Add(new TargetLocation(capsuleHolder.Location, LocationType.EnemyPirate, priority, capsuleHolder, this,
                     (game.StickyBombReloadTurns != 0) ? capsuleHolder.NumPushesForCapsuleLoss : 1));
             }
             if (!enemyCapsuleHolders.Any())
@@ -46,7 +46,7 @@ namespace Skillz_Code
                 //     .OrderByDescending(enemy => GetEnemiesInBombRange(enemy)).FirstOrDefault();
                 if (bestEnemy != null)
                     targetPirates.Add(new TargetLocation(bestEnemy.Location, LocationType.EnemyPirate,
-                        ScaleToRange(0, game.GetAllEnemyPirates().Count(), MAX_PRIORITY, MIN_PRIORITY, GetEnemiesInBombRange(bestEnemy).Count()), bestEnemy, 1));
+                        ScaleToRange(0, game.GetAllEnemyPirates().Count(), MAX_PRIORITY, MIN_PRIORITY, GetEnemiesInBombRange(bestEnemy).Count()), bestEnemy, this, 1));
             }
 
             return targetPirates;
@@ -61,7 +61,7 @@ namespace Skillz_Code
                 var bestMothership = game.GetMyMotherships().OrderBy(mothership => pirate.Steps(mothership) / (int) ((double) mothership.ValueMultiplier).Sqrt()).FirstOrDefault();
                 if (!CheckIfCapsuleCanReachMothership(pirate, bestMothership))
                 {
-                    targetLocations.Add(new TargetLocation(pirate.Location, LocationType.MyPirate, 1, pirate));
+                    targetLocations.Add(new TargetLocation(pirate.Location, LocationType.MyPirate, 1, pirate, this));
                 }
             }
             // foreach (var pair in pirateDestinations)
