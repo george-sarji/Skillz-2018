@@ -185,8 +185,8 @@ Skillz code for 2018, revamped.
         <td>1</td>
         <td>DeathStar</td>
         <td>Win</td>
-        <td>12/1</td>
-        <td>212</td>
+        <td>12/4</td>
+        <td>177</td>
         <td>-</td>
     </tr>
     <tr>
@@ -194,7 +194,7 @@ Skillz code for 2018, revamped.
         <td>StaticVoid</td>
         <td>Win</td>
         <td>8/0</td>
-        <td>172</td>
+        <td>205</td>
         <td>-</td>
     </tr>
     <tr>
@@ -233,8 +233,8 @@ Skillz code for 2018, revamped.
         <td>3</td>
         <td>NeutronStar</td>
         <td>Win</td>
-        <td>8/2</td>
-        <td>287</td>
+        <td>8/0</td>
+        <td>195</td>
         <td>-</td>
     </tr>
     <tr>
@@ -242,7 +242,7 @@ Skillz code for 2018, revamped.
         <td>Pushiner</td>
         <td>Win</td>
         <td>8/1</td>
-        <td>198</td>
+        <td>234</td>
         <td>-</td>
     </tr>
     <tr>
