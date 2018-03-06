@@ -110,26 +110,31 @@ namespace Skillz_Code
             }
             return false;
         }
-        private static int DistanceThroughWormhole(Location from, MapObject to, Wormhole wormhole, IEnumerable<Wormhole> wormholes)
+        private static int DistanceThroughWormhole(Location from, MapObject to, Wormhole wormhole, IEnumerable<Wormhole> wormholes, int turnsElapsed, int pirateSpeed)
         {
-            return from.Distance(wormhole) +
-                ClosestDistance(wormhole.Partner.Location, to,
-                    wormholes.Where(w => w.Id != wormhole.Id && w.Id != wormhole.Partner.Id));
+            // return from.Distance(wormhole) + 
+            //     ClosestDistance(wormhole.Partner.Location, to,
+            //         wormholes.Where(w => w.Id != wormhole.Id && w.Id != wormhole.Partner.Id));
+            int turns = 0;
+            if(to.Distance(wormhole) / pirateSpeed < wormhole.TurnsToReactivate - turnsElapsed)
+                turns = wormhole.TurnsToReactivate - (to.Distance(wormhole) / pirateSpeed) - turnsElapsed;
+            return from.Distance(wormhole) + turns * pirateSpeed 
+                + ClosestDistance(wormhole.Partner.Location, to,
+                wormholes.Where(w => w.Id != wormhole.Id && w.Id != wormhole.Partner.Id), to.Distance(wormhole) / pirateSpeed +  turns + turnsElapsed, pirateSpeed);
         }
 
-        private static int ClosestDistance(Location from, MapObject to, IEnumerable<Wormhole> wormholes)
+        private static int ClosestDistance(Location from, MapObject to, IEnumerable<Wormhole> wormholes, int turnsElapsed, int pirateSpeed)
         {
             if (wormholes.Any())
             {
                 int distanceWithoutWormholes = from.Distance(to);
                 int distanceWithWormholes = wormholes
-                    .Select(wormhole => DistanceThroughWormhole(from, to, wormhole, wormholes))
+                    .Select(wormhole => DistanceThroughWormhole(from, to, wormhole, wormholes, turnsElapsed, pirateSpeed))
                     .Min();
                 return System.Math.Min(distanceWithoutWormholes, distanceWithWormholes);
             }
             return from.Distance(to);
         }
-
         private IEnumerable<Wormhole> GetViableWormholes(Pirate pirate)
         {
             return game.GetAllWormholes() //.Except(usedWormholes)
@@ -140,11 +145,11 @@ namespace Skillz_Code
         private Wormhole GetBestWormhole(Pirate pirate, Location destination)
         {
             var wormholeDistances = new Dictionary<Wormhole, int>();
-            var wormholes = GetViableWormholes(pirate);
+            var wormholes = game.GetAllWormholes();
             foreach (var wormhole in wormholes)
             {
                 //    Assign the closest distance for the wormhole
-                wormholeDistances.Add(wormhole, DistanceThroughWormhole(pirate.Location, destination, wormhole, wormholes));
+                wormholeDistances.Add(wormhole, DistanceThroughWormhole(pirate.Location, destination, wormhole, wormholes, 0, pirate.MaxSpeed));
             }
             //    Get the minimum
             var bestWormhole = wormholeDistances.OrderBy(map => map.Value).FirstOrDefault();
@@ -161,7 +166,7 @@ namespace Skillz_Code
         private Mothership GetBestMothershipThroughWormholes(Pirate pirate, IEnumerable<Mothership> motherships)
         {
             return motherships
-                .OrderBy(mothership => ClosestDistance(pirate.Location, mothership, GetViableWormholes(pirate)))
+                .OrderBy(mothership => ClosestDistance(pirate.Location, mothership, game.GetAllWormholes(), 0, pirate.MaxSpeed))
                 .FirstOrDefault();
         }
 
