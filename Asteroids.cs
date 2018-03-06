@@ -72,9 +72,34 @@ namespace Skillz_Code
 
         }
 
-        private void PushAsteroid(Pirate pirate, Asteroid asteroid)
+        private bool PushAsteroid(Pirate pirate, Asteroid asteroid)
         {
+            if (!pirate.CanPush(asteroid)) return false;
             // Push the asteroid towards: 1) capsule that can be intercepted, 2) 
+            // Get the best capsule.
+            var bestCapsule = game.GetEnemyCapsules().Where(capsule => capsule.Holder != null &&
+                    GetEnemyBestMothershipThroughWormholes(capsule.Holder) != null &&
+                    GetOptimalAsteroidInterception(capsule.Holder, pirate, asteroid, GetEnemyBestMothershipThroughWormholes(capsule.Holder).GetLocation()) != null)
+                .OrderByDescending(capsule => capsule.Holder.Steps(GetEnemyBestMothershipThroughWormholes(capsule.Holder))).FirstOrDefault();
+            var bestGrouping = game.GetEnemyLivingPirates().OrderByDescending(enemy => enemy.PushReloadTurns).
+            OrderBy(enemy => game.GetEnemyLivingPirates().Count(enemyPirate => enemyPirate.InRange(enemy, asteroid.Size))).FirstOrDefault();
+            if (bestCapsule != null)
+            {
+                // Push towards the capsule
+                var pushLocation = GetOptimalAsteroidInterception(bestCapsule.Holder, pirate, asteroid, GetEnemyBestMothershipThroughWormholes(bestCapsule.Holder).Location);
+                pirate.Push(asteroid, pushLocation);
+                Print(pirate + " pushes asteroid " + asteroid + " towards " + pushLocation + " to intercept " + bestCapsule);
+                return true;
+            }
+            else if (bestGrouping != null)
+            {
+                // Push towards the grouping
+                var pushLocation = bestGrouping.Location;
+                pirate.Push(asteroid, pushLocation);
+                Print(pirate + " pushes asteroid " + asteroid + " towards " + pushLocation);
+                return true;
+            }
+            return false;
         }
 
         private bool AsteroidHeadingTowardsPirate(Asteroid asteroid, Pirate pirate)
