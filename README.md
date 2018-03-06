@@ -34,7 +34,7 @@ Skillz code for 2018, revamped.
         <td>Steroids</td>
         <td>Win</td>
         <td>8/1</td>
-        <td>243</td>
+        <td>210</td>
         <td>-</td>
     </tr>
     <tr>
@@ -58,31 +58,31 @@ Skillz code for 2018, revamped.
         <td>Meteroite</td>
         <td>Win</td>
         <td>8/2</td>
-        <td>165</td>
+        <td>157</td>
         <td>-</td>
     </tr>
     <tr>
         <td>3</td>
         <td>Lepton</td>
         <td>Win</td>
-        <td>8/5</td>
-        <td>288</td>
+        <td>8/3</td>
+        <td>287</td>
         <td>-</td>
     </tr>
     <tr>
         <td>4</td>
         <td>Voyager1</td>
         <td>Win</td>
-        <td>8/1</td>
-        <td>171</td>
+        <td>8/0</td>
+        <td>139</td>
         <td>-</td>
     </tr>
     <tr>
         <td>4</td>
         <td>Pullpullon</td>
         <td>Win</td>
-        <td>8/0</td>
-        <td>275</td>
+        <td>8/1</td>
+        <td>290</td>
         <td>-</td>
     </tr>
 </table>
@@ -269,16 +269,16 @@ Skillz code for 2018, revamped.
         <td>1</td>
         <td>TodoBomb</td>
         <td>Win</td>
-        <td>8/4</td>
-        <td>203</td>
+        <td>8/2</td>
+        <td>219</td>
         <td>-</td>
     </tr>
     <tr>
         <td>1</td>
         <td>Matrix</td>
         <td>Win</td>
-        <td>8/7</td>
-        <td>217</td>
+        <td>8/2</td>
+        <td>150</td>
         <td>-</td>
     </tr>
     <tr>
@@ -286,15 +286,15 @@ Skillz code for 2018, revamped.
         <td>Kamikaze</td>
         <td>Win</td>
         <td>10/9</td>
-        <td>279</td>
+        <td>240</td>
         <td>-</td>
     </tr>
     <tr>
         <td>2</td>
         <td>StickyNotes</td>
         <td>Win</td>
-        <td>8/3</td>
-        <td>740</td>
+        <td>8/1</td>
+        <td>452</td>
         <td>-</td>
     </tr>
     <tr>
@@ -309,16 +309,16 @@ Skillz code for 2018, revamped.
         <td>3</td>
         <td>CyberSpace</td>
         <td>Win</td>
-        <td>8/1</td>
-        <td>159</td>
+        <td>8/3</td>
+        <td>142</td>
         <td>-</td>
     </tr>
     <tr>
         <td>3</td>
         <td>Basmach</td>
         <td>Win</td>
-        <td>8/1</td>
-        <td>163</td>
+        <td>8/2</td>
+        <td>183</td>
         <td>-</td>
     </tr>
     <tr>
@@ -333,8 +333,8 @@ Skillz code for 2018, revamped.
         <td>4</td>
         <td>PushPullon</td>
         <td>Win</td>
-        <td>10/6</td>
-        <td>193</td>
+        <td>10/7</td>
+        <td>369</td>
         <td>-</td>
     </tr>
 </table>
