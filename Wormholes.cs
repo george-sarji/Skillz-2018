@@ -140,7 +140,7 @@ namespace Skillz_Code
         private Wormhole GetBestWormhole(Pirate pirate, Location destination)
         {
             var wormholeDistances = new Dictionary<Wormhole, int>();
-            var wormholes = game.GetAllWormholes().Where(wormhole => wormhole.TurnsToReactivate < pirate.Steps(destination) / 4);
+            var wormholes = GetViableWormholes(pirate);
             foreach (var wormhole in wormholes)
             {
                 //    Assign the closest distance for the wormhole
