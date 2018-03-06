@@ -71,10 +71,10 @@ namespace Skillz_Code
             }
         }
 
-        private bool PushAsteroid(Pirate pirate, Asteroid asteroid)
+        private bool TryPushAsteroid(Pirate pirate, Asteroid asteroid)
         {
             if (!pirate.CanPush(asteroid)) return false;
-            // Push the asteroid towards: 1) capsule that can be intercepted, 2) 
+            // Push the asteroid towards: 1) capsule that can be intercepted, 2)
             // Get the best capsule.
             var bestCapsule = game.GetEnemyCapsules().Where(capsule => capsule.Holder != null &&
                     GetEnemyBestMothershipThroughWormholes(capsule.Holder) != null &&
@@ -119,33 +119,22 @@ namespace Skillz_Code
         {
             var AsteroidCapsulePair = new Dictionary<Asteroid, Capsule>();
             List<TargetLocation> targetAsteroids = new List<TargetLocation>();
-            var availableCapsules = game.GetEnemyCapsules().Where(capsule => capsule.InitialLocation != capsule.Location);
-            foreach (var asteroid in availableAsteroids.Where( a => a.Location.Add(a.Direction) == a.Location))
+            var availableCapsules = game.GetEnemyCapsules().Where(capsule => capsule.Holder != null).ToList();
+            foreach (var asteroid in availableAsteroids.ToList())
             {
-                Capsule bestCapsule = null;
-                foreach (Capsule capsule in availableCapsules)
-                {
-                    var bestMothership = GetEnemyBestMothershipThroughWormholes(capsule.Holder);
-                    int distance = asteroid.Steps(capsule) + capsule.Holder.Steps(GetEnemyBestMothershipThroughWormholes(capsule.Holder));
-                    if (bestCapsule == null ||
-                        (asteroid.Steps(capsule) < capsule.Holder.Steps(bestMothership)) &&
-                        distance < bestCapsule.Distance(asteroid) + bestCapsule.Holder.Distance(GetEnemyBestMothershipThroughWormholes(bestCapsule.Holder)))
-                    {
-                        bestCapsule = capsule;
-                    }
-                }
-                if (bestCapsule != null &&
-                    availablePirates.OrderBy(p => p.Steps(asteroid)).FirstOrDefault().Steps(asteroid) <
-                    bestCapsule.Holder.Distance(GetEnemyBestMothershipThroughWormholes(bestCapsule.Holder)))
+                Capsule bestCapsule = GetBestCapsuleForAsteroid(asteroid, availableCapsules);
+                if (bestCapsule != null)
                 {
                     AsteroidCapsulePair.Add(asteroid, bestCapsule);
+                    availableAsteroids.Remove(asteroid);
+                    availableCapsules.Remove(bestCapsule);
                 }
             }
-            AsteroidCapsulePair.OrderBy( entry => entry.Key.Steps(entry.Value) + entry.Value.Holder.Steps(GetEnemyBestMothershipThroughWormholes(entry.Value.Holder)));
+            AsteroidCapsulePair.OrderBy(entry => entry.Key.Steps(entry.Value) + entry.Value.Holder.Steps(GetEnemyBestMothershipThroughWormholes(entry.Value.Holder)));
             int count = 1;
-            foreach( var entry in AsteroidCapsulePair)
+            foreach (var entry in AsteroidCapsulePair)
             {
-                targetAsteroids.Add(new TargetLocation(entry.Key.Location,LocationType.Asteroid,count,entry.Key));
+                targetAsteroids.Add(new TargetLocation(entry.Key.Location, LocationType.Asteroid, count, entry.Key, this));
                 count++;
             }
             return targetAsteroids;
@@ -163,6 +152,13 @@ namespace Skillz_Code
                     return enemyLocation;
             }
             return null;
+        }
+
+        private Capsule GetBestCapsuleForAsteroid(Asteroid asteroid, IEnumerable<Capsule> availableCapsules) //takes available capsule with carriers and returns the best for the asteroid.
+        {
+            return availableCapsules
+                .Where(capsule => asteroid.Steps(capsule) < capsule.Holder.Steps(GetEnemyBestMothershipThroughWormholes(capsule.Holder)))
+                .OrderBy(capsule => asteroid.Steps(capsule) + capsule.Holder.Steps(GetEnemyBestMothershipThroughWormholes(capsule.Holder))).FirstOrDefault();
         }
     }
 }
