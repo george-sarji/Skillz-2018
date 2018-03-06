@@ -185,8 +185,8 @@ Skillz code for 2018, revamped.
         <td>1</td>
         <td>DeathStar</td>
         <td>Win</td>
-        <td>12/4</td>
-        <td>177</td>
+        <td>12/2</td>
+        <td>261</td>
         <td>-</td>
     </tr>
     <tr>
@@ -293,16 +293,16 @@ Skillz code for 2018, revamped.
         <td>2</td>
         <td>StickyNotes</td>
         <td>Win</td>
-        <td>8/1</td>
-        <td>452</td>
+        <td>8/0</td>
+        <td>270</td>
         <td>-</td>
     </tr>
     <tr>
         <td>3</td>
         <td>HamannHarasha</td>
         <td>Win</td>
-        <td>8/4</td>
-        <td>521</td>
+        <td>8/5</td>
+        <td>693</td>
         <td>-</td>
     </tr>
     <tr>
@@ -317,8 +317,8 @@ Skillz code for 2018, revamped.
         <td>3</td>
         <td>Basmach</td>
         <td>Win</td>
-        <td>8/2</td>
-        <td>183</td>
+        <td>8/1</td>
+        <td>148</td>
         <td>-</td>
     </tr>
     <tr>
@@ -333,8 +333,8 @@ Skillz code for 2018, revamped.
         <td>4</td>
         <td>PushPullon</td>
         <td>Win</td>
-        <td>10/7</td>
-        <td>369</td>
+        <td>10/6</td>
+        <td>314</td>
         <td>-</td>
     </tr>
 </table>
