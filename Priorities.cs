@@ -8,6 +8,7 @@ namespace Skillz_Code
     {
         private class TargetLocation
         {
+            private SSJS12Bot bot;
             public Location Location { get; private set; }
             public LocationType Type { get; private set; }
             public int Priority { get; private set; }
@@ -17,8 +18,9 @@ namespace Skillz_Code
 
             private const int PenaltyPerExtraPirate = MAX_PRIORITY / 10;
 
-            public TargetLocation(Location location, LocationType type, int priority, GameObject targetLocationObject, int desiredPirates = 1)
+            public TargetLocation(Location location, LocationType type, int priority, GameObject targetLocationObject,SSJS12Bot bot , int desiredPirates = 1)
             {
+                this.bot = bot;
                 Location = location;
                 Type = type;
                 Priority = priority;
@@ -51,10 +53,36 @@ namespace Skillz_Code
                     score += this.Priority;
                     return score;
                 }
-                score += this.Priority;
+
+                score += HandleIfPirateCanReach(pirate);
                 return score;
 
             }
+
+            private int HandleIfPirateCanReach(Pirate pirate)
+            {
+                if (LocationType.MyPirate == Type)
+                {
+                    var bestMothership = bot.GetMyBestMothershipThroughWormholes(pirate);
+                    if (!CanCatchUpAndPush(pirate, (Pirate) TargetLocationObject, bestMothership.Location))
+                    {
+
+                        return MAX_PRIORITY;
+                    }
+                }
+                else if(LocationType.Asteroid == Type)
+                {
+                    Asteroid asteroid = (Asteroid)TargetLocationObject;
+                    var bestCapsule = bot.GetBestCapsuleForAsteroid(asteroid, game.GetEnemyCapsules()
+                                                                                                .Where(capsule => capsule.Holder != null));
+                    if(pirate.Steps(asteroid) + asteroid.Steps(bestCapsule) > bestCapsule.Holder.Steps(bot.GetEnemyBestMothershipThroughWormholes(bestCapsule.Holder)))
+                    {
+                        return MAX_PRIORITY;
+                    }
+                }
+                return this.Priority;
+            }
+
 
             private int ScaledDistance(Pirate pirate)
             {
@@ -73,7 +101,7 @@ namespace Skillz_Code
             StickyBomb,
         }
 
-        // Moves remaining availablePirates according to Priorities 
+        // Moves remaining availablePirates according to Priorities
         private void HandlePriorities()
         {
             var targetLocations = GetAllTargetLocations();
@@ -119,6 +147,11 @@ namespace Skillz_Code
                             AssignDestination(bestPirate, bestLocation.Location.Towards(bestPirate, game.WormholeRange));
                         break;
 
+                    case LocationType.Asteroid:
+                        if (!TryPushAsteroid(bestPirate, ((Asteroid) bestLocation.TargetLocationObject)))
+                            AssignDestination(bestPirate, bestLocation.Location);
+                        break;
+
                     default:
                         AssignDestination(bestPirate, bestLocation.Location);
                         break;
@@ -133,7 +166,7 @@ namespace Skillz_Code
             var targetLocations = new List<TargetLocation>();
             targetLocations.AddRange(GetTargetLocationsWormholes());
             targetLocations.AddRange(GetTargetLocationsAsteroids());
-            targetLocations.AddRange(GetTargetLocationsMyPirates()); //for now not using it since we need to interesect our pirates
+            targetLocations.AddRange(GetTargetLocationsMyPirates());
             targetLocations.AddRange(GetTargetLocationsEnemyPirates());
             return targetLocations;
         }
