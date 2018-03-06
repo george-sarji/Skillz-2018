@@ -12,6 +12,7 @@ namespace Skillz_Code
         private Dictionary<Pirate, Location> pirateDestinations;
         private Dictionary<Capsule, int> enemyCapsulePushes;
         private Dictionary<Pirate, int> myPiratesWithCapsulePushes;
+        private List<Asteroid> availableAsteroids;
         private static List<Pirate> bunkeringPirates; //List to add pirates used in bunker to, used in swapping states and finding preferred states.
         private const int MAX_PRIORITY = 10;
         private const int MIN_PRIORITY = 1;
@@ -43,6 +44,7 @@ namespace Skillz_Code
         private void Initialize(PirateGame pirateGame)
         {
             game = pirateGame;
+            availableAsteroids = game.GetLivingAsteroids().ToList();
             availablePirates = pirateGame.GetMyLivingPirates().ToList();
             pirateDestinations = new Dictionary<Pirate, Location>();
             enemyCapsulePushes = new Dictionary<Capsule, int>();
