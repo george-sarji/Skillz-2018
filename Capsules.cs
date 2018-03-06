@@ -16,11 +16,11 @@ namespace Skillz_Code
             {
                 var capsulesOrdered = game.GetMyCapsules()
                     .OrderBy(capsule => capsule.Distance(
-                        availablePirates.OrderBy(p => ClosestDistance(p.Location, capsule.Location, GetViableWormholes(p))).First()));
+                        availablePirates.OrderBy(p => ClosestDistance(p.Location, capsule.Location, GetViableWormholes(p), 0, p.MaxSpeed)).First()));
                 foreach (var capsule in capsulesOrdered)
                 {
                     var piratesOrdered = availablePirates
-                        .OrderBy(pirate => ClosestDistance(pirate.Location, capsule.InitialLocation, GetViableWormholes(pirate)));
+                        .OrderBy(pirate => ClosestDistance(pirate.Location, capsule.InitialLocation, GetViableWormholes(pirate), 0, pirate.MaxSpeed));
                     // Check if we have a close pirate to the capsule.
                     if (piratesOrdered.Any())
                     {
