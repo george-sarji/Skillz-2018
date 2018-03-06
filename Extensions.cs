@@ -45,7 +45,7 @@ namespace Skillz_Code
             return asteroid.Distance(mapObject) / (asteroid.Speed + 1);
         }
 
-        public static int Steps(this Location location,int distance, int speed)
+        public static int Steps(this Location location, int distance, int speed)
         {
             return distance/(speed+1);
         }

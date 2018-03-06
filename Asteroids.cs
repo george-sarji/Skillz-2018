@@ -8,7 +8,6 @@ namespace Skillz_Code
     {
         private void PushAsteroids()
         {
-            var exceptionList = new List<Asteroid>();
             foreach (Asteroid asteroid in game.GetLivingAsteroids())
             {
                 var pirate = availablePirates.Where(p => p.CanPush(asteroid)).OrderByDescending(p => AsteroidHeadingTowardsPirate(asteroid, p)).FirstOrDefault();

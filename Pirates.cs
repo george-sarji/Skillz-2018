@@ -92,7 +92,6 @@ namespace Skillz_Code
             // Each pirate will be in 1 category if he wants to change(wantToBeXXXX), or doesn't mind it(willingToBeXXXXX). Otherwise he will remain in the same state.
             // We consider the following factors:
             // 1. Whether the pirate has a capsule. 2. Whether the pirate is in danger. 3. Whether the pirate is currently performing a bunker/wants to be.
-            List<Pirate> piratesGoingForCapsules = PiratesGoingForCapsule();
             List<Pirate> wantToBeHeavy = game.GetMyLivingPirates()
                 .Where(pirate => pirate.HasCapsule() && pirate.IsNormal() && IsCapsuleHolderInDanger(pirate))
                 .ToList();
@@ -102,7 +101,6 @@ namespace Skillz_Code
               && game.GetEnemyCapsules().Where(capsule => capsule.Holder != null
               && capsule.Distance(pirate) < game.PushRange + game.PirateMaxSpeed * 2).Any()) || !pirateDestinations.ContainsKey(pirate)));
             List<Pirate> wantToBeNormal = availablePirates.Where(pirate => pirate.HasCapsule() && pirate.IsHeavy() && !IsCapsuleHolderInDanger(pirate)).ToList();
-            wantToBeNormal.AddRange(piratesGoingForCapsules);
             List<Pirate> willingToBeNormal = availablePirates
                 .Except(bunkeringPirates)
                 .Where(pirate => !pirate.HasCapsule() && pirate.IsHeavy()).ToList();

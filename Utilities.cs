@@ -93,31 +93,11 @@ namespace Skillz_Code
             // Checks if a pirate is in extreme danger, and maybe then it will be woth swapping him with a heavy pirate. Working on it for StateMachine.
             return game.GetEnemyLivingPirates().Where(enemy => enemy.Distance(pirate) < game.PushRange).Count() > game.NumPushesForCapsuleLoss;
         }
-        private List<Pirate> PiratesGoingForCapsule()
-        {
-            List<Pirate> piratesGoingForCapsule = null;
-             if (availablePirates.Any())
-            {
-                var capsulesOrdered = game.GetMyCapsules()
-                    .OrderBy(capsule => capsule.Distance(
-                        availablePirates.OrderBy(p => ClosestDistance(p.Location, capsule.Location, game.GetAllWormholes(), 0, p.MaxSpeed)).First()));
-                foreach (var capsule in capsulesOrdered)
-                {
-                    var piratesOrdered = availablePirates
-                        .OrderBy(p => ClosestDistance(p.Location, capsule.InitialLocation, game.GetAllWormholes(), 0, p.MaxSpeed));
-                    if (piratesOrdered.Any())
-                    {
-                        piratesGoingForCapsule.Add(piratesOrdered.First());
-                    }
-                }
-            }
-            return piratesGoingForCapsule;
-        }
         private bool IsCapsuleHolderInDanger(Pirate pirate)
         {
             int numOfNearbyEnemyPushers = game.GetEnemyLivingPirates().Where(enemy => enemy.InRange(pirate, enemy.PushRange + game.PirateMaxSpeed) && enemy.PushReloadTurns <= 2).Count();
             // Checks if the capsule holder is in danger by checking if there are enough close enemies that are in range of pushing, or close to being in range to make the capsule holder lose his capsule.
-            return pirate.HasCapsule() && numOfNearbyEnemyPushers >= game.NumPushesForCapsuleLoss && numOfNearbyEnemyPushers < game.HeavyNumPushesForCapsuleLoss;
+            return pirate.HasCapsule() && numOfNearbyEnemyPushers >= game.NumPushesForCapsuleLoss && numOfNearbyEnemyPushers <= game.HeavyNumPushesForCapsuleLoss;
         }
 
         private bool CheckIfPirateCanReach(Pirate CapsuleCapturer, Location destination) //Working on this Function -Mahmoud

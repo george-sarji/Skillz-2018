@@ -112,13 +112,13 @@ namespace Skillz_Code
         }
          private static int DistanceThroughWormhole(Location from, MapObject to, Wormhole wormhole, IEnumerable<Wormhole> wormholes, int turnsElapsed, int pirateSpeed)
         {
-            // return from.Distance(wormhole) + 
+            // return from.Distance(wormhole) +
             //     ClosestDistance(wormhole.Partner.Location, to,
             //         wormholes.Where(w => w.Id != wormhole.Id && w.Id != wormhole.Partner.Id));
             int turns = 0;
             if(to.Distance(wormhole) / pirateSpeed < wormhole.TurnsToReactivate - turnsElapsed)
                 turns = wormhole.TurnsToReactivate - (to.Distance(wormhole) / pirateSpeed) - turnsElapsed;
-            return from.Distance(wormhole) + turns * pirateSpeed 
+            return from.Distance(wormhole) + turns * pirateSpeed
                 + ClosestDistance(wormhole.Partner.Location, to,
                 wormholes.Where(w => w.Id != wormhole.Id && w.Id != wormhole.Partner.Id), to.Distance(wormhole) / pirateSpeed +  turns + turnsElapsed, pirateSpeed);
         }
