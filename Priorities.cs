@@ -139,7 +139,14 @@ namespace Skillz_Code
 
                     case LocationType.EnemyPirate:
                         if (!TryStickBomb(bestPirate, (Pirate) bestLocation.TargetLocationObject))
-                            AssignDestination(bestPirate, bestLocation.Location);
+                        {
+                            var enemyPirate = (Pirate) bestLocation.TargetLocationObject;
+                            if(enemyPirate.HasCapsule() && GetEnemyBestMothershipThroughWormholes(enemyPirate)!=null &&
+                                GetPirateOptimalInterception(bestPirate, enemyPirate, GetEnemyBestMothershipThroughWormholes(enemyPirate).Location)!=null)
+                                AssignDestination(bestPirate, GetPirateOptimalInterception(bestPirate, enemyPirate, GetEnemyBestMothershipThroughWormholes(enemyPirate).Location));
+                            else
+                                AssignDestination(bestPirate, bestLocation.Location);
+                        }
                         break;
 
                     case LocationType.Wormhole:
