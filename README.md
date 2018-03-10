@@ -158,7 +158,7 @@ Skillz code for 2018, revamped.
         <td>William</td>
         <td>Win</td>
         <td>8/3</td>
-        <td>294</td>
+        <td>271</td>
         <td>-</td>
     </tr>
     <tr>
