@@ -26,7 +26,7 @@ namespace Skillz_Code
                     // get the closest asteroid
                     var closestAsteroid = game.GetLivingAsteroids().OrderBy(ast => ast.Distance(asteroid)).Where(ast => ast != asteroid).FirstOrDefault();
                     // get the ooposite direction of the astroid you're pushing
-                    var oppositeDirection = new Location(asteroid.Location.Row * (-1), asteroid.Location.Col * (-1));
+                    var oppositeDirection = asteroid.Direction.Multiply(-1);
                     // this variable is to simplify the IF below it
                     bool bestEnemyIsCloserThanClosestAsteroid = (closestAsteroid == null) || (bestEnemy != null && bestEnemy.Distance(pirate) <= closestAsteroid.Distance(pirate));
                     // the 4 "IF"s below check if the asteroid is going to kill the pirate pushing it before pushing.

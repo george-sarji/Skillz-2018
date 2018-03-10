@@ -100,7 +100,17 @@ namespace Skillz_Code
               && pirateDestinations[pirate].InRange(pirate.GetLocation(), pirate.MaxSpeed)
               && game.GetEnemyCapsules().Where(capsule => capsule.Holder != null
               && capsule.Distance(pirate) < game.PushRange + game.PirateMaxSpeed * 2).Any()) || !pirateDestinations.ContainsKey(pirate)));
-            List<Pirate> wantToBeNormal = availablePirates.Where(pirate => pirate.HasCapsule() && pirate.IsHeavy() && !IsCapsuleHolderInDanger(pirate)).ToList();
+            List<Pirate> wantToBeNormal = availablePirates
+                .Where(pirate => pirate.HasCapsule() && pirate.IsHeavy() && !IsCapsuleHolderInDanger(pirate)).ToList();
+            foreach (var capsule in game.GetMyCapsules()) {
+                var closestPirateToCaptureCapsule = game.GetMyLivingPirates()
+                    .Where(pirate => !pirate.HasCapsule())
+                    .OrderBy(pirate => pirate.Distance(capsule.InitialLocation))
+                    .FirstOrDefault();
+                if (closestPirateToCaptureCapsule != null && closestPirateToCaptureCapsule.IsHeavy()) {
+                    wantToBeNormal.Add(closestPirateToCaptureCapsule);
+                }
+            }
             List<Pirate> willingToBeNormal = availablePirates
                 .Except(bunkeringPirates)
                 .Where(pirate => !pirate.HasCapsule() && pirate.IsHeavy()).ToList();
