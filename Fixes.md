@@ -191,4 +191,46 @@
                 enemy.PushReloadTurns<enemy.Steps(loc))>= myPirate.NumPushesForCapsuleLoss;</td>
         <td>Added to check if the pirate has capsule to show if in enemy danger</td>
     </tr>
+    <tr>
+        <td>Utilities.cs</td>
+        <td>48</td>
+        <td>return availablePirates.Count(p => p.CanPush(pirate));</td>
+        <td>return availablePirates.Where(p => p.CanPush(pirate)).Count();</td>
+        <td>Less called functions.</td>
+    </tr>
+    <tr>
+        <td>Utilities.cs</td>
+        <td>64</td>
+        <td>return game.GetEnemyLivingPirates().Count(p => IsOnTheWay(myPirate.Location, b, p.Location, p.MaxSpeed) && myPirate.Steps(p) < p.PushReloadTurns);</td>
+        <td>return game.GetEnemyLivingPirates().Where(p => IsOnTheWay(myPirate.Location, b, p.Location, p.MaxSpeed) && myPirate.Steps(p) < p.PushReloadTurns).ToList().Count;</td>
+        <td>Less called functions</td>
+    </tr>
+    <tr>
+        <td>Utilities.cs</td>
+        <td>69</td>
+        <td>return game.GetEnemyLivingPirates().Count(enemy => enemy.CanPush(pirate));</td>
+        <td>return game.GetEnemyLivingPirates().Where(enemy => enemy.CanPush(pirate)).Count();</td>
+        <td>Less called functions</td>
+    </tr>
+    <tr>
+        <td>Utilities.cs</td>
+        <td>74</td>
+        <td>return game.GetEnemyLivingPirates().Count(enemy => enemy.InRange(location, enemy.PushRange) && enemy.PushReloadTurns != 0);</td>
+        <td>return game.GetEnemyLivingPirates().Where(enemy => enemy.InRange(location, enemy.PushRange) && enemy.PushReloadTurns != 0).Count();</td>
+        <td>Less called functions</td>
+    </tr>
+    <tr>
+        <td>Utilities.cs</td>
+        <td>94</td>
+        <td>return game.GetEnemyLivingPirates().Count(enemy => enemy.Distance(pirate) < game.PushRange) > game.NumPushesForCapsuleLoss;</td>
+        <td>return game.GetEnemyLivingPirates().Where(enemy => enemy.Distance(pirate) < game.PushRange).Count() > game.NumPushesForCapsuleLoss;</td>
+        <td>Less called functions</td>
+    </tr>
+    <tr>
+        <td>Utilities.cs</td>
+        <td>98</td>
+        <td>var numOfNearbyEnemyPushers = game.GetEnemyLivingPirates().Count(enemy => enemy.InRange(pirate, enemy.PushRange + game.PirateMaxSpeed) && enemy.PushReloadTurns <= 2);</td>
+        <td>int numOfNearbyEnemyPushers = game.GetEnemyLivingPirates().Where(enemy => enemy.InRange(pirate, enemy.PushRange + game.PirateMaxSpeed) && enemy.PushReloadTurns <= 2).Count();</td>
+        <td>Less called functions</td>
+    </tr>
 </table>
