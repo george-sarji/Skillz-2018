@@ -7,17 +7,6 @@
         <th>Reason</th>
     </tr>
     <tr>
-        <td>Initializer.cs</td>
-        <td>54-58</td>
-        <td>myPiratesWithCapsulePushes = game.GetMyLivingPirates().Where(p => p.HasCapsule()).ToDictionary(pirate => pirate, pirate => 0);</td>
-        <td>myPiratesWithCapsulePushes = new Dictionary<Pirate, int>();
-            foreach (Pirate pirate in game.GetMyLivingPirates().Where(p => p.HasCapsule()))
-            {
-                myPiratesWithCapsulePushes.Add(pirate, 0);
-            }</td>
-        <td>Less time used</td>
-    </tr>
-    <tr>
         <td>Asteroids.cs</td>
         <td>19</td>
         <td>.OrderByDescending(enemy => enemy.PushReloadTurns - asteroid.Steps(enemy) > 0)</td>
@@ -296,24 +285,10 @@
 	</tr>
 	<tr>
 		<td>Pirates.cs</td>
-		<td>57</td>
-		<td>var PiratesWithCapsule = game.GetMyLivingPirates().Where(p => p.HasCapsule());</td>
-		<td>List<Pirate> PiratesWithCapsule = game.GetMyLivingPirates().Where(p => p.HasCapsule()).ToList();</td>
-		<td>Used less functions (removed copying to list)</td>
-	</tr>
-	<tr>
-		<td>Pirates.cs</td>
 		<td>61</td>
 		<td>var bestMothership = GetMyBestMothershipThroughWormholes(pirate);</td>
 		<td>var bestMothership = game.GetMyMotherships().OrderBy(mothership => pirate.Steps(mothership) / (int) ((double) mothership.ValueMultiplier).Sqrt()).FirstOrDefault();</td>
 		<td>Updated to new function.</td>
-	</tr>
-	<tr>
-		<td>Pirates.cs</td>
-		<td>89-124</td>
-		<td>IEnumerable + it's methods</td>
-		<td>List + it's methods</td>
-		<td>Change everything from lists to IEnumerable and make the .AddRange into .Concat</td>
 	</tr>
 	<tr>
     <td>Utilities.cs</td>
@@ -364,4 +339,29 @@
         <td>int numOfNearbyEnemyPushers = game.GetEnemyLivingPirates().Where(enemy => enemy.InRange(pirate, enemy.PushRange + game.PirateMaxSpeed) && enemy.PushReloadTurns <= 2).Count();</td>
         <td>Less called functions</td>
     </tr>
+    <tr>
+        <td>Initializer.cs</td>
+        <td>54-58</td>
+        <td>myPiratesWithCapsulePushes = game.GetMyLivingPirates().Where(p => p.HasCapsule()).ToDictionary(pirate => pirate, pirate => 0);</td>
+        <td>myPiratesWithCapsulePushes = new Dictionary<Pirate, int>();
+            foreach (Pirate pirate in game.GetMyLivingPirates().Where(p => p.HasCapsule()))
+            {
+                myPiratesWithCapsulePushes.Add(pirate, 0);
+            }</td>
+        <td>Less time used</td>
+    </tr>
+    <tr>
+		<td>Pirates.cs</td>
+		<td>57</td>
+		<td>var PiratesWithCapsule = game.GetMyLivingPirates().Where(p => p.HasCapsule());</td>
+		<td>List<\Pirate\> PiratesWithCapsule = game.GetMyLivingPirates().Where(p => p.HasCapsule()).ToList();</td>
+		<td>Used less functions (removed copying to list)</td>
+	</tr>
+    <tr>
+		<td>Pirates.cs</td>
+		<td>89-124</td>
+		<td>IEnumerable + it's methods</td>
+		<td>List + it's methods</td>
+		<td>Change everything from lists to IEnumerable and make the .AddRange into .Concat</td>
+	</tr>
 </table>
