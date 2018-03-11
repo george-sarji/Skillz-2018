@@ -191,4 +191,55 @@
                 enemy.PushReloadTurns<enemy.Steps(loc))>= myPirate.NumPushesForCapsuleLoss;</td>
         <td>Added to check if the pirate has capsule to show if in enemy danger</td>
     </tr>
+    <tr>
+        <td>Capsules.cs</td>
+        <td>63</td>
+        <td>+</td>
+        <td>-</td>
+        <td>Added taking the worst case scenario</td>
+    </tr>
+    <tr>
+        <td>Capsules.cs</td>
+        <td>89</td>
+        <td>var bestWormhole = GetBestWormhole(myPirateWithCapsule, destination.Location);</td>
+        <td>---</td>
+        <td>we want the best wormhole to ensure that we push it to the best wormhole</td>
+    </tr>
+    <tr>
+        <td>Capsules.cs</td>
+        <td>89</td>
+        <td>Location locationOfPush = null;
+            if (bestWormhole != null)
+            {
+                var distance = DistanceThroughWormhole(myPirateWithCapsule.Location, destination, bestWormhole, game.GetActiveWormholes().Where(wormhole => wormhole != bestWormhole), 0, myPirateWithCapsule.MaxSpeed);
+                locationOfPush = (distance > myPirateWithCapsule.Distance(destination)) ? destination.Location : bestWormhole.Location ;
+            }
+            else
+            {
+                locationOfPush = destination.Location;
+            }</td>
+        <td>var locationOfPush = myPirateWithCapsule.Location.Towards(destination, pusherPirate.PushDistance);</td>
+        <td>in order to make sure that we push it towards the best possible location (wormhole or mothership)</td>
+    </tr>
+    <tr>
+        <td>Capsules.cs</td>
+        <td>90</td>
+        <td>!IsWorthPushing(myPirateWithCapsule, pusherPirate)</td>
+        <td>!IsWorthPushing(myPirateWithCapsule, pusherPirate, locationOfPush, destination.Location)</td>
+        <td>removed unused parameters</td>
+    </tr>
+    <tr>
+        <td>Capsule.cs</td>
+        <td>103</td>
+        <td>private bool IsWorthPushing(Pirate myPirateWithCapsule, Pirate piratePusher)</td>
+        <td>private bool IsWorthPushing(Pirate myPirateWithCapsule, Pirate piratePusher, Location locationOfPush, Location destination)</td>
+        <td>Reomved unused parameters</td>
+    </tr>
+    <tr>
+        <td>Capsule.cs</td>
+        <td>108</td>
+        <td>-1</td>
+        <td>---</td>
+        <td>add -1 so we don't over push the capsule</td>
+    </tr>
 </table>
