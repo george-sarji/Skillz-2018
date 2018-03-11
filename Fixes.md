@@ -259,6 +259,20 @@
                 }</td>
         <td>it is already done inside handle if pirate can reach</td>
     </tr>
+    <tr>
+    <td>Priorities.cs </td>
+    <td>34 </td>
+    <td>Location intercept = bot.GetPirateOptimalInterception(pirate, destinationPirate, destination); </td>
+    <td>Location intercept = Interception(destinationPirate.Location, destination, pirate.Location); </td>
+    <td>Added PirateInterception which considers pirate states </td>
+    </tr>
+    <tr>
+    <td>Utilities.cs </td>
+    <td>80 </td>
+    <td>if (capsuleHolder.InRange(mothership, mothership.UnloadRange + capsuleHolder.MaxSpeed) </td>
+    <td>if (capsuleHolder.InRange(mothership, mothership.UnloadRange * 3) </td>
+    <td>Now represents the capsuleHolder's capability of unloading in the next turn </td>
+    </tr>
 	<tr>
 		<td>Pirates.cs</td>
 		<td>16</td>
