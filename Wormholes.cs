@@ -112,9 +112,11 @@ namespace Skillz_Code
         }
          private static int DistanceThroughWormhole(Location from, MapObject to, Wormhole wormhole, IEnumerable<Wormhole> wormholes, int turnsElapsed, int pirateSpeed)
         {
-            // return from.Distance(wormhole) +
-            //     ClosestDistance(wormhole.Partner.Location, to,
-            //         wormholes.Where(w => w.Id != wormhole.Id && w.Id != wormhole.Partner.Id));
+            // DistanceThroughWormhole tries to find the best route's distance from a location to another, using a spaceobject with a certain speed (pirateSpeed).
+            // It tries to map the shortest route from point A to point B, taking shortcuts through wormholes when needed.
+            // When a pirate must wait for a wormhole to reactivate, we consider those turns wasted waiting as distance wasted, and therefore, we also create a variable turnsElapsed.
+            // When we try to calculate how much time a pirate spends waiting for any wormhole to reactivate, we must know how many turns have been elapsed since the start of the route.
+            // For reasons above, when we calculate the distance through additional wormholes, we give the function the "turnsElapsed" so that it knows if it should expect to wait at a certain wormhole upon arrival.
             int turns = 0;
             if(to.Distance(wormhole) / pirateSpeed < wormhole.TurnsToReactivate - turnsElapsed)
                 turns = wormhole.TurnsToReactivate - (to.Distance(wormhole) / pirateSpeed) - turnsElapsed;
