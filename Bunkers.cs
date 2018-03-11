@@ -20,7 +20,7 @@ namespace Skillz_Code
 
                 bunkerCount[mothership]++;
                 var distanceToBorder = capsule.Distance(GetClosestToBorder(capsule.Location));
-                var useablePirates = availablePirates.Where(p => p.Steps(mothership) > p.PushReloadTurns)
+                var useablePirates = availablePirates.Where(p => p.Steps(mothership) > p.PushReloadTurns + capsule.Holder.Steps(mothership) - p.Steps(mothership))
                     .Where(p => p.Steps(mothership) < capsule.Holder.Steps(mothership))
                     .Where(p => p.Capsule == null)
                     .OrderBy(p => p.Steps(mothership));
