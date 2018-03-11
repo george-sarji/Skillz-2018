@@ -182,7 +182,7 @@ namespace Skillz_Code
             {
                 // Get the location.
                 var enemyLocation = enemy.Location.Towards(destination, enemy.MaxSpeed * i);
-                if (asteroidLocation.Towards(enemyLocation, friendly.PushDistance + asteroid.Speed * (i-1)).InRange(enemyLocation, (int) (asteroid.Size * 0.8)))
+                if (asteroidLocation.Towards(enemyLocation, friendly.PushDistance + asteroid.Speed * (i-1)).InRange(enemyLocation, asteroid.Size))
                     return enemyLocation;
             }
             return null;
