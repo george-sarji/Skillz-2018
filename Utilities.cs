@@ -77,7 +77,7 @@ namespace Skillz_Code
         private bool CheckIfCapsuleCanReachMothership(Pirate capsuleHolder, Mothership mothership) //Working on this Function -Mahmoud
         {
             if (mothership == null) return false;
-            if (capsuleHolder.InRange(mothership, mothership.UnloadRange * 3) &&
+            if (capsuleHolder.InRange(mothership, mothership.UnloadRange + capsuleHolder.MaxSpeed) &&
                 NumberOfAvailableEnemyPushers(capsuleHolder) < capsuleHolder.NumPushesForCapsuleLoss &&
                 NumberOfEnemiesOnTheWay(capsuleHolder, mothership.Location) < capsuleHolder.NumPushesForCapsuleLoss)
             {
