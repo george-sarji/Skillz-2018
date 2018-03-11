@@ -128,17 +128,17 @@
     </tr>
     <tr>
         <td>Bunkers.cs</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td>67</td>
+        <td>bunkerCount[mothership] * game.PushDistance /2</td>
+        <td>bunkerCount[mothership].Power(2) * game.PushRange</td>
+        <td>a better calculation to take into consideration the heavy pirates' push</td>
     </tr>
     <tr>
-        <td>Bunkers.cs</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td>Asteroids.cs</td>
+        <td>178</td>
+        <td>asteroid.Size</td>
+        <td> (int) (asteroid.Size * 0.8)</td>
+        <td> the problem of the asteroid not killing the pirate was caused by another reason</td>
     </tr>
     <tr>
         <td>Bunkers.cs</td>
