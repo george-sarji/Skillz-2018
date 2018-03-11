@@ -50,10 +50,38 @@
     </tr>
     <tr>
         <td>Asteroids.cs</td>
+        <td>78</td>
+        <td>if(!newAsteroidLocation.InMap() &&</td>
+        <td>.Where(p => !newAsteroidLocation.InMap() ? false</td>
+        <td>removed in map from inside the where</td>
+    </tr>
+    <tr>
+        <td>Asteroids.cs</td>
+        <td>99</td>
+        <td>.OrderBy(</td>
+        <td>.OrderByDescending(</td>
+        <td> changed orderby to normal because we should target the closest capsule to the mothership that we can hit</td>
+    </tr>
+    <tr>
+        <td>Asteroids.cs</td>
         <td>121,13</td>
         <td>AsteroidHittingPirate</td>
         <td>AsteroidHeadingTowardsPirate</td>
         <td>Changed name to make it clearer</td>
+    </tr>
+    <tr>
+        <td>Asteroids.cs</td>
+        <td>125</td>
+        <td><</td>
+        <td><=</td>
+        <td> changed <= to < because we want them to hit each other</td>
+    </tr>
+    <tr>
+        <td>Asteroids.cs</td>
+        <td>154</td>
+        <td>score</td>
+        <td> bestScore = asteroid.Steps(bestCapsuleForAsteroid) + ...</td>
+        <td>changed the value to score since it already exists</td>
     </tr>
     <tr>
         <td>Asteroids.cs</td>
@@ -71,31 +99,10 @@
     </tr>
     <tr>
         <td>Asteroids.cs</td>
-        <td>78</td>
-        <td>if(!newAsteroidLocation.InMap() &&</td>
-        <td>.Where(p => !newAsteroidLocation.InMap() ? false</td>
-        <td>removed in map from inside the where</td>
-    </tr>
-    <tr>
-        <td>Asteroids.cs</td>
-        <td>99</td>
-        <td>.OrderBy(</td>
-        <td>.OrderByDescending(</td>
-        <td> changed orderby to normal because we should target the closest capsule to the mothership that we can hit</td>
-    </tr>
-    <tr>
-        <td>Asteroids.cs</td>
-        <td>154</td>
-        <td>score</td>
-        <td> bestScore = asteroid.Steps(bestCapsuleForAsteroid) + ...</td>
-        <td>changed the value to score since it already exists</td>
-    </tr>
-    <tr>
-        <td>Asteroids.cs</td>
-        <td>125</td>
-        <td><</td>
-        <td><=</td>
-        <td> changed <= to < because we want them to hit each other</td>
+        <td>178</td>
+        <td>asteroid.Size</td>
+        <td> (int) (asteroid.Size * 0.8)</td>
+        <td> the problem of the asteroid not killing the pirate was caused by another reason</td>
     </tr>
     <tr>
         <td>Bunkers.cs</td>
@@ -134,16 +141,9 @@
         <td>a better calculation to take into consideration the heavy pirates' push</td>
     </tr>
     <tr>
-        <td>Asteroids.cs</td>
-        <td>178</td>
-        <td>asteroid.Size</td>
-        <td> (int) (asteroid.Size * 0.8)</td>
-        <td> the problem of the asteroid not killing the pirate was caused by another reason</td>
-    </tr>
-    <tr>
         <td>Bunkers.cs</td>
-        <td></td>
-        <td></td>
+        <td>69-72</td>
+        <td>Make sure to review the * 2</td>
         <td></td>
         <td></td>
     </tr>
