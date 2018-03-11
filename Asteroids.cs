@@ -174,7 +174,7 @@ namespace Skillz_Code
 
         private Location GetOptimalAsteroidInterception(Pirate enemy, Pirate friendly, Asteroid asteroid, Location destination)
         {
-            if(asteroid.InRange(enemy,asteroid.Size)
+            if(asteroid.InRange(enemy,asteroid.Size))
                 return null;
             var steps = enemy.Steps(destination.Towards(enemy, enemy.MaxSpeed));
             var asteroidLocation = asteroid.Location;
