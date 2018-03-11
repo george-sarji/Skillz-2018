@@ -50,8 +50,8 @@ namespace Skillz_Code
                         {
                             // Get the steps needed for the pirate to go to the wormhole's partner, push it and come back.
                              int friendlyStepsNeeded =
-                                System.Math.Max(pirate.Steps(bestWormhole.Partner), pirate.PushReloadTurns) +
-                                System.Math.Max(pirate.Steps(bestWormhole.Partner), game.PushMaxReloadTurns);//Fix
+                                System.Math.Max(pirate.Steps(bestWormhole.Partner.Location.Towards(pirate, pirate.PushRange)), pirate.PushReloadTurns) +
+                                System.Math.Max(pirate.Steps(bestWormhole.Partner.Location.Towards(pirate, pirate.PushRange)), game.PushMaxReloadTurns);//Fix, assumed pirate.PushRange, needs review
                             // Get the steps needed for the enemy pirate to arrive to the mothership
                             var enemyStepsNeeded = capsule.Holder.Steps(bestWormhole) + (bestWormhole.Partner.Distance(capsule) / capsule.Holder.MaxSpeed); //Fix
                             if (friendlyStepsNeeded < enemyStepsNeeded)
