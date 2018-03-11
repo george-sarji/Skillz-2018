@@ -328,6 +328,14 @@
 	</tr>
 	<tr>
 		<td>Pirates.cs</td>
+		<td>36</td>
+		<td>var bestMothership = GetEnemyBestMothershipThroughWormholes(capsuleHolder);
+                if (capsuleHolder.StickyBombs.Any() && capsuleHolder.StickyBombs.OrderBy(bomb => bomb.Countdown).First().Countdown < capsuleHolder.Steps(bestMothership))</td>
+		<td>if (capsuleHolder.StickyBombs.Any())</td>
+		<td>This is to attack pirates if they wont blow up before reaching the mothership. Needs to be tested.</td>
+	</tr>
+	<tr>
+		<td>Pirates.cs</td>
 		<td>44-45</td>
 		<td>.Where(enemy => !enemy.StickyBombs.Any() &&
                     GetEnemiesInBombRange(enemy).Count() >= 2)</td>
@@ -355,13 +363,6 @@
 		<td>IEnumerable + it's methods</td>
 		<td>List + it's methods</td>
 		<td>Change everything from lists to IEnumerable and make the .AddRange into .Concat</td>
-	</tr>
-	<tr>
-		<td>Pirates.cs</td>
-		<td>LINES</td>
-		<td>REPLACEMENT</td>
-		<td>REPLACED</td>
-		<td>REASON</td>
 	</tr>
 	<tr>
 		<td>Pirates.cs</td>

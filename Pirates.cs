@@ -33,7 +33,8 @@ namespace Skillz_Code
             foreach (var capsuleHolder in enemyCapsuleHolders)
             {
                 int priority = 1;
-                if (capsuleHolder.StickyBombs.Any())
+                var bestMothership = GetEnemyBestMothershipThroughWormholes(capsuleHolder);
+                if (capsuleHolder.StickyBombs.Any() && capsuleHolder.StickyBombs.OrderBy(bomb => bomb.Countdown).First().Countdown < capsuleHolder.Steps(bestMothership))
                     priority = 10;
                 targetPirates.Add(new TargetLocation(capsuleHolder.Location, LocationType.EnemyPirate, priority, capsuleHolder, this,
                     (game.StickyBombReloadTurns != 0) ? capsuleHolder.NumPushesForCapsuleLoss : 1));
