@@ -295,4 +295,21 @@
         <td>int numOfNearbyEnemyPushers = game.GetEnemyLivingPirates().Where(enemy => enemy.InRange(pirate, enemy.PushRange + game.PirateMaxSpeed) && enemy.PushReloadTurns <= 2).Count();</td>
         <td>Less called functions</td>
     </tr>
+    <tr>
+    <td>Priorities.cs</td>
+        <td>45-55</td>
+        <td>---</td>
+        <td>if (LocationType.MyPirate == Type)
+                {
+                    var bestMothership = game.GetMyMotherships().OrderBy(mothership => pirate.Steps(mothership) / (int) ((double) mothership.ValueMultiplier).Sqrt()).FirstOrDefault();;
+                    if (!CanCatchUpAndPush(pirate, (Pirate) TargetLocationObject, bestMothership.Location))
+                    {
+                        score += MAX_PRIORITY;
+                        return score;
+                    }
+                    score += this.Priority;
+                    return score;
+                }</td>
+        <td>it is already done inside handle if pirate can reach</td>
+    </tr>
 </table>
