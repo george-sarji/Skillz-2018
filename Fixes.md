@@ -85,6 +85,24 @@
     </tr>
     <tr>
         <td>Bunkers.cs</td>
+        <td>23</td>
+        <td>capsule.Holder.Steps(mothership)</td>
+        <td>add the wait turns until we get to the enemy pirates instead of the p.Steps(mothership)</td>
+    </tr>
+    <tr>
+        <td>Bunkers.cs</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Bunkers.cs</td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Bunkers.cs</td>
         <td></td>
         <td></td>
         <td></td>
