@@ -18,7 +18,7 @@ namespace Skillz_Code
                 double deltaX = pirate.MaxSpeed * System.Math.Cos(angle);
                 double deltaY = pirate.MaxSpeed * System.Math.Sin(angle);
                 Location option = new Location((int) (pirate.Location.Row - deltaY), (int) (pirate.Location.Col + deltaX));
-                if (!IsInDanger(option, destination.GetLocation(), pirate) && option.InMap())
+                if (option.InMap() && !IsInDanger(option, destination.GetLocation(), pirate))
                 {
                     candidates.Add(option);
                 }
@@ -39,13 +39,12 @@ namespace Skillz_Code
 
         private bool IsHittingAsteroid(Location loc)
         {
-            bool hitting = false;
             foreach (Asteroid asteroid in game.GetLivingAsteroids())
             {
                 if (loc.InRange(asteroid.Location.Add(asteroid.Direction), asteroid.Size))
-                    hitting = true;
+                    return true;
             }
-            return hitting;
+            return false;
         }
 
         private bool IsInWormholeDanger(Location location, Location destination, Pirate pirate)
@@ -61,7 +60,7 @@ namespace Skillz_Code
 
         private bool IsInEnemyRange(Location loc, Pirate myPirate)
         {
-            return game.GetEnemyLivingPirates().Count(enemy => enemy.InRange(loc, enemy.PushRange + enemy.MaxSpeed) &&
+            return (!myPirate.HasCapsule()) ? false : game.GetEnemyLivingPirates().Count(enemy => enemy.InRange(loc, enemy.PushRange + enemy.MaxSpeed) &&
                 enemy.PushReloadTurns<enemy.Steps(loc))>= myPirate.NumPushesForCapsuleLoss;
         }
 

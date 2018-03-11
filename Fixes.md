@@ -154,4 +154,48 @@
         <td></td>
         <td></td>
     </tr>
+    <tr>
+        <td>SmartSailing.cs</td>
+        <td>21</td>
+        <td>if (option.InMap() && !IsInDanger(option, destination.GetLocation(), pirate))</td>
+        <td>if (!IsInDanger(option, destination.GetLocation(), pirate) && option.InMap())</td>
+        <td>Provides more run time for the bot</td>
+    <tr>
+    <tr>
+        <td>SmartSailing.cs</td>
+        <td>42</td>
+        <td>-</td>
+        <td>bool hitting = false;</td>
+        <td>Removed to improve timing. Look changes below</td>
+    </tr>
+    <tr>
+        <td>SmartSailing.cs</td>
+        <td>46</td>
+        <td>return true;</td>
+        <td>hitting = true;</td>
+        <td>Improving timing of operation.</td>
+    </tr>
+    <tr>
+        <td>SmartSailing.cs</td>
+        <td>47</td>
+        <td>return false;</td>
+        <td>return hitting;</td>
+        <td>Improving timing of operation.</td>
+    </tr>
+    <tr>
+        <td>SmartSailing.cs</td>
+        <td>LINE</td>
+        <td>CHANGE</td>
+        <td>INSTEAD</td>
+        <td>REASON</td>
+    </tr>
+    <tr>
+        <td>SmartSailing.cs</td>
+        <td>64-65</td>
+        <td>(!myPirate.HasCapsule()) ? false : game.GetEnemyLivingPirates().Count(enemy => enemy.InRange(loc, enemy.PushRange + enemy.MaxSpeed) &&
+                enemy.PushReloadTurns<enemy.Steps(loc))>= myPirate.NumPushesForCapsuleLoss;</td>
+        <td>return game.GetEnemyLivingPirates().Count(enemy => enemy.InRange(loc, enemy.PushRange + enemy.MaxSpeed) &&
+                enemy.PushReloadTurns<enemy.Steps(loc))>= myPirate.NumPushesForCapsuleLoss;</td>
+        <td>Added to check if the pirate has capsule to show if in enemy danger</td>
+    </tr>
 </table>
