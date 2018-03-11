@@ -100,9 +100,32 @@
     <tr>
         <td>Bunkers.cs</td>
         <td>23</td>
-        <td>.Where(p => p.Steps(mothership) > p.PushReloadTurns)</td>
+        <td>.Where(p => capsule.Holder.Steps(mothership) > p.PushReloadTurns)</td>
         <td>.Where(p => p.Steps(mothership) > p.PushReloadTurns)</td>
         <td>add the wait turns until we get to the enemy pirates instead of the p.Steps(mothership)</td>
+    </tr>
+    <tr>
+        <td>Bunkers.cs</td>
+        <td>44</td>
+        <td>if (requiredPiratesCount == count)</td>
+        <td>---</td>
+        <td>Deleted the if because we want to sort them in any case</td>
+    </tr>
+    <tr>
+        <td>Bunkers.cs</td>
+        <td>53</td>
+        <td> var friendlyStepsNeeded = pirate.Steps(bestWormhole.Partner) * 2 + 1 + pirate.PushReloadTurns + game.PushMaxReloadTurns;</td>
+        <td>int friendlyStepsNeeded =
+                                System.Math.Max(pirate.Steps(bestWormhole.Partner), pirate.PushReloadTurns) +
+                                System.Math.Max(pirate.Steps(bestWormhole.Partner), game.PushMaxReloadTurns);</td>
+        <td>the previous calculation was faulty</td>
+    </tr>
+    <tr>
+        <td>Bunkers.cs</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
     </tr>
     <tr>
         <td>Bunkers.cs</td>
