@@ -315,7 +315,6 @@
 		<td>List + it's methods</td>
 		<td>Change everything from lists to IEnumerable and make the .AddRange into .Concat</td>
 	</tr>
-	
 	<tr>
     <td>Utilities.cs</td>
         <td>48</td>
