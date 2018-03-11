@@ -115,17 +115,16 @@
         <td>Bunkers.cs</td>
         <td>53</td>
         <td> var friendlyStepsNeeded = pirate.Steps(bestWormhole.Partner) * 2 + 1 + pirate.PushReloadTurns + game.PushMaxReloadTurns;</td>
-        <td>int friendlyStepsNeeded =
-                                System.Math.Max(pirate.Steps(bestWormhole.Partner), pirate.PushReloadTurns) +
-                                System.Math.Max(pirate.Steps(bestWormhole.Partner), game.PushMaxReloadTurns);</td>
+        <td>System.Math.Max(pirate.Steps(bestWormhole.Partner.Location.Towards(pirate, pirate.PushRange)), pirate.PushReloadTurns) +
+                                System.Math.Max(pirate.Steps(bestWormhole.Partner.Location.Towards(pirate, pirate.PushRange)), game.PushMaxReloadTurns);</td>
         <td>the previous calculation was faulty</td>
     </tr>
     <tr>
         <td>Bunkers.cs</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td>55</td>
+        <td>capsule.Holder.Steps(bestWormhole) + (bestWormhole.Partner.Distance(capsule) / capsule.Holder.MaxSpeed);</td>
+        <td>var enemyStepsNeeded = capsule.Holder.Steps(mothership);</td>
+        <td>the previous calculation was faulty</td>
     </tr>
     <tr>
         <td>Bunkers.cs</td>
