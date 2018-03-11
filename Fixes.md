@@ -184,13 +184,6 @@
     </tr>
     <tr>
         <td>SmartSailing.cs</td>
-        <td>LINE</td>
-        <td>CHANGE</td>
-        <td>INSTEAD</td>
-        <td>REASON</td>
-    </tr>
-    <tr>
-        <td>SmartSailing.cs</td>
         <td>64-65</td>
         <td>(!myPirate.HasCapsule()) ? false : game.GetEnemyLivingPirates().Count(enemy => enemy.InRange(loc, enemy.PushRange + enemy.MaxSpeed) &&
                 enemy.PushReloadTurns<enemy.Steps(loc))>= myPirate.NumPushesForCapsuleLoss;</td>
