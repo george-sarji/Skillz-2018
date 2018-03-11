@@ -10,34 +10,35 @@ namespace Skillz_Code
         {
             foreach (Asteroid asteroid in game.GetLivingAsteroids())
             {
-                var pirate = availablePirates.Where(p => p.CanPush(asteroid)).OrderByDescending(p => AsteroidHeadingTowardsPirate(asteroid, p)).FirstOrDefault();
-                if (pirate != null && availablePirates.Where(p => p.CanPush(asteroid)).Any() && availableAsteroids.Contains(asteroid))
+                var pirate = availablePirates.Where(p => p.CanPush(asteroid)).OrderByDescending(p => AsteroidHittingPirate(asteroid, p)).FirstOrDefault();
+                if (pirate != null && availableAsteroids.Contains(asteroid))
                 {
                     // get the best enemy to push asteroid towards
                     var bestEnemy = game.GetEnemyLivingPirates()
                         .OrderByDescending(enemy => enemy.HasCapsule())
-                        .OrderByDescending(enemy => enemy.PushReloadTurns > 0)
-                        .OrderBy(enemy => enemy.Distance(asteroid)).FirstOrDefault();
+                        .OrderByDescending(enemy => enemy.PushReloadTurns - asteroid.Steps(enemy) > 0)
+                        .FirstOrDefault();//fixed
                     // Get the best capsule
                     var bestCapsule = game.GetEnemyCapsules().Where(capsule => capsule.Holder != null &&
                             GetEnemyBestMothershipThroughWormholes(capsule.Holder) != null &&
                             GetOptimalAsteroidInterception(capsule.Holder, pirate, asteroid, GetEnemyBestMothershipThroughWormholes(capsule.Holder).GetLocation()) != null)
-                        .OrderByDescending(capsule => capsule.Holder.Steps(GetEnemyBestMothershipThroughWormholes(capsule.Holder))).FirstOrDefault();
+                        .OrderBy(capsule => capsule.Holder.Steps(GetEnemyBestMothershipThroughWormholes(capsule.Holder))).FirstOrDefault();//Fix: orderbyDescending to normal
                     // get the closest asteroid
-                    var closestAsteroid = game.GetLivingAsteroids().OrderBy(ast => ast.Distance(asteroid)).Where(ast => ast != asteroid).FirstOrDefault();
+                    var closestAsteroid = game.GetLivingAsteroids().OrderBy(ast => ast.Distance(asteroid)).Where(ast => ast != asteroid).FirstOrDefault();//maybe we should try pushing towards an asteroid that might threaten our pirates
                     // get the ooposite direction of the astroid you're pushing
                     var oppositeDirection = asteroid.Direction.Multiply(-1);
                     // this variable is to simplify the IF below it
-                    bool bestEnemyIsCloserThanClosestAsteroid = (closestAsteroid == null) || (bestEnemy != null && bestEnemy.Distance(pirate) <= closestAsteroid.Distance(pirate));
+                    bool bestEnemyIsCloserThanClosestAsteroid = (closestAsteroid == null) || (bestEnemy != null && bestEnemy.Steps(asteroid) <= closestAsteroid.Steps(asteroid));//Fix: changed pirate to asteroid
                     // the 4 "IF"s below check if the asteroid is going to kill the pirate pushing it before pushing.
                     if (bestCapsule != null &&
                         !IsSelfKilling(pirate, asteroid, GetOptimalAsteroidInterception(bestCapsule.Holder, pirate, asteroid,
-                            GetEnemyBestMothershipThroughWormholes(bestCapsule.Holder).GetLocation())))
+                            GetEnemyBestMothershipThroughWormholes(bestCapsule.Holder).GetLocation())))//Fix: in each if we added availableAsteroids.Remove
                     {
                         var interceptionPoint = GetOptimalAsteroidInterception(bestCapsule.Holder, pirate, asteroid,
                             GetEnemyBestMothershipThroughWormholes(bestCapsule.Holder).GetLocation());
                         pirate.Push(asteroid, interceptionPoint);
                         availablePirates.Remove(pirate);
+                        availableAsteroids.Remove(asteroid);
                     }
                     else if (bestEnemy != null && !IsSelfKilling(pirate, asteroid, bestEnemy.Location) &&
                         bestEnemyIsCloserThanClosestAsteroid)
@@ -45,6 +46,7 @@ namespace Skillz_Code
                         // push asteroid towards the closest enemy
                         pirate.Push(asteroid, bestEnemy);
                         availablePirates.Remove(pirate);
+                        availableAsteroids.Remove(asteroid);
                     }
                     else if (closestAsteroid != null && !IsSelfKilling(pirate, asteroid, closestAsteroid.Location))
                     {
@@ -52,6 +54,7 @@ namespace Skillz_Code
                         pirate.Push(asteroid, closestAsteroid);
                         availablePirates.Remove(pirate);
                         availableAsteroids.Remove(closestAsteroid);
+                        availableAsteroids.Remove(asteroid);
                     }
                     // if the asteroid is standing still dont pushing to the opposite direction.
                     else if (!IsSelfKilling(pirate, asteroid, asteroid.Location.Towards(asteroid.Location.Add(oppositeDirection), pirate.PushDistance)) && asteroid.Direction.Distance(new Location(0, 0)) != 0)
@@ -59,14 +62,16 @@ namespace Skillz_Code
                         // push asteroid in it's opposite direction
                         pirate.Push(asteroid, asteroid.Location.Towards(asteroid.Location.Add(oppositeDirection), pirate.PushDistance));
                         availablePirates.Remove(pirate);
+                        availableAsteroids.Remove(asteroid);
                     }
-                    else if (!IsSelfKilling(pirate, asteroid, GetClosestToBorder(asteroid.Location)))
+                    else if (!IsSelfKilling(pirate, asteroid, GetClosestToBorder(asteroid.Location)) && AsteroidHittingPirate(asteroid, pirate))//Fix: Added is hitting asteroid
                     {
                         // push asteroid towards the closest border
                         pirate.Push(asteroid, GetClosestToBorder(asteroid.Location));
                         availablePirates.Remove(pirate);
+                        availableAsteroids.Remove(asteroid);
                     }
-                    else
+                    else if(AsteroidHittingPirate(asteroid, pirate))// Fix: avoid pushing the asteroid if we
                     {
                         var bestOption = asteroid.Location;
                         for (int i = 0; i < CircleSteps; i++)
@@ -75,7 +80,7 @@ namespace Skillz_Code
                             double deltaX = pirate.PushDistance * System.Math.Cos(angle);
                             double deltaY = pirate.PushDistance * System.Math.Sin(angle);
                             Location newAsteroidLocation = new Location((int) (asteroid.Location.Row - deltaY), (int) (asteroid.Location.Col + deltaX));
-                            if(!(game.GetMyLivingPirates().Where(p => !newAsteroidLocation.InMap() ? false : newAsteroidLocation.Distance(p) <= asteroid.Size).Any()))
+                            if(!newAsteroidLocation.InMap() &&!(game.GetMyLivingPirates().Where(p => newAsteroidLocation.Distance(p) <= asteroid.Size).Any()))//Fix: removed in map from inside the where
                             {
                                 pirate.Push(asteroid, newAsteroidLocation);
                                 availableAsteroids.Remove(asteroid);
@@ -84,6 +89,7 @@ namespace Skillz_Code
                             }
                         }
                     }
+
                 }
             }
         }
@@ -96,7 +102,7 @@ namespace Skillz_Code
             var bestCapsule = game.GetEnemyCapsules().Where(capsule => capsule.Holder != null &&
                     GetEnemyBestMothershipThroughWormholes(capsule.Holder) != null &&
                     GetOptimalAsteroidInterception(capsule.Holder, pirate, asteroid, GetEnemyBestMothershipThroughWormholes(capsule.Holder).GetLocation()) != null)
-                .OrderByDescending(capsule => capsule.Holder.Steps(GetEnemyBestMothershipThroughWormholes(capsule.Holder))).FirstOrDefault();
+                .OrderBy(capsule => capsule.Holder.Steps(GetEnemyBestMothershipThroughWormholes(capsule.Holder))).FirstOrDefault();//Fix: changed orderby to normal because we should target the closest capsule to the mothership that we can hit
             var bestGrouping = game.GetEnemyLivingPirates().OrderByDescending(enemy => enemy.PushReloadTurns).
             OrderBy(enemy => game.GetEnemyLivingPirates().Count(enemyPirate => enemyPirate.InRange(enemy, asteroid.Size))).FirstOrDefault();
             if (bestCapsule != null)
@@ -118,11 +124,11 @@ namespace Skillz_Code
             return false;
         }
 
-        private bool AsteroidHeadingTowardsPirate(Asteroid asteroid, Pirate pirate)
+        private bool AsteroidHittingPirate(Asteroid asteroid, Pirate pirate)
         {
             // check if the asteroid is heading towards the pirate
             return !asteroid.Location.Add(asteroid.Direction).InMap() ? false :
-                asteroid.Location.Add(asteroid.Direction).Distance(pirate) <= asteroid.Size;
+                asteroid.Location.Add(asteroid.Direction).Distance(pirate) < asteroid.Size; //Fix: changed <= to <
         }
 
         private bool IsSelfKilling(Pirate pirate, Asteroid asteroid, Location pushDestination)
@@ -151,8 +157,7 @@ namespace Skillz_Code
                         bestCapsuleForAsteroid.Holder.Steps(GetEnemyBestMothershipThroughWormholes(bestCapsuleForAsteroid.Holder));
                     if (bestCapsule == null || bestAsteroid == null || score < bestScore)
                     {
-                        bestScore = asteroid.Steps(bestCapsuleForAsteroid) +
-                            bestCapsuleForAsteroid.Holder.Steps(GetEnemyBestMothershipThroughWormholes(bestCapsuleForAsteroid.Holder));
+                        bestScore = score;//Fix: replace it with score
                         bestCapsule = bestCapsuleForAsteroid;
                         bestAsteroid = asteroid;
                     }
@@ -169,13 +174,15 @@ namespace Skillz_Code
 
         private Location GetOptimalAsteroidInterception(Pirate enemy, Pirate friendly, Asteroid asteroid, Location destination)
         {
+            if(asteroid.InRange(enemy,asteroid.Size)
+                return null;
             var steps = enemy.Steps(destination.Towards(enemy, enemy.MaxSpeed));
             var asteroidLocation = asteroid.Location;
-            for (int i = 0; i < steps; i++)
+            for (int i = 1; i < steps; i++)//Fix: changed I to 1
             {
                 // Get the location.
                 var enemyLocation = enemy.Location.Towards(destination, enemy.MaxSpeed * i);
-                if (asteroidLocation.Towards(enemyLocation, friendly.PushDistance + asteroid.Speed * i).InRange(enemyLocation, (int) (asteroid.Size * 0.8)))
+                if (asteroidLocation.Towards(enemyLocation, friendly.PushDistance + asteroid.Speed * (i-1)).InRange(enemyLocation, (int) (asteroid.Size * 0.8)))
                     return enemyLocation;
             }
             return null;
