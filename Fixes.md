@@ -281,6 +281,13 @@
         <td>return game.GetEnemyLivingPirates().Where(enemy => enemy.InRange(location, enemy.PushRange) && enemy.PushReloadTurns != 0).Count();</td>
         <td>Less called functions</td>
     </tr>
+	<tr>
+		<td>Utilities.cs</td>
+		<td>85</td>
+		<td>-</td>
+		<td>availablePirates.Remove(capsuleHolder);</td>
+		<td>Review this and check if it doesnt cause any ignored actions.</td>
+	</tr>
     <tr>
         <td>Utilities.cs</td>
         <td>94</td>
@@ -312,4 +319,55 @@
                 }</td>
         <td>it is already done inside handle if pirate can reach</td>
     </tr>
+	<tr>
+		<td>Pirates.cs</td>
+		<td>16</td>
+		<td>game.GetEnemyLivingPirates().Count(enemyPirate => enemy != enemyPirate && enemy.Distance(enemyPirate) <= game.StickyBombExplosionRange) > 2</td>
+		<td>game.GetEnemyLivingPirates().Where(enemyPirate => enemy != enemyPirate && enemy.Distance(enemyPirate) < game.StickyBombExplosionRange).Count() > 2</td>
+		<td>Used to include the tip of sticky bomb range, attack more pirates (minimum 2) and call less functions.</td>
+	</tr>
+	<tr>
+		<td>Pirates.cs</td>
+		<td>44-45</td>
+		<td>.Where(enemy => !enemy.StickyBombs.Any() &&
+                    GetEnemiesInBombRange(enemy).Count() >= 2)</td>
+		<td>.Where(enemy => GetEnemiesInBombRange(enemy).Count() >= 2 &&
+                    !enemy.StickyBombs.Any())</td>
+		<td>Switch order of functions to use less time.</td>
+	</tr>
+	<tr>
+		<td>Pirates.cs</td>
+		<td>57</td>
+		<td>var PiratesWithCapsule = game.GetMyLivingPirates().Where(p => p.HasCapsule());</td>
+		<td>List<Pirate> PiratesWithCapsule = game.GetMyLivingPirates().Where(p => p.HasCapsule()).ToList();</td>
+		<td>Used less functions (removed copying to list)</td>
+	</tr>
+	<tr>
+		<td>Pirates.cs</td>
+		<td>61</td>
+		<td>var bestMothership = GetMyBestMothershipThroughWormholes(pirate);</td>
+		<td>var bestMothership = game.GetMyMotherships().OrderBy(mothership => pirate.Steps(mothership) / (int) ((double) mothership.ValueMultiplier).Sqrt()).FirstOrDefault();</td>
+		<td>Updated to new function.</td>
+	</tr>
+	<tr>
+		<td>Pirates.cs</td>
+		<td>89-124</td>
+		<td>IEnumerable + it's methods</td>
+		<td>List + it's methods</td>
+		<td>Change everything from lists to IEnumerable and make the .AddRange into .Concat</td>
+	</tr>
+	<tr>
+		<td>Pirates.cs</td>
+		<td>LINES</td>
+		<td>REPLACEMENT</td>
+		<td>REPLACED</td>
+		<td>REASON</td>
+	</tr>
+	<tr>
+		<td>Pirates.cs</td>
+		<td>LINES</td>
+		<td>REPLACEMENT</td>
+		<td>REPLACED</td>
+		<td>REASON</td>
+	</tr>
 </table>

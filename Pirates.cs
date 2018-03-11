@@ -13,7 +13,7 @@ namespace Skillz_Code
             {
                 foreach (Pirate enemy in game.GetEnemyLivingPirates().Where(enemyPirate => enemyPirate.InStickBombRange(pirate)))
                 {
-                    if (game.GetEnemyLivingPirates().Where(enemyPirate => enemy != enemyPirate && enemy.Distance(enemyPirate) < game.StickyBombExplosionRange).Count() > 2)
+                    if (game.GetEnemyLivingPirates().Count(enemyPirate => enemy != enemyPirate && enemy.Distance(enemyPirate) <= game.StickyBombExplosionRange) >= 2)
                     {
                         pirate.StickBomb(enemy);
                         stickedBomb = true;
@@ -40,8 +40,8 @@ namespace Skillz_Code
             }
             if (!enemyCapsuleHolders.Any())
             {
-                var bestEnemy = game.GetEnemyLivingPirates().Where(enemy => GetEnemiesInBombRange(enemy).Count() >= 2 &&
-                    !enemy.StickyBombs.Any()).OrderByDescending(enemy => GetEnemiesInBombRange(enemy).Count()).FirstOrDefault();
+                var bestEnemy = game.GetEnemyLivingPirates().Where(enemy => !enemy.StickyBombs.Any() &&
+                    GetEnemiesInBombRange(enemy).Count() >= 2).OrderByDescending(enemy => GetEnemiesInBombRange(enemy).Count()).FirstOrDefault();
                 // var centeredEnemy = game.GetEnemyLivingPirates().Where(enemy => GetEnemiesInBombRange(enemy).Count() >= 2)
                 //     .OrderByDescending(enemy => GetEnemiesInBombRange(enemy)).FirstOrDefault();
                 if (bestEnemy != null)
@@ -54,11 +54,11 @@ namespace Skillz_Code
 
         private IEnumerable<TargetLocation> GetTargetLocationsMyPirates()
         {
-            List<Pirate> PiratesWithCapsule = game.GetMyLivingPirates().Where(p => p.HasCapsule()).ToList();
+            var PiratesWithCapsule = game.GetMyLivingPirates().Where(p => p.HasCapsule());
             List<TargetLocation> targetLocations = new List<TargetLocation>();
             foreach (Pirate pirate in PiratesWithCapsule)
             {
-                var bestMothership = game.GetMyMotherships().OrderBy(mothership => pirate.Steps(mothership) / (int) ((double) mothership.ValueMultiplier).Sqrt()).FirstOrDefault();
+                var bestMothership = GetMyBestMothershipThroughWormholes(pirate);
                 if (!CheckIfCapsuleCanReachMothership(pirate, bestMothership))
                 {
                     targetLocations.Add(new TargetLocation(pirate.Location, LocationType.MyPirate, 1, pirate, this));
