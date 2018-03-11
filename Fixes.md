@@ -7,6 +7,17 @@
         <td>Reason</td>
     </tr>
     <tr>
+        <td>Initializer.cs</td>
+        <td>54-58</td>
+        <td>myPiratesWithCapsulePushes = game.GetMyLivingPirates().Where(p => p.HasCapsule()).ToDictionary(pirate => pirate, pirate => 0);</td>
+        <td>myPiratesWithCapsulePushes = new Dictionary<Pirate, int>();
+            foreach (Pirate pirate in game.GetMyLivingPirates().Where(p => p.HasCapsule()))
+            {
+                myPiratesWithCapsulePushes.Add(pirate, 0);
+            }</td>
+        <td>Less time used</td>
+    </tr>
+    <tr>
         <td>Asteroids.cs</td>
         <td>19</td>
         <td>.OrderByDescending(enemy => enemy.PushReloadTurns - asteroid.Steps(enemy) > 0)</td>
