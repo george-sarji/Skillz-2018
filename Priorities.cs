@@ -42,17 +42,6 @@ namespace Skillz_Code
                     (pirate.PushReloadTurns - pirate.Steps(Location)).Clamp(0, MAX_PRIORITY) : 0;
                 int score = this.ScaledDistance(pirate) + PenaltyPerExtraPirate * (this.AssignedPirates >= this.DesiredPirates ? (AssignedPirates - DesiredPirates + 1) : 0) +
                     penaltyForNoPush;
-                if (LocationType.MyPirate == Type)
-                {
-                    var bestMothership = game.GetMyMotherships().OrderBy(mothership => pirate.Steps(mothership) / (int) ((double) mothership.ValueMultiplier).Sqrt()).FirstOrDefault();;
-                    if (!CanCatchUpAndPush(pirate, (Pirate) TargetLocationObject, bestMothership.Location))
-                    {
-                        score += MAX_PRIORITY;
-                        return score;
-                    }
-                    score += this.Priority;
-                    return score;
-                }
 
                 score += HandleIfPirateCanReach(pirate);
                 return score;
