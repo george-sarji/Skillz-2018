@@ -1,10 +1,10 @@
 <table>
     <tr>
-        <td>Class</td>
-        <td>Line</td>
-        <td>Fix</td>
-        <td>Instead Of</td>
-        <td>Reason</td>
+        <th>Class</th>
+        <th>Line</th>
+        <th>Fix</th>
+        <th>Instead Of</th>
+        <th>Reason</th>
     </tr>
     <tr>
         <td>Initializer.cs</td>
