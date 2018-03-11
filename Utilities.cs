@@ -45,7 +45,7 @@ namespace Skillz_Code
         }
         private int NumOfAvailablePushers(Pirate pirate)
         {
-            return availablePirates.Where(p => p.CanPush(pirate)).Count();
+            return availablePirates.Count(p => p.CanPush(pirate));
         }
 
         private static bool IsOnTheWay(Location a, Location b, Location c, int buffer)
@@ -61,17 +61,17 @@ namespace Skillz_Code
         }
         private int NumberOfEnemiesOnTheWay(Pirate myPirate, Location b)
         {
-            return game.GetEnemyLivingPirates().Where(p => IsOnTheWay(myPirate.Location, b, p.Location, p.MaxSpeed) && myPirate.Steps(p) < p.PushReloadTurns).ToList().Count;
+            return game.GetEnemyLivingPirates().Count(p => IsOnTheWay(myPirate.Location, b, p.Location, p.MaxSpeed) && myPirate.Steps(p) < p.PushReloadTurns);
         }
 
         private int NumberOfAvailableEnemyPushers(Pirate pirate)
         {
-            return game.GetEnemyLivingPirates().Where(enemy => enemy.CanPush(pirate)).Count();
+            return game.GetEnemyLivingPirates().Count(enemy => enemy.CanPush(pirate));
         }
 
         private int NumberOfPushersAtLocation(Location location)
         {
-            return game.GetEnemyLivingPirates().Where(enemy => enemy.InRange(location, enemy.PushRange) && enemy.PushReloadTurns != 0).Count();
+            return game.GetEnemyLivingPirates().Count(enemy => enemy.InRange(location, enemy.PushRange) && enemy.PushReloadTurns != 0);
         }
 
         private bool CheckIfCapsuleCanReachMothership(Pirate capsuleHolder, Mothership mothership) //Working on this Function -Mahmoud
@@ -91,11 +91,11 @@ namespace Skillz_Code
         private bool IsPirateInExtremeDanger(Pirate pirate)
         {
             // Checks if a pirate is in extreme danger, and maybe then it will be woth swapping him with a heavy pirate. Working on it for StateMachine.
-            return game.GetEnemyLivingPirates().Where(enemy => enemy.Distance(pirate) < game.PushRange).Count() > game.NumPushesForCapsuleLoss;
+            return game.GetEnemyLivingPirates().Count(enemy => enemy.Distance(pirate) < game.PushRange) > game.NumPushesForCapsuleLoss;
         }
         private bool IsCapsuleHolderInDanger(Pirate pirate)
         {
-            int numOfNearbyEnemyPushers = game.GetEnemyLivingPirates().Where(enemy => enemy.InRange(pirate, enemy.PushRange + game.PirateMaxSpeed) && enemy.PushReloadTurns <= 2).Count();
+            var numOfNearbyEnemyPushers = game.GetEnemyLivingPirates().Count(enemy => enemy.InRange(pirate, enemy.PushRange + game.PirateMaxSpeed) && enemy.PushReloadTurns <= 2);
             // Checks if the capsule holder is in danger by checking if there are enough close enemies that are in range of pushing, or close to being in range to make the capsule holder lose his capsule.
             return pirate.HasCapsule() && numOfNearbyEnemyPushers >= game.NumPushesForCapsuleLoss && numOfNearbyEnemyPushers <= game.HeavyNumPushesForCapsuleLoss;
         }
