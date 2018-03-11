@@ -22,6 +22,13 @@
     </tr>
     <tr>
         <td>Asteroids.cs</td>
+        <td>29</td>
+        <td>var oppositeDirection = asteroid.Direction.Multiply(-1);</td>
+        <td>var oppositeDirection = new Location(asteroid.Location.Row * (-1), asteroid.Location.Col * (-1));</td>
+        <td>Better calculation using API</td>
+    </tr>
+    <tr>
+        <td>Asteroids.cs</td>
         <td>31</td>
         <td>bestEnemy.Steps(asteroid) <= closestAsteroid.Steps(asteroid));</td>
         <td>bestEnemy.Distance(pirate) <= closestAsteroid.Distance(pirate)</td>
