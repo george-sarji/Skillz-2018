@@ -60,7 +60,7 @@ namespace Skillz_Code
                 var pushingPirates = availablePirates.Where(p => p.CanPush(capsule.Holder))
                     .OrderByDescending(p => p.PushDistance)
                     .Take(capsule.Holder.NumPushesForCapsuleLoss);
-                var distanceToBorder = capsule.Holder.Distance(GetClosestToBorder(capsule.Location)) - capsule.Holder.MaxSpeed;
+                var distanceToBorder = capsule.Holder.Distance(GetClosestToBorder(capsule.Location)) + capsule.Holder.MaxSpeed;
                 var pushDistance = pushingPirates.Sum(p => p.PushDistance);
                 if (pushingPirates.Count() == capsule.Holder.NumPushesForCapsuleLoss ||
                     pushDistance >= distanceToBorder)
@@ -86,8 +86,18 @@ namespace Skillz_Code
                 return false;
             }
             var destination = GetMyBestMothershipThroughWormholes(myPirateWithCapsule);
-            var locationOfPush = myPirateWithCapsule.Location.Towards(destination, pusherPirate.PushDistance);
-            if (!IsWorthPushing(myPirateWithCapsule ,pusherPirate, locationOfPush, destination.Location))
+            var bestWormhole = GetBestWormhole(myPirateWithCapsule, destination.Location);
+            Location locationOfPush = null;
+            if (bestWormhole != null)
+            {
+                var distance = DistanceThroughWormhole(myPirateWithCapsule.Location, destination, bestWormhole, game.GetActiveWormholes().Where(wormhole => wormhole != bestWormhole), 0, myPirateWithCapsule.MaxSpeed);
+                locationOfPush = (distance > myPirateWithCapsule.Distance(destination)) ? destination.Location : bestWormhole.Location ;
+            }
+            else
+            {
+                locationOfPush = destination.Location;
+            }
+            if (!IsWorthPushing(myPirateWithCapsule, pusherPirate))
             {
                 return false;
             }
@@ -100,13 +110,13 @@ namespace Skillz_Code
             return true;
         }
 
-       private bool IsWorthPushing(Pirate myPirateWithCapsule, Pirate piratePusher, Location locationOfPush, Location destination)
+        private bool IsWorthPushing(Pirate myPirateWithCapsule, Pirate piratePusher)//Fix
         {
             // return false;
             return availablePirates.Where(p => p.CanPush(myPirateWithCapsule))
-                   .OrderByDescending(p => p.PushDistance)
-                   .Take(myPirateWithCapsule.NumPushesForCapsuleLoss-myPiratesWithCapsulePushes[myPirateWithCapsule])
-                   .Contains(piratePusher);
+                .OrderByDescending(p => p.PushDistance)
+                .Take(myPirateWithCapsule.NumPushesForCapsuleLoss - myPiratesWithCapsulePushes[myPirateWithCapsule]-1)
+                .Contains(piratePusher);
         }
 
     }
