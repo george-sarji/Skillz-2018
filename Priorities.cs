@@ -31,7 +31,7 @@ namespace Skillz_Code
 
             private bool CanCatchUpAndPush(Pirate pirate, Pirate destinationPirate, Location destination)
             {
-                Location intercept = Interception(destinationPirate.Location, destination, pirate.Location);
+                Location intercept = bot.GetPirateOptimalInterception(pirate, destinationPirate, destination); //Fix
                 int steps = pirate.Distance(intercept) / pirate.MaxSpeed;
                 return (steps < pirate.PushReloadTurns && pirate.Distance(intercept) < pirate.Distance(destination)) || pirate.CanPush(destinationPirate);
             }
