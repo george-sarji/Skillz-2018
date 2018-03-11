@@ -20,7 +20,7 @@ namespace Skillz_Code
 
                 bunkerCount[mothership]++;
                 var distanceToBorder = capsule.Distance(GetClosestToBorder(capsule.Location));
-                var useablePirates = availablePirates.Where(p => p.Steps(mothership) > p.PushReloadTurns + capsule.Holder.Steps(mothership) - p.Steps(mothership))
+                var useablePirates = availablePirates.Where(p =>  capsule.Holder.Steps(mothership)  > p.PushReloadTurns ) //Fix: add the wait turns until we get to the enemy pirates
                     .Where(p => p.Steps(mothership) < capsule.Holder.Steps(mothership))
                     .Where(p => p.Capsule == null)
                     .OrderBy(p => p.Steps(mothership));
@@ -41,8 +41,7 @@ namespace Skillz_Code
                     if (game.GetEnemyCapsules().Where(cap => cap.Holder != null)
                         .OrderBy(cap => cap.Holder.Steps(GetEnemyBestMothershipThroughWormholes(cap.Holder))).Last().Equals(capsule))
                         Print(header);
-                    if (requiredPiratesCount == count)
-                        useablePirates = useablePirates.OrderByDescending(p => p.PushDistance);
+                    useablePirates = useablePirates.OrderByDescending(p => p.PushDistance);
                     var usedPirates = new List<Pirate>();
                     foreach (var pirate in useablePirates.Take(requiredPiratesCount))
                     {
@@ -50,7 +49,9 @@ namespace Skillz_Code
                             bestWormhole.Partner.InRange(mothership, mothership.UnloadRange * 3))
                         {
                             // Get the steps needed for the pirate to go to the wormhole's partner, push it and come back.
-                            var friendlyStepsNeeded = pirate.Steps(bestWormhole.Partner) * 2 + 1 + pirate.PushReloadTurns + game.PushMaxReloadTurns;
+                             int friendlyStepsNeeded =
+                                System.Math.Max(pirate.Steps(bestWormhole.Partner), pirate.PushReloadTurns) +
+                                System.Math.Max(pirate.Steps(bestWormhole.Partner), game.PushMaxReloadTurns);//Fix
                             // Get the steps needed for the enemy pirate to arrive to the mothership
                             var enemyStepsNeeded = capsule.Holder.Steps(mothership);
                             if (friendlyStepsNeeded < enemyStepsNeeded)
