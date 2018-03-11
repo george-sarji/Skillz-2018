@@ -73,12 +73,6 @@
     </tr>
     <tr>
         <td>Asteroids.Cs</td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>Asteroids.Cs</td>
         <td>154</td>
         <td>score</td>
         <td>changed the value to score since it already exists</td>
