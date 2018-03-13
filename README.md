@@ -14,7 +14,7 @@ We implied multiple strategies in our code that worked on multiple items. Almost
 ** Note: There is a file that is not shared due to private purposes.
 
 ## Folders
-- Old code: This folder contains the oldest version of code that we had, which we found unworkable. We abandoned it and created a new code within three days that was used for the finale.
+- Old code: This folder contains the oldest version of code that we had, which we found unworkable. We abandoned it and created a new code within three days that was used for the finale. (<a href="https://github.com/george17-meet/Skillz-2018-Old">Repository</a>)
 - Pre-finale code: This folder contains the code that was submitted to the finals before the site was closed.
 
 
