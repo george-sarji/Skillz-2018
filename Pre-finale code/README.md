@@ -1,5 +1,5 @@
-# Skillz-Code
-Skillz code for 2018, revamped.
+# Pre-finale code:
+This part of the repository contains the code that we submitted for the finals.
 
 ## Bot stats:
 
