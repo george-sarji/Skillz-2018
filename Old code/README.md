@@ -1,5 +1,6 @@
-# Skillz 2018
-This repository contains the code for the bot for the Skill 2018 cyber competition.
+# Old code:
+This part of the repository contains an older code that we started working on but found unworkable.
+The documentation is 90% out of date.
 
 ## Bot documentation:
 <table>
