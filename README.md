@@ -11,6 +11,8 @@ We implied multiple strategies in our code that worked on multiple items. Almost
 - <a href="https://docs.google.com/document/d/1O85CJa_cKZgjpaBhxIYU9997ILV4BIEz5wB-7re2Eo8/edit?usp=sharing">The Flying Dutchman (School tournaments, George + Sary)
 - <a href="">We already won (School tournaments, Mahmoud + Rami)</a>
 
+** Note: There is a file that is not shared due to private purposes.
+
 ## Folders
 - Old code: This folder contains the oldest version of code that we had, which we found unworkable. We abandoned it and created a new code within three days that was used for the finale.
 - Pre-finale code: This folder contains the code that was submitted to the finals before the site was closed.
