@@ -2,7 +2,7 @@
 
 ## This code was developed by George Sarji, Rami Matar, Sary Daaboul and Mahmoud Khalifa.
 
-### This repository contains all versions of our code as a group (Saint Joseph's school, Nazareth) that eventually got us to the 6th place in the competition. The code that was in the finals is yet to be released as soon as we get access to it.
+### This repository contains all versions of our code as a group (Saint Joseph's school, Nazareth) that eventually got us to the 6th place in the competition.
 
 We implied multiple strategies in our code that worked on multiple items. Almost all the changes could be found in the following google docs, ordered chronologically (newest first):
 - <a href="https://docs.google.com/document/d/1Q5NLpMSrnGE2AlC-IuSHcHNdcs5E4945035Y6N-7fnE/edit?usp=sharing">Finals</a>
@@ -16,6 +16,7 @@ We implied multiple strategies in our code that worked on multiple items. Almost
 ## Folders
 - Old code: This folder contains the oldest version of code that we had, which we found unworkable. We abandoned it and created a new code within three days that was used for the finale. (<a href="https://github.com/george17-meet/Skillz-2018-Old">Repository</a>)
 - Pre-finale code: This folder contains the code that was submitted to the finals before the site was closed.
+- Finale code: This folder contains the code that got us to the top 8 groups in the competition and before we were split up.
 
 
 
